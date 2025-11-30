@@ -2,20 +2,22 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>TOOK WAR</title>
+<title>TOOK WAR — Startseite</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,tookwear,took wear">
+<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear">
 <meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! Baue auf deinem eigenen Bau-Server, kämpfe in Arenen und lerne in Tutorials.">
 <meta property="og:image" content="logo.jpg">
+
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- Navbar -->
 <nav class="navbar apple-glass">
   <div class="nav-container">
-    <a href="index.html" class="nav-link">Home</a>
+    <a href="index.html" class="nav-link active">Home</a>
     <a href="about.html" class="nav-link">About</a>
     <a href="community.html" class="nav-link">Community</a>
     <a href="events.html" class="nav-link">Events</a>
@@ -25,38 +27,44 @@
   </div>
 </nav>
 
-<section class="apple-glass container">
+<!-- Hero Section -->
+<header class="hero-section apple-glass container">
   <h1>Willkommen auf TOOK WAR</h1>
   <p>Deutschlands Wargear-Server für Action, Turniere & Kreativität.</p>
-</section>
-  <div class="container" id="connect">
-  <h2>Schnell verbinden</h2>
-  <p>Verbinde dich direkt mit unserem Minecraft-Server:</p>
-  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-    <input type="text" id="serverIP" value="took-wear.gl.joinmc.link" readonly 
-           style="padding:8px; border-radius:5px; border:1px solid #ccc; width:250px;">
-    <button onclick="copyIP()" 
-            style="padding:8px 15px; background:#1f2937; color:#fff; border:none; border-radius:5px; cursor:pointer;">
-      Kopieren
-    </button>
-  </div>
-  <p id="copyMsg" style="color:green; margin-top:5px; display:none;">IP kopiert!</p>
-</div>
+</header>
 
+<!-- Schnell verbinden -->
+<main class="container">
+  <section class="connect-section apple-glass">
+    <h2>Schnell verbinden</h2>
+    <p>Verbinde dich direkt mit unserem Minecraft-Server:</p>
+    <div class="connect-wrapper">
+      <input type="text" id="serverIP" value="took-wear.gl.joinmc.link" readonly>
+      <button id="copyBtn">Kopieren</button>
+    </div>
+    <p id="copyMsg" class="copy-msg">IP kopiert!</p>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="apple-glass">
+  <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
+</footer>
+
+<!-- Script zum Kopieren der IP -->
 <script>
-// Kopieren der IP
-function copyIP() {
+const copyBtn = document.getElementById('copyBtn');
+copyBtn.addEventListener('click', () => {
   const ipInput = document.getElementById('serverIP');
   ipInput.select();
-  ipInput.setSelectionRange(0, 99999); // Für mobile Geräte
+  ipInput.setSelectionRange(0, 99999); // für mobile Geräte
   document.execCommand('copy');
 
   const msg = document.getElementById('copyMsg');
-  msg.style.display = 'inline';
+  msg.style.display = 'block';
   setTimeout(() => { msg.style.display = 'none'; }, 2000);
-}
+});
 </script>
-
 
 <script src="script.js"></script>
 </body>
