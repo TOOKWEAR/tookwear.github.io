@@ -9,32 +9,30 @@ body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
   color: #333;
-  background: #fdfdfd;
+  background: #f0f2f5; /* weniger weiß, sanftes Grau */
   scroll-behavior: smooth;
 }
 
 /* ===== Typografie ===== */
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5 {
   font-family: 'Playfair Display', serif;
-  color: #2575fc;
+  color: #1e3a8a; /* dunkles Blau für Überschriften */
   margin-bottom: 20px;
 }
 
-p {
+p, li, span {
   font-size: 1.2rem;
-  margin-bottom: 20px;
-  color: #555;
+  color: #4b5563; /* dezentes Grau für Text */
 }
 
-/* ===== Links ===== */
 a {
   text-decoration: none;
-  color: #2575fc;
+  color: #2563eb; /* Blau für Links */
   transition: color 0.3s, transform 0.2s;
 }
 
 a:hover {
-  color: #6a11cb;
+  color: #4338ca; /* dunkleres Blau beim Hover */
   transform: scale(1.05);
 }
 
@@ -43,32 +41,35 @@ nav {
   position: fixed;
   top: 0;
   width: 100%;
-  background: rgba(255,255,255,0.95);
+  background: #1f2937; /* dunkles, elegantes Grau für Navbar */
   display: flex;
   justify-content: center;
   padding: 15px 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  border-bottom: 2px solid #2563eb; /* kleine Farbakzentlinie */
 }
 
 nav a {
   margin: 0 25px;
   font-weight: bold;
-  color: #333;
+  color: #f9fafb; /* fast weiß für Kontrast */
   transition: color 0.3s, transform 0.3s;
 }
 
 nav a:hover {
-  color: #6a11cb;
+  color: #60a5fa; /* helleres Blau beim Hover */
   transform: translateY(-2px);
 }
 
-/* ===== Header ===== */
+/* ===== Header / Hero ===== */
 header {
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  background: linear-gradient(135deg, #2563eb, #60a5fa); /* schöner Farbverlauf */
   color: white;
-  padding: 120px 20px;
+  padding: 150px 20px;
   text-align: center;
+  border-radius: 0 0 50px 50px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
 }
 
 header h1 {
@@ -91,16 +92,22 @@ section {
   align-items: center;
   justify-content: center;
   text-align: center;
+  background: #e5e7eb; /* sanftes Grau für Abschnitte */
+  border-radius: 25px;
+  margin: 40px auto;
+  width: 90%;
+  max-width: 1200px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 section:nth-child(even) {
-  background: #f7f7f7;
+  background: #f3f4f6; /* leichtes Wechselspiel */
 }
 
 /* ===== Buttons ===== */
 .btn {
   display: inline-block;
-  background: #2575fc;
+  background: #2563eb;
   color: white;
   padding: 15px 35px;
   border-radius: 50px;
@@ -109,99 +116,105 @@ section:nth-child(even) {
 }
 
 .btn:hover {
-  background: #6a11cb;
+  background: #4338ca;
   transform: scale(1.05);
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.15);
 }
 
-/* ===== Portfolio/Grid ===== */
+/* ===== Grid / Portfolio ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 30px;
   width: 100%;
-  max-width: 1200px;
   margin-top: 40px;
 }
 
 .grid-item {
-  background: white;
+  background: #fff;
   padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .grid-item:hover {
   transform: translateY(-10px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
 }
 
 .grid-item a {
-  color: #2575fc;
+  color: #2563eb;
   font-weight: bold;
   display: inline-block;
   margin-top: 10px;
 }
 
 .grid-item a:hover {
-  color: #6a11cb;
+  color: #4338ca;
   transform: scale(1.05);
 }
 
-/* ===== Listen ===== */
-ul, ol {
-  padding-left: 40px;
-  margin-bottom: 20px;
+/* ===== Team ===== */
+.team {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  width: 100%;
+  margin-top: 40px;
 }
 
-li {
-  margin-bottom: 10px;
-  color: #555;
+.team-member {
+  text-align: center;
+  padding: 20px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-li a {
-  color: #2575fc;
+.team-member:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
 }
 
-li a:hover {
-  color: #6a11cb;
+.team-member img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 3px solid #2563eb;
 }
 
 /* ===== Footer ===== */
 footer {
-  background: #333;
-  color: white;
-  padding: 60px 20px;
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 80px 20px;
   text-align: center;
+  border-top: 2px solid #2563eb;
+  border-radius: 50px 50px 0 0;
 }
 
 footer a {
-  color: #2575fc;
-  text-decoration: none;
+  color: #60a5fa;
   margin: 0 10px;
   transition: color 0.3s, transform 0.2s;
 }
 
 footer a:hover {
-  color: #6a11cb;
+  color: #4338ca;
   transform: translateY(-2px);
 }
 
 /* ===== Social Icons ===== */
-.social-icons {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
 .social-icons a {
   display: inline-block;
   width: 45px;
   height: 45px;
   line-height: 45px;
   border-radius: 50%;
-  background: #2575fc;
+  background: #2563eb;
   color: white;
   text-align: center;
   font-size: 1.2rem;
@@ -210,11 +223,11 @@ footer a:hover {
 }
 
 .social-icons a:hover {
-  background: #6a11cb;
+  background: #4338ca;
   transform: scale(1.2);
 }
 
-/* ===== Animation & Interaktionen ===== */
+/* ===== Animation ===== */
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
@@ -229,28 +242,39 @@ footer a:hover {
 }
 
 /* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  header h1 {
+    font-size: 3.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   header h1 {
     font-size: 3rem;
   }
-
   section h2 {
     font-size: 2.5rem;
   }
-
   nav a {
     margin: 0 15px;
   }
-
   .btn {
     padding: 12px 25px;
     font-size: 1rem;
   }
-
   .social-icons a {
     width: 40px;
     height: 40px;
     line-height: 40px;
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 2.5rem;
+  }
+  section {
+    padding: 80px 15px;
   }
 }
