@@ -1,212 +1,256 @@
-{
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* ===== Grundlegendes Reset ===== */
+* {
   margin: 0;
-  background: linear-gradient(180deg, #f4f4f9 0%, #e2e6f0 100%);
-  color: #333;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
   line-height: 1.6;
-  transition: background 0.3s;
+  color: #333;
+  background: #fdfdfd;
+  scroll-behavior: smooth;
 }
 
-/* --- Navbar --- */
-.navbar {
-  background: #1f2937;
-  padding: 15px 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.navbar .logo {
-  font-size: 1.8em;
-  font-weight: bold;
-  color: #facc15;
-  text-decoration: none;
-}
-
-.navbar a {
-  color: #fff;
-  text-decoration: none;
-  margin-left: 25px;
-  font-weight: bold;
-  position: relative;
-  transition: color 0.3s;
-}
-
-.navbar a::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  background: #facc15;
-  left: 0;
-  bottom: -4px;
-  transition: width 0.3s;
-}
-
-.navbar a:hover {
-  color: #facc15;
-}
-
-.navbar a:hover::after {
-  width: 100%;
-}
-
-/* --- Container --- */
-.container {
-  max-width: 1100px;
-  margin: 50px auto;
-  padding: 0 20px;
-}
-
-/* --- Section Styling --- */
-section {
-  margin-bottom: 60px;
-  padding: 30px 20px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-section:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-
-/* --- Headlines & Text --- */
-h1, h2, h3 {
-  color: #1f2937;
-  margin-bottom: 15px;
+/* ===== Typografie ===== */
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
+  color: #2575fc;
+  margin-bottom: 20px;
 }
 
 p {
-  line-height: 1.7;
-  margin-bottom: 12px;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
   color: #555;
 }
 
-/* --- Buttons --- */
-button, .btn {
-  padding: 10px 20px;
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-}
-
-button:hover, .btn:hover {
-  background: #1e40af;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-
-/* --- Links Design --- */
+/* ===== Links ===== */
 a {
-  color: #2563eb;
   text-decoration: none;
-  transition: color 0.3s, text-shadow 0.3s;
+  color: #2575fc;
+  transition: color 0.3s, transform 0.2s;
 }
 
 a:hover {
-  color: #1e40af;
-  text-shadow: 0 0 2px rgba(37,99,235,0.8);
+  color: #6a11cb;
+  transform: scale(1.05);
 }
 
-/* --- News Cards --- */
-.news-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px 25px;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-
-.news-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-
-.news-title {
-  font-weight: bold;
-  font-size: 1.6em;
-  margin-bottom: 8px;
-  color: #1f2937;
-}
-
-.news-text {
-  margin: 8px 0;
-}
-
-.news-meta {
-  font-size: 0.85em;
-  color: #555;
-}
-
-/* --- Admin Section --- */
-#adminSection input, #adminSection textarea {
-  margin: 8px 0;
-  padding: 12px;
+/* ===== Navigation ===== */
+nav {
+  position: fixed;
+  top: 0;
   width: 100%;
-  max-width: 400px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  transition: border 0.3s, box-shadow 0.3s;
+  background: rgba(255,255,255,0.95);
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-#adminSection input:focus, #adminSection textarea:focus {
-  border-color: #2563eb;
-  outline: none;
-  box-shadow: 0 0 6px rgba(37,99,235,0.5);
+nav a {
+  margin: 0 25px;
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s, transform 0.3s;
 }
 
-/* --- Footer --- */
-footer {
+nav a:hover {
+  color: #6a11cb;
+  transform: translateY(-2px);
+}
+
+/* ===== Header ===== */
+header {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  padding: 120px 20px;
   text-align: center;
-  padding: 25px 20px;
-  color: #555;
-  font-size: 0.9em;
-  border-top: 1px solid #ddd;
-  background: #f9fafb;
 }
 
-/* --- Responsive --- */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .navbar a {
-    margin-left: 0;
-    margin-top: 10px;
-  }
-  .container {
-    margin: 30px auto;
-    padding: 0 15px;
-  }
-  #adminSection input, #adminSection textarea {
-    max-width: 100%;
-  }
+header h1 {
+  font-size: 4rem;
+  margin-bottom: 20px;
 }
 
-/* --- Additional Visual Enhancements --- */
-section img {
-  max-width: 100%;
-  border-radius: 10px;
-  margin-bottom: 15px;
+header p {
+  font-size: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-.card-grid {
+/* ===== Sektionen ===== */
+section {
+  padding: 100px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+section:nth-child(even) {
+  background: #f7f7f7;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-block;
+  background: #2575fc;
+  color: white;
+  padding: 15px 35px;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.btn:hover {
+  background: #6a11cb;
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+/* ===== Portfolio/Grid ===== */
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 40px;
+}
+
+.grid-item {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.grid-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.grid-item a {
+  color: #2575fc;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.grid-item a:hover {
+  color: #6a11cb;
+  transform: scale(1.05);
+}
+
+/* ===== Listen ===== */
+ul, ol {
+  padding-left: 40px;
+  margin-bottom: 20px;
+}
+
+li {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+li a {
+  color: #2575fc;
+}
+
+li a:hover {
+  color: #6a11cb;
+}
+
+/* ===== Footer ===== */
+footer {
+  background: #333;
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+footer a {
+  color: #2575fc;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: color 0.3s, transform 0.2s;
+}
+
+footer a:hover {
+  color: #6a11cb;
+  transform: translateY(-2px);
+}
+
+/* ===== Social Icons ===== */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.social-icons a {
+  display: inline-block;
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 50%;
+  background: #2575fc;
+  color: white;
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 0 10px;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.social-icons a:hover {
+  background: #6a11cb;
+  transform: scale(1.2);
+}
+
+/* ===== Animation & Interaktionen ===== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 3rem;
+  }
+
+  section h2 {
+    font-size: 2.5rem;
+  }
+
+  nav a {
+    margin: 0 15px;
+  }
+
+  .btn {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+
+  .social-icons a {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1rem;
+  }
 }
