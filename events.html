@@ -2,32 +2,88 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Events</title>
+<title>Events — TOOK WAR</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,tookwear,took wear">
+<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord, tookwear, took wear">
 <meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! Baue auf deinem eigenen Bau-Server, kämpfe in Arenen und lerne in Tutorials.">
 <meta property="og:image" content="logo.jpg">
 
 <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-  
+
+<!-- Navbar -->
 <nav class="navbar apple-glass">
   <div class="nav-container">
     <a href="index.html" class="nav-link">Home</a>
     <a href="about.html" class="nav-link">About</a>
     <a href="community.html" class="nav-link">Community</a>
-    <a href="events.html" class="nav-link">Events</a>
+    <a href="events.html" class="nav-link active">Events</a>
     <a href="support.html" class="nav-link">Support</a>
     <a href="news.html" class="nav-link">News</a>
     <a href="conventions.html" class="nav-link">Konventionen</a>
   </div>
 </nav>
-  
-<section class="apple-glass container">
-<h1>Events</h1>
-<p>Turniere & Wettbewerbe.</p>
-</section>
-<script src="script.js"></script>
-</body></html>
+
+<!-- Hero Section -->
+<header class="hero-section">
+  <h1>Events & Turniere</h1>
+  <p>Alle aktuellen Wettbewerbe, Turniere und Community-Events von TOOK WAR.</p>
+</header>
+
+<!-- Main Content -->
+<main class="container">
+  <section class="events-section apple-glass">
+    <h2>Kommende Events</h2>
+    <div id="eventsContainer" class="events-grid">
+      <p>Events werden geladen...</p>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
+</footer>
+
+<!-- Script zum Laden der Events -->
+<script>
+async function loadEvents() {
+  try {
+    const res = await fetch('events.json'); // events.json muss im gleichen Ordner liegen
+    const events = await res.json();
+    const container = document.getElementById('eventsContainer');
+    container.innerHTML = '';
+
+    if(events.length === 0){
+      container.innerHTML = '<p>Keine Events vorhanden.</p>';
+      return;
+    }
+
+    // Sortiere nach Datum (neueste zuerst)
+    events.sort((a,b) => new Date(a.date) - new Date(b.date))
+          .forEach(e => {
+            const div = document.createElement('div');
+            div.classList.add('event-card'); // Card-Klasse für CSS
+            div.innerHTML = `
+              <h3>${e.title}</h3>
+              <p><strong>Datum:</strong> ${new Date(e.date).toLocaleDateString()}</p>
+              <p><strong>Ort:</strong> ${e.location}</p>
+              <p>${e.description}</p>
+            `;
+            container.appendChild(div);
+          });
+
+  } catch (err) {
+    document.getElementById('eventsContainer').innerHTML = '<p>Fehler beim Laden der Events.</p>';
+    console.error(err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadEvents);
+</script>
+
+</body>
+</html>
