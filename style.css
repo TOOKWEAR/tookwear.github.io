@@ -1,10 +1,10 @@
-/* --- Allgemein --- */
-body {
+{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   background: linear-gradient(180deg, #f4f4f9 0%, #e2e6f0 100%);
   color: #333;
   line-height: 1.6;
+  transition: background 0.3s;
 }
 
 /* --- Navbar --- */
@@ -15,6 +15,16 @@ body {
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar .logo {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #facc15;
+  text-decoration: none;
 }
 
 .navbar a {
@@ -47,13 +57,72 @@ body {
 
 /* --- Container --- */
 .container {
-  max-width: 900px;
+  max-width: 1100px;
   margin: 50px auto;
   padding: 0 20px;
 }
 
+/* --- Section Styling --- */
+section {
+  margin-bottom: 60px;
+  padding: 30px 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* --- Headlines & Text --- */
+h1, h2, h3 {
+  color: #1f2937;
+  margin-bottom: 15px;
+}
+
+p {
+  line-height: 1.7;
+  margin-bottom: 12px;
+  color: #555;
+}
+
+/* --- Buttons --- */
+button, .btn {
+  padding: 10px 20px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:hover, .btn:hover {
+  background: #1e40af;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* --- Links Design --- */
+a {
+  color: #2563eb;
+  text-decoration: none;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+a:hover {
+  color: #1e40af;
+  text-shadow: 0 0 2px rgba(37,99,235,0.8);
+}
+
 /* --- News Cards --- */
-#newsContainer div {
+.news-card {
   background: #fff;
   border-radius: 12px;
   padding: 20px 25px;
@@ -62,7 +131,7 @@ body {
   transition: all 0.3s ease;
 }
 
-#newsContainer div:hover {
+.news-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
@@ -71,11 +140,11 @@ body {
   font-weight: bold;
   font-size: 1.6em;
   margin-bottom: 8px;
+  color: #1f2937;
 }
 
 .news-text {
   margin: 8px 0;
-  line-height: 1.6;
 }
 
 .news-meta {
@@ -84,57 +153,60 @@ body {
 }
 
 /* --- Admin Section --- */
-#adminSection {
-  margin-top: 40px;
-  background: #fff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-
-#adminSection:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-}
-
-#adminSection input {
+#adminSection input, #adminSection textarea {
   margin: 8px 0;
-  padding: 10px;
+  padding: 12px;
   width: 100%;
-  max-width: 350px;
+  max-width: 400px;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  transition: border 0.3s;
+  border-radius: 8px;
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
-#adminSection input:focus {
+#adminSection input:focus, #adminSection textarea:focus {
   border-color: #2563eb;
   outline: none;
-  box-shadow: 0 0 5px rgba(37,99,235,0.5);
+  box-shadow: 0 0 6px rgba(37,99,235,0.5);
 }
 
-#adminSection button {
-  padding: 10px 18px;
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.3s ease;
-}
-
-#adminSection button:hover {
-  background: #1e40af;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-/* --- Footer (optional) --- */
+/* --- Footer --- */
 footer {
   text-align: center;
-  padding: 20px;
+  padding: 25px 20px;
   color: #555;
   font-size: 0.9em;
+  border-top: 1px solid #ddd;
+  background: #f9fafb;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .navbar a {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .container {
+    margin: 30px auto;
+    padding: 0 15px;
+  }
+  #adminSection input, #adminSection textarea {
+    max-width: 100%;
+  }
+}
+
+/* --- Additional Visual Enhancements --- */
+section img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
 }
