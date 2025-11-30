@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>TOOK WAR</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,tookwear,took wear">
+<meta name="description" content="TOOK WAR - Deutschlands drittbester Wargear-Server! Baue auf deinem eigenen Bau-Server, kämpfe in Arenen und lerne in Tutorials.">
+<meta property="og:image" content="logo.jpg">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar apple-glass">
+  <div class="nav-container">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="community.html" class="nav-link">Community</a>
+    <a href="events.html" class="nav-link">Events</a>
+    <a href="support.html" class="nav-link">Support</a>
+    <a href="news.html" class="nav-link">News</a>
+    <a href="conventions.html" class="nav-link">Konventionen</a>
+  </div>
+</nav>
+
+<h1>Konventionen</h1>
+<p>Konventionen sind Design Merkmale von Code.</p>
+<p>Diese sind nur für das Developer-Team wichtig</p>
+
+<details open>
+    <summary><h2>Indent</h2></summary>
+    <p>Man soll einen Indent von 3 haben.</p>
+    <p>Es ist egal, ob TABs oder Leerzeichen genutzt werden</p>
+</details>
+
+<details open>
+    <summary><h2>Keine Leerzeichen nach statements</h2></summary>
+    <p>Beispiel:</p>
+    <pre><code class="language-java">
+    // Richtig
+    if(true);
+    
+    // Falsch
+    if (true);
+    </code></pre>
+</details>
+
+<details open>
+    <summary><h2>Namen auf Englisch</h2></summary>
+    <p>Alle Namen und Kommentare sollen auf Englisch verfasst werden.</p>
+</details>
+
+<details open>
+    <summary><h2>Pattern Matching nutzen</h2></summary>
+    <p>Pattern Matching ist sehr clean und gut lesbar.</p>
+    <pre><code class="language-java">
+    // Richtig
+    if(!(sender instanceof Player player))
+        return;
+    
+    // Falsch
+    if(!(sender instanceof Player))
+        return;
+    Player player = (Player) sender;
+    </code></pre>
+</details>
+
+<details open>
+    <summary><h2>If statements</h2></summary>
+    <p>If statements sollten immer mindestends 2 Zeilen einnehmen, da one-liner schwierig zu lesen sind.</p>
+    <p>Es ist ok, one-liner zu verwenden, wenn danach nur ein einzelnes keyword kommt</p>
+    <pre><code class="language-java">
+    // Richtig
+    if(true)
+       run();
+
+    // Richtig
+    if(true) {
+       run();
+    }
+
+    // Falsch
+    if(true) run();
+
+    // Ausnahme
+    if(true) return;
+
+    if(true) break;
+    </code></pre>
+</details>
+
+<details open>
+    <summary><h2>d</h2></summary>
+</details>
+
+</body>
+</html>
