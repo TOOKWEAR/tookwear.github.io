@@ -7,23 +7,11 @@
 <meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! News & Events.">
 <meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear">
 <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- Navbar
-<nav class="navbar apple-glass">
-  <div class="nav-container">
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="about.html" class="nav-link">About</a>
-    <a href="community.html" class="nav-link">Community</a>
-    <a href="events.html" class="nav-link">Events</a>
-    <a href="support.html" class="nav-link">Support</a>
-    <a href="news.html" class="nav-link">News</a>
-    <a href="conventions.html" class="nav-link">Konventionen</a>
-  </div>
-</nav>
-<-->
-
+<!-- Navbar -->
 <nav class="navbar apple-glass">
   <div class="nav-container">
     <a href="index.html" class="nav-link">Home</a>
@@ -36,24 +24,33 @@
   </div>
 </nav>
 
-<div class="container" id="home">
+<!-- Hero Section -->
+<header class="hero-section">
   <h1>Willkommen auf TOOK WAR</h1>
-  <p>Die aktuellsten News findest du hier unten. Admins können die `news.json` im Repository bearbeiten, um neue Beiträge hinzuzufügen.</p>
-</div>
+  <p>Die aktuellsten News findest du hier unten. Admins können die <code>news.json</code> im Repository bearbeiten, um neue Beiträge hinzuzufügen.</p>
+</header>
 
-<div class="container" id="news">
-  <h2>Server News</h2>
-  <div id="newsContainer">News werden geladen...</div>
+<!-- Main Content -->
+<main>
+  <section class="news-section container" id="news">
+    <h2>Server News</h2>
+    <div id="newsContainer" class="news-grid">
+      <p>News werden geladen...</p>
+    </div>
+  </section>
+</main>
 
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
+</footer>
 
-
+<!-- Script zum Laden der News -->
 <script>
-// --- News laden ---
 async function loadNews() {
   try {
     const res = await fetch('news.json'); // news.json muss im gleichen Ordner liegen
     const news = await res.json();
-
     const container = document.getElementById('newsContainer');
     container.innerHTML = '';
 
@@ -65,6 +62,7 @@ async function loadNews() {
     news.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
         .forEach(n => {
           const div = document.createElement('div');
+          div.classList.add('news-card'); // Card-Klasse für Styling
           div.innerHTML = `
             <div class="news-title">${n.title}</div>
             <div class="news-text">${n.text}</div>
@@ -74,7 +72,7 @@ async function loadNews() {
         });
 
   } catch (err) {
-    document.getElementById('newsContainer').innerHTML = 'Fehler beim Laden der News.';
+    document.getElementById('newsContainer').innerHTML = '<p>Fehler beim Laden der News.</p>';
     console.error(err);
   }
 }
