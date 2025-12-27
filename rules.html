@@ -1,200 +1,178 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Tookwar – WarGear & MiniWarGear Regelwerk</title>
+<meta charset="UTF-8">
+<title>Tookwar – WarGear & MiniWarGear Regelwerk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="keywords" content="wargear, Minecraft, Tookwar, WarGear Regelwerk, MiniWarGear, Arena, Deutsch, Turniere">
-  <meta name="description" content="TOOKWAR – Deutschlands drittbester WarGear-Server. Offizielles WarGear & MiniWarGear Regelwerk.">
-  <meta property="og:image" content="logo.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Roboto',sans-serif;
+  background:#f0f2f5;
+  color:#374151;
+  line-height:1.7;
+}
+nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  background:#1f2937;
+  padding:15px;
+  text-align:center;
+  z-index:1000;
+}
+nav a{
+  color:#f9fafb;
+  margin:0 15px;
+  font-weight:700;
+  text-decoration:none;
+}
+header{
+  margin-top:80px;
+  padding:120px 20px 80px;
+  text-align:center;
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+  color:#fff;
+}
+header h1{
+  font-family:'Playfair Display',serif;
+  font-size:3.5rem;
+}
+header p{
+  max-width:700px;
+  margin:20px auto 0;
+  font-size:1.3rem;
+}
+main{
+  max-width:1100px;
+  margin:0 auto;
+  padding:80px 20px;
+}
+section{
+  background:#fff;
+  border-radius:20px;
+  padding:70px 70px;
+  margin-bottom:80px;
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
+}
+section h2{
+  font-family:'Playfair Display',serif;
+  font-size:2.6rem;
+  margin-bottom:30px;
+  color:#1e3a8a;
+}
+section h3{
+  margin-top:40px;
+  margin-bottom:10px;
+  color:#1e40af;
+}
+section ul{
+  margin:15px 0 25px 25px;
+}
+footer{
+  background:#1f2937;
+  color:#f9fafb;
+  text-align:center;
+  padding:60px 20px;
+}
+@media(max-width:768px){
+  section{padding:50px 30px}
+  header h1{font-size:2.6rem}
+}
+</style>
 </head>
 
 <body>
 
-<!-- Navigation -->
 <nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="community.html">Community</a>
-  <a href="events.html">Events</a>
-  <a href="support.html">Support</a>
-  <a href="news.html">News</a>
-  <a href="conventions.html">Konventionen</a>
-  <a href="rules.html">Regelwerk</a>
+  <a href="#wargear">WarGear</a>
+  <a href="#miniwargear">MiniWarGear</a>
 </nav>
 
-<!-- Header / Hero -->
 <header>
-  <h1>WarGear & MiniWarGear</h1>
-  <p>Offizielles Tookwar-Regelwerk für faire, kompetitive und saubere WarGear-Kämpfe.</p>
+  <h1>WarGear & MiniWarGear Regelwerk</h1>
+  <p>Offizielles Tookwar-Regelwerk für kompetitive WarGear- und MiniWarGear-Kämpfe</p>
 </header>
 
-<main style="margin-top: 120px;">
+<main>
 
-<!-- WarGear Grundlagen -->
 <section id="wargear">
-  <h2>WarGear – Grundlagen</h2>
+<h2>WarGear Regelwerk</h2>
 
-  <p>
-    Ein <strong>WarGear</strong> ist eine Redstone-Kampfmaschine in Minecraft.
-    Sie wird mithilfe von Redstone-Techniken und TNT-Kanonen gebaut, um gegnerische WarGears zu beschädigen.
-  </p>
+<p>Ein <strong>WarGear</strong> ist eine Redstone-Kampfmaschine in Minecraft, die mithilfe von TNT-Kanonen und Redstone-Technik andere WarGears beschädigt.</p>
 
-  <h3>Clocks</h3>
-  <p>
-    Eine <strong>Clock</strong> ist ein Mechanismus, der in regelmäßigen oder unregelmäßigen Abständen Signale aussendet
-    und sich nach Beendigung selbst abschalten muss.
-  </p>
+<h3>Definitionen</h3>
+<p><strong>Clock:</strong> Gibt wiederholt Signale aus und schaltet sich nach ihrer Aufgabe selbst ab.</p>
+<p><strong>Autostarter:</strong> Aktiviert automatische Kanonen oder Schilde durch Interaktion oder Bedrock-Replacement.</p>
+<p><strong>Kampfbereiter Zustand:</strong> Zustand nach Freigabe, aber vor Kampfbeginn.</p>
 
-  <h3>Autostarter</h3>
-  <p>
-    Ein <strong>Autostarter</strong> aktiviert automatische Kanonen oder Schilde
-    durch Spielerinteraktion oder das Replacen eines einzelnen Bedrocks.
-  </p>
+<h3>Maße</h3>
+<ul>
+<li>41 Blöcke hoch</li>
+<li>47 Blöcke tief</li>
+<li>67 Blöcke breit</li>
+<li>Ausfahrmaß: 16 Blöcke (außer nach unten)</li>
+</ul>
 
-  <h3>Kampfbereiter Zustand</h3>
-  <p>
-    Der <strong>kampfbereite Zustand</strong> beschreibt den Zustand des WarGears
-    nach Freigabe, aber vor Kampfbeginn.
-  </p>
+<h3>Blöcke & Design</h3>
+<p>Erlaubt sind Blöcke mit TNT-Widerstand ≤ 9. Ausgenommen sind Sprösslinge, Spawner, Eis, Netherportal und Lava. Wasser ist erlaubt.</p>
+<p>Die äußere Designschicht darf maximal TNT-Widerstand 6 besitzen und muss aus mindestens zwei Blockarten bestehen.</p>
+
+<h3>Kanonen</h3>
+<p>Maximal <strong>14 Kanonen</strong> pro WarGear. Automatische Kanonen dürfen maximal 336 TNT enthalten.</p>
+
+<h3>Schilde</h3>
+<p>Jeder Block, der aus den normalen Maßen geschoben wird, zählt als Schild.</p>
+
+<h3>Kommandozentrale</h3>
+<ul>
+<li>Mindestens 8 sichtbare Frontscheinwerfer</li>
+<li>Autostarter oder alternative Startvorrichtung</li>
+<li>Manuelle Schildsteuerung</li>
+<li>Manuelle Steuerung automatischer Kanonen</li>
+</ul>
+
+<h3>Bug-Using</h3>
+<p>Techhider-Missbrauch und übermäßiger Lag sind verboten. Die finale Entscheidung liegt beim Prüfer.</p>
 </section>
 
-<!-- Maße -->
-<section>
-  <h2>Maße, Blöcke & Design</h2>
-
-  <ul>
-    <li>41 Blöcke hoch</li>
-    <li>47 Blöcke tief</li>
-    <li>67 Blöcke breit</li>
-  </ul>
-
-  <p>Ausfahrmaß: maximal 16 Blöcke in jede Richtung (außer nach unten).</p>
-
-  <p>
-    Erlaubt sind alle Blöcke mit TNT-Widerstand ≤ 9.<br>
-    Ausgenommen: Sprösslinge, Spawner, Eis, Netherportale, Lava.<br>
-    Wasser ist erlaubt.
-  </p>
-
-  <p>
-    <strong>Designpflicht:</strong><br>
-    Außenschicht ≤ TNT-Widerstand 6, geschlossene Front,
-    begrenzte Tiefenvariation, mindestens zwei Blockarten.
-  </p>
-
-  <p>
-    Mindestens ein Ausguck ist Pflicht,
-    davon mindestens einer mit sechs durchsichtigen Blöcken zum Gegner.
-  </p>
-</section>
-
-<!-- MiniWarGear -->
 <section id="miniwargear">
-  <h2>MiniWarGear</h2>
+<h2>MiniWarGear Regelwerk</h2>
 
-  <p>
-    <strong>MiniWarGears</strong> sind kleine Zusatzmechaniken innerhalb eines WarGears
-    und dienen ausschließlich der taktischen Unterstützung.
-  </p>
+<p>MiniWarGears werden in Minecraft Version <strong>1.21</strong> gebaut und besitzen eigene Limits.</p>
 
-  <h3>Allgemeine Regeln</h3>
-  <ul>
-    <li>Nur innerhalb der regulären WarGear-Maße erlaubt</li>
-    <li>Keine eigenständigen Kanonen oder Schilde</li>
-    <li>Nur unterstützende Funktionen</li>
-    <li>Keine neuen Abschusspunkte</li>
-  </ul>
+<h3>Maße</h3>
+<ul>
+<li>20 Blöcke tief (+1 Design pro Seite → 22)</li>
+<li>35 Blöcke breit (+1 Design pro Seite → 37)</li>
+<li>26 Blöcke hoch</li>
+<li>Ausfahrmaß: 7 Blöcke</li>
+</ul>
 
-  <h3>Einschränkungen</h3>
-  <ul>
-    <li>Kein direkter Blockschaden</li>
-    <li>Keine Umgehung von Limits</li>
-    <li>Keine verbotene Entitätenerzeugung</li>
-    <li>Kein Stapeln zur Ersetzung von Hauptsystemen</li>
-  </ul>
+<h3>Materialien</h3>
+<p>Maximaler TNT-Widerstand: 9. Maximal 120 TNT. Wasser darf ausschließlich in Kanonen verwendet werden.</p>
 
-  <h3>Aktivierung</h3>
-  <ul>
-    <li>Manuelle MiniWarGears benötigen User-Input</li>
-    <li>Automatische nur über vorhandene Autostarter</li>
-    <li>Klare, nachvollziehbare Steuerung</li>
-  </ul>
-</section>
+<h3>Kanonen</h3>
+<p>Maximal <strong>9 Kanonen</strong>. Maximal 8 Projektile pro Schuss. Eine zusätzliche manuelle Hauptkanone mit 12 Projektilen ist erlaubt.</p>
+<p>Automatische Kanonen: mindestens 5 Schüsse, maximal 1 Schuss alle 40 Redstoneticks, maximal 2 Stück.</p>
 
-<!-- Kanonen -->
-<section id="kanonen">
-  <h2>Kanonen</h2>
-  <p>Maximal <strong>14 Kanonen</strong> pro WarGear.</p>
+<h3>Brücke</h3>
+<p>Jedes MiniWarGear benötigt eine klar abtrennbare Brücke mit mindestens 25 begehbaren Blöcken und vollständiger Steuerung.</p>
 
-  <h3>Manuelle Kanonen</h3>
-  <p>
-    Vor dem Kampf kein TNT. Manuelles Laden erforderlich.
-    Mehrere Schüsse ohne Neuladen sind erlaubt.
-  </p>
+<h3>Design</h3>
+<p>Außenschicht maximal TNT-Widerstand 6, durchgängige Front, mindestens zwei Blockarten.</p>
 
-  <h3>Automatische Kanonen</h3>
-  <p>
-    Vor dem Kampf geladen. Identische Abschusspunkte.<br>
-    Maximal 336 TNT, mindestens 6 Schüsse.<br>
-    SFAs: maximal ein Schuss alle 1,5 Redstoneticks.
-  </p>
-</section>
-
-<!-- Schilde -->
-<section id="schilde">
-  <h2>Schilde</h2>
-
-  <p>
-    Jeder aus den normalen Maßen geschobene Block zählt als Schild.
-  </p>
-
-  <h3>Manuelle Schilde</h3>
-  <p>
-    Erfordern aktiven User-Input und müssen vollständig über die Kommandozentrale steuerbar sein.
-  </p>
-
-  <h3>Automatische Schilde</h3>
-  <p>
-    Werden über Autostarter oder Pasten aktiviert.
-    Keine zusätzliche Aktivierung erlaubt.
-  </p>
-</section>
-
-<!-- Kommandozentrale -->
-<section id="kommando">
-  <h2>Kommandozentrale</h2>
-  <ul>
-    <li>Mindestens 8 frontal sichtbare Scheinwerfer</li>
-    <li>Autostarter oder alternative Startvorrichtung</li>
-    <li>Manuelle Schildsteuerung</li>
-    <li>Manuelle Steuerung automatischer Kanonen</li>
-  </ul>
-</section>
-
-<section>
-  <h2>Bug-Using & Anti-Lag</h2>
-  <p>Missbrauch von Techhiding ist verboten. Übermäßiger Lag kann zur Sperre führen.</p>
-</section>
-
-<section>
-  <h2>Prüfer & WarGear-Rat</h2>
-  <p>Finale Entscheidungen liegen beim Prüfer und dem WarGear-Rat.</p>
-</section>
-
-<section>
-  <h2>Versteckte Blöcke</h2>
-  <p>Versteckte Blöcke werden durch Endstein ersetzt.</p>
+<h3>Bug-Using</h3>
+<p>Das Erzeugen von TNT ist verboten. Exzessiver Einsatz von Techhider-Blöcken ist nicht erlaubt.</p>
 </section>
 
 </main>
 
 <footer>
-  <p>Tookwar • WarGear & MiniWarGear Regelwerk</p>
+Tookwar • Offizielles WarGear & MiniWarGear Regelwerk
 </footer>
 
 </body>
