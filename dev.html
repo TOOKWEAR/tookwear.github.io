@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -6,45 +7,291 @@
 <title>TookWar Dev Board</title>
 <style>
 /* -------------------- Design von dir -------------------- */
-*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
-body { font-family:'Segoe UI', Tahoma, Geneva, Verdana,sans-serif; background:#0f172a; color:#e2e8f0; min-height:100vh; display:flex; flex-direction:column;}
-header { background:#1e293b; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; color:#22c55e; }
-.logo { font-weight:700; font-size:1.3rem; user-select:none; }
-#userInfo { margin-right:1rem; font-weight:600; }
-button { padding:0.5rem 1rem; font-weight:600; border:none; border-radius:0.5rem; background:transparent; color:inherit; cursor:pointer; transition:0.2s; user-select:none;}
-button:focus { outline:2px solid #22c55e; outline-offset:2px; }
-#logoutBtn { background:#ef4444; color:white;}
-#logoutBtn:hover { background:#dc2626; }
-.primary { background:#22c55e; color:#022c22; font-weight:700;}
-.primary:hover { background:#16a34a;}
-.danger { background:#dc2626; color:white; font-weight:700;}
-.danger:hover { background:#b91c1c;}
-.edit-btn { background:#2563eb; color:white;}
-.edit-btn:hover { background:#1d4ed8;}
-#login { margin:100px auto; background:#1e293b; max-width:400px; padding:2rem; border-radius:1rem; box-shadow:0 0 15px rgba(34,197,94,0.5);}
-#login h2 { margin-bottom:1.5rem; color:#22c55e; text-align:center;}
-#login input { width:100%; padding:0.8rem 1rem; margin-bottom:1rem; border-radius:0.6rem; border:none; font-size:1rem; background:#334155; color:#e2e8f0;}
-#login input::placeholder { color:#94a3b8;}
-#login button { width:100%; font-size:1.1rem; border-radius:0.6rem;}
-#app { flex-grow:1; max-width:900px; margin:2rem auto 4rem auto; padding:0 1rem;}
-#app h2 { border-bottom:2px solid #22c55e; padding-bottom:0.5rem; margin-bottom:1rem;}
-#auftraege { display:flex; flex-direction:column; gap:1rem; }
-.auftrag { background:#1e293b; border-radius:1rem; padding:1.5rem 2rem; box-shadow:0 0 15px rgba(34,197,94,0.15);}
-.row { display:flex; gap:1rem; margin-bottom:0.9rem; align-items:center;}
-.row label { min-width:90px; font-weight:700; color:#6ee7b7; user-select:none;}
-input[type="text"], input[type="date"], select, textarea { background:#334155; border:none; border-radius:0.6rem; color:#e2e8f0; font-size:1rem; padding:0.5rem 0.8rem; flex-grow:1; transition:0.2s;}
-input:disabled, select:disabled, textarea:disabled { background:transparent; color:#94a3b8; cursor:default;}
-textarea { min-height:70px; resize:vertical; font-family:inherit;}
-.buttons-wrapper { margin-top:1rem; text-align:right;}
-button.primary, button.danger { padding:0.5rem 1.4rem;}
-button.danger { margin-left:0.75rem;}
-#addBtn { position:fixed; bottom:2rem; right:2rem; width:60px; height:60px; font-size:40px; font-weight:600; background:#22c55e; border-radius:50%; border:none; color:#022c22; cursor:pointer; box-shadow:0 4px 10px rgba(34,197,94,0.6); display:none; align-items:center; justify-content:center; user-select:none;}
-#addBtn:hover { background:#16a34a; }
-.editable-text { width:100%; min-height:100px; max-height:300px; resize:vertical; font-size:1rem; padding:0.5rem 0.8rem; border-radius:0.6rem; background:#334155; color:#e2e8f0; font-family:inherit;}
-@media (max-width:550px){ .editable-text { min-height:80px; font-size:0.9rem;} .row { flex-direction:column; align-items:flex-start;} .row label { margin-bottom:0.25rem;} #login{width:90vw;} }
-@media (min-width:551px) and (max-width:900px){ .editable-text { min-height:90px; font-size:0.95rem;} }
-@media (min-width:901px) and (max-width:1200px){ .editable-text { min-height:100px; font-size:1rem;} }
-@media (min-width:1201px){ .editable-text { min-height:120px; font-size:1.05rem;} }
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: #1e293b;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #22c55e;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.3rem;
+    user-select: none;
+}
+
+#userInfo {
+    margin-right: 1rem;
+    font-weight: 600;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: 0.2s;
+    user-select: none;
+}
+
+button:focus {
+    outline: 2px solid #22c55e;
+    outline-offset: 2px;
+}
+
+#logoutBtn {
+    background: #ef4444;
+    color: white;
+}
+
+#logoutBtn:hover {
+    background: #dc2626;
+}
+
+.primary {
+    background: #22c55e;
+    color: #022c22;
+    font-weight: 700;
+}
+
+.primary:hover {
+    background: #16a34a;
+}
+
+.danger {
+    background: #dc2626;
+    color: white;
+    font-weight: 700;
+}
+
+.danger:hover {
+    background: #b91c1c;
+}
+
+.edit-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #1d4ed8;
+}
+
+#login {
+    margin: 100px auto;
+    background: #1e293b;
+    max-width: 400px;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+}
+
+#login h2 {
+    margin-bottom: 1.5rem;
+    color: #22c55e;
+    text-align: center;
+}
+
+#login input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.6rem;
+    border: none;
+    font-size: 1rem;
+    background: #334155;
+    color: #e2e8f0;
+}
+
+#login input::placeholder {
+    color: #94a3b8;
+}
+
+#login button {
+    width: 100%;
+    font-size: 1.1rem;
+    border-radius: 0.6rem;
+}
+
+#app {
+    flex-grow: 1;
+    max-width: 900px;
+    margin: 2rem auto 4rem auto;
+    padding: 0 1rem;
+}
+
+#app h2 {
+    border-bottom: 2px solid #22c55e;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+#auftraege {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.auftrag {
+    background: #1e293b;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.15);
+}
+
+.row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+    align-items: center;
+}
+
+.row label {
+    min-width: 90px;
+    font-weight: 700;
+    color: #6ee7b7;
+    user-select: none;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    background: #334155;
+    border: none;
+    border-radius: 0.6rem;
+    color: #e2e8f0;
+    font-size: 1rem;
+    padding: 0.5rem 0.8rem;
+    flex-grow: 1;
+    transition: 0.2s;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+    background: transparent;
+    color: #94a3b8;
+    cursor: default;
+}
+
+textarea {
+    min-height: 70px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.buttons-wrapper {
+    margin-top: 1rem;
+    text-align: right;
+}
+
+button.primary,
+button.danger {
+    padding: 0.5rem 1.4rem;
+}
+
+button.danger {
+    margin-left: 0.75rem;
+}
+
+#addBtn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    font-size: 40px;
+    font-weight: 600;
+    background: #22c55e;
+    border-radius: 50%;
+    border: none;
+    color: #022c22;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(34, 197, 94, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+#addBtn:hover {
+    background: #16a34a;
+}
+
+.editable-text {
+    width: 100%;
+    min-height: 100px;
+    max-height: 300px;
+    resize: vertical;
+    font-size: 1rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.6rem;
+    background: #334155;
+    color: #e2e8f0;
+    font-family: inherit;
+}
+
+@media (max-width: 550px) {
+    .editable-text {
+        min-height: 80px;
+        font-size: 0.9rem;
+    }
+
+    .row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .row label {
+        margin-bottom: 0.25rem;
+    }
+
+    #login {
+        width: 90vw;
+    }
+}
+
+@media (min-width: 551px) and (max-width: 900px) {
+    .editable-text {
+        min-height: 90px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (min-width: 901px) and (max-width: 1200px) {
+    .editable-text {
+        min-height: 100px;
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 1201px) {
+    .editable-text {
+        min-height: 120px;
+        font-size: 1.05rem;
+    }
+}
 </style>
 </head>
 <body>
@@ -59,8 +306,8 @@ button.danger { margin-left:0.75rem;}
 
 <div id="login">
 <h2>Login</h2>
-<input id="username" placeholder="Email" autocomplete="username">
-<input id="password" type="password" placeholder="Passwort" autocomplete="current-password">
+<input type="email" id="username" placeholder="Email" autocomplete="username">
+<input type="password" id="password" placeholder="Passwort" autocomplete="current-password">
 <button id="loginBtn" class="primary">Login</button>
 </div>
 
@@ -96,18 +343,40 @@ const logoutBtnEl = document.getElementById('logoutBtn');
 loginBtnEl.addEventListener('click', async ()=>{
     const email = usernameEl.value.trim();
     const password = passwordEl.value.trim();
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if(error){ alert('Login fehlgeschlagen: '+error.message); return; }
-    currentUser = data.user.email;
-    // Holen der Rolle aus profiles-Tabelle
-    const { data: profile } = await supabase.from('profiles').select('roles').eq('id', data.user.id).single();
-    roles = profile?.roles || [];
-    loginEl.style.display='none';
-    appEl.style.display='block';
-    topEl.style.display='flex';
-    userInfoEl.textContent=`${currentUser} (${roles.join(', ')})`;
-    addBtn.style.display = (roles.includes('admin')||roles.includes('manager'))?'flex':'none';
-    loadAuftraege();
+    try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error) {
+            alert('Login fehlgeschlagen: ' + error.message);
+            return;
+        }
+
+        currentUser = data.user.email;
+
+        // Holen der Rolle aus profiles-Tabelle
+        const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('roles')
+            .eq('id', data.user.id)
+            .single();
+
+        if (profileError) {
+            console.error('Fehler beim Abrufen des Profils:', profileError.message);
+            roles = []; // Setze roles auf ein leeres Array, um Fehler zu vermeiden
+        } else {
+            roles = profile?.roles || [];
+        }
+
+        loginEl.style.display = 'none';
+        appEl.style.display = 'block';
+        topEl.style.display = 'flex';
+        userInfoEl.textContent = `${currentUser} (${roles.join(', ')})`;
+        addBtn.style.display = (roles.includes('admin') || roles.includes('manager')) ? 'flex' : 'none';
+        loadAuftraege();
+    } catch (error) {
+        console.error('Unerwarteter Fehler beim Login:', error);
+        alert('Ein unerwarteter Fehler ist aufgetreten.');
+    }
 });
 
 logoutBtnEl.addEventListener('click', ()=>{ supabase.auth.signOut(); location.reload(); });
@@ -154,8 +423,22 @@ function createAuftragElement(a){
     editBtn.addEventListener('click', ()=>{ devInput.disabled=false; deadlineInput.disabled=false; textArea.disabled=false; statusSelect.disabled=false; editBtn.style.display='none'; saveBtn.style.display='inline-block'; cancelBtn.style.display='inline-block'; deleteBtn.style.display='none'; });
     cancelBtn.addEventListener('click', ()=>{ devInput.value=a.dev||''; deadlineInput.value=a.deadline||''; textArea.value=a.text; statusSelect.value=a.status||STATUS_OPTIONS[0]; devInput.disabled=true; deadlineInput.disabled=true; textArea.disabled=true; statusSelect.disabled=true; editBtn.style.display='inline-block'; saveBtn.style.display='none'; cancelBtn.style.display='none'; deleteBtn.style.display='inline-block'; });
     saveBtn.addEventListener('click', async ()=>{
-        const { error } = await supabase.from('auftraege').update({dev:devInput.value,deadline:deadlineInput.value,text:textArea.value,status:statusSelect.value}).eq('id',a.id);
-        if(error){ alert(error.message); return; } loadAuftraege();
+        try {
+            const { error } = await supabase
+                .from('auftraege')
+                .update({ dev: devInput.value, deadline: deadlineInput.value, text: textArea.value, status: statusSelect.value })
+                .eq('id', a.id);
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            loadAuftraege();
+        } catch (err) {
+            console.error("Fehler beim Speichern des Auftrags:", err);
+            alert("Fehler beim Speichern des Auftrags. Bitte versuche es erneut.");
+        }
     });
     deleteBtn.addEventListener('click', async ()=>{ if(!confirm('Löschen?')) return; const {error}=await supabase.from('auftraege').delete().eq('id',a.id); if(error){ alert(error.message); return;} div.remove(); });
     return div;
@@ -163,3 +446,4 @@ function createAuftragElement(a){
 </script>
 </body>
 </html>
+```
