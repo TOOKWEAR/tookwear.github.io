@@ -2,244 +2,162 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TookWar Dev Board</title>
-
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: #e5e7eb;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 16px;
-    background: #020617;
-}
-
-.logo {
-    font-weight: bold;
-}
-
-button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.primary {
-    background: #2563eb;
-    color: white;
-}
-
-#login {
-    max-width: 320px;
-    margin: 80px auto;
-    background: #020617;
-    padding: 20px;
-    border-radius: 8px;
-}
-
-#login input {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-}
-
-#app {
-    padding: 16px;
-}
-
-.auftrag {
-    background: #020617;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-}
-
-.row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 6px;
-}
-
-.row label {
-    width: 90px;
-    font-weight: bold;
-}
-
-textarea {
-    width: 100%;
-    background: #020617;
-    color: #e5e7eb;
-}
-
-select {
-    background: #020617;
-    color: #e5e7eb;
-}
-
-#addBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    font-size: 24px;
-    background: #22c55e;
-    color: black;
-    display: none;
-}
+/* -------------------- Design von dir -------------------- */
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+body { font-family:'Segoe UI', Tahoma, Geneva, Verdana,sans-serif; background:#0f172a; color:#e2e8f0; min-height:100vh; display:flex; flex-direction:column;}
+header { background:#1e293b; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; color:#22c55e; }
+.logo { font-weight:700; font-size:1.3rem; user-select:none; }
+#userInfo { margin-right:1rem; font-weight:600; }
+button { padding:0.5rem 1rem; font-weight:600; border:none; border-radius:0.5rem; background:transparent; color:inherit; cursor:pointer; transition:0.2s; user-select:none;}
+button:focus { outline:2px solid #22c55e; outline-offset:2px; }
+#logoutBtn { background:#ef4444; color:white;}
+#logoutBtn:hover { background:#dc2626; }
+.primary { background:#22c55e; color:#022c22; font-weight:700;}
+.primary:hover { background:#16a34a;}
+.danger { background:#dc2626; color:white; font-weight:700;}
+.danger:hover { background:#b91c1c;}
+.edit-btn { background:#2563eb; color:white;}
+.edit-btn:hover { background:#1d4ed8;}
+#login { margin:100px auto; background:#1e293b; max-width:400px; padding:2rem; border-radius:1rem; box-shadow:0 0 15px rgba(34,197,94,0.5);}
+#login h2 { margin-bottom:1.5rem; color:#22c55e; text-align:center;}
+#login input { width:100%; padding:0.8rem 1rem; margin-bottom:1rem; border-radius:0.6rem; border:none; font-size:1rem; background:#334155; color:#e2e8f0;}
+#login input::placeholder { color:#94a3b8;}
+#login button { width:100%; font-size:1.1rem; border-radius:0.6rem;}
+#app { flex-grow:1; max-width:900px; margin:2rem auto 4rem auto; padding:0 1rem;}
+#app h2 { border-bottom:2px solid #22c55e; padding-bottom:0.5rem; margin-bottom:1rem;}
+#auftraege { display:flex; flex-direction:column; gap:1rem; }
+.auftrag { background:#1e293b; border-radius:1rem; padding:1.5rem 2rem; box-shadow:0 0 15px rgba(34,197,94,0.15);}
+.row { display:flex; gap:1rem; margin-bottom:0.9rem; align-items:center;}
+.row label { min-width:90px; font-weight:700; color:#6ee7b7; user-select:none;}
+input[type="text"], input[type="date"], select, textarea { background:#334155; border:none; border-radius:0.6rem; color:#e2e8f0; font-size:1rem; padding:0.5rem 0.8rem; flex-grow:1; transition:0.2s;}
+input:disabled, select:disabled, textarea:disabled { background:transparent; color:#94a3b8; cursor:default;}
+textarea { min-height:70px; resize:vertical; font-family:inherit;}
+.buttons-wrapper { margin-top:1rem; text-align:right;}
+button.primary, button.danger { padding:0.5rem 1.4rem;}
+button.danger { margin-left:0.75rem;}
+#addBtn { position:fixed; bottom:2rem; right:2rem; width:60px; height:60px; font-size:40px; font-weight:600; background:#22c55e; border-radius:50%; border:none; color:#022c22; cursor:pointer; box-shadow:0 4px 10px rgba(34,197,94,0.6); display:none; align-items:center; justify-content:center; user-select:none;}
+#addBtn:hover { background:#16a34a; }
+.editable-text { width:100%; min-height:100px; max-height:300px; resize:vertical; font-size:1rem; padding:0.5rem 0.8rem; border-radius:0.6rem; background:#334155; color:#e2e8f0; font-family:inherit;}
+@media (max-width:550px){ .editable-text { min-height:80px; font-size:0.9rem;} .row { flex-direction:column; align-items:flex-start;} .row label { margin-bottom:0.25rem;} #login{width:90vw;} }
+@media (min-width:551px) and (max-width:900px){ .editable-text { min-height:90px; font-size:0.95rem;} }
+@media (min-width:901px) and (max-width:1200px){ .editable-text { min-height:100px; font-size:1rem;} }
+@media (min-width:1201px){ .editable-text { min-height:120px; font-size:1.05rem;} }
 </style>
 </head>
-
 <body>
 
 <header id="top" style="display:none">
-    <div class="logo">TookWar Dev Board</div>
-    <div>
-        <span id="userInfo"></span>
-        <button id="logoutBtn">Logout</button>
-    </div>
+<div class="logo">TookWar Dev Board</div>
+<div>
+<span id="userInfo"></span>
+<button id="logoutBtn">Logout</button>
+</div>
 </header>
 
 <div id="login">
-    <h2>Login</h2>
-    <input id="email" placeholder="E-Mail">
-    <input id="password" type="password" placeholder="Passwort">
-    <button id="loginBtn" class="primary">Login</button>
+<h2>Login</h2>
+<input id="username" placeholder="Email" autocomplete="username">
+<input id="password" type="password" placeholder="Passwort" autocomplete="current-password">
+<button id="loginBtn" class="primary">Login</button>
 </div>
 
 <main id="app" style="display:none">
-    <h2>Aufträge</h2>
-    <div id="auftraege"></div>
+<h2>Aufträge</h2>
+<div id="auftraege"></div>
 </main>
 
 <button id="addBtn">+</button>
 
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-/* 🔐 SUPABASE CONFIG */
 const SUPABASE_URL = 'https://canbmnjlmzxiscmohtqy.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhbmJtbmpsbXp4aXNjbW9odHF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNTMwMDUsImV4cCI6MjA4MjkyOTAwNX0.WxS_wRHL6dARReG1IPAfJV0JeNfWwcvnO2Kg_-qd22o';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* STATUS */
 const STATUS_OPTIONS = ['Offen','In Arbeit','Abgeschlossen','Warten'];
+let currentUser = null, roles = [];
 
-let currentUser = null;
-let roles = [];
-
-/* ELEMENTE */
 const loginEl = document.getElementById('login');
 const appEl = document.getElementById('app');
 const topEl = document.getElementById('top');
-const auftraegeEl = document.getElementById('auftraege');
 const addBtn = document.getElementById('addBtn');
+const auftraegeEl = document.getElementById('auftraege');
+const usernameEl = document.getElementById('username');
+const passwordEl = document.getElementById('password');
 const userInfoEl = document.getElementById('userInfo');
+const loginBtnEl = document.getElementById('loginBtn');
+const logoutBtnEl = document.getElementById('logoutBtn');
 
-/* 🔐 LOGIN */
-document.getElementById('loginBtn').onclick = async () => {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-
+// --- Login mit Supabase Auth ---
+loginBtnEl.addEventListener('click', async ()=>{
+    const email = usernameEl.value.trim();
+    const password = passwordEl.value.trim();
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) return alert(error.message);
-
-    await onLogin(data.user);
-};
-
-/* 🔄 SESSION RESTORE */
-const { data: { session } } = await supabase.auth.getSession();
-if (session?.user) await onLogin(session.user);
-
-/* 🚪 LOGOUT */
-document.getElementById('logoutBtn').onclick = async () => {
-    await supabase.auth.signOut();
-    location.reload();
-};
-
-/* 👤 NACH LOGIN */
-async function onLogin(user) {
-    const { data, error } = await supabase
-        .from('profiles')
-        .select('username, roles')
-        .eq('id', user.id)
-        .single();
-
-    if (error) return alert('Profil fehlt');
-
-    currentUser = data.username;
-    roles = data.roles || [];
-
-    loginEl.style.display = 'none';
-    appEl.style.display = 'block';
-    topEl.style.display = 'flex';
-
-    userInfoEl.textContent = `${currentUser} (${roles.join(', ')})`;
-    addBtn.style.display = (roles.includes('admin') || roles.includes('manager')) ? 'block' : 'none';
-
+    if(error){ alert('Login fehlgeschlagen: '+error.message); return; }
+    currentUser = data.user.email;
+    // Holen der Rolle aus profiles-Tabelle
+    const { data: profile } = await supabase.from('profiles').select('roles').eq('id', data.user.id).single();
+    roles = profile?.roles || [];
+    loginEl.style.display='none';
+    appEl.style.display='block';
+    topEl.style.display='flex';
+    userInfoEl.textContent=`${currentUser} (${roles.join(', ')})`;
+    addBtn.style.display = (roles.includes('admin')||roles.includes('manager'))?'flex':'none';
     loadAuftraege();
+});
+
+logoutBtnEl.addEventListener('click', ()=>{ supabase.auth.signOut(); location.reload(); });
+
+// --- Aufträge laden ---
+async function loadAuftraege(){
+    auftraegeEl.innerHTML='';
+    const { data, error } = await supabase.from('auftraege').select('*').order('createdAt',{ascending:true});
+    if(error){ alert('Fehler beim Laden: '+error.message); return; }
+    data.forEach(a=>auftraegeEl.appendChild(createAuftragElement(a)));
 }
 
-/* 📦 AUFTRÄGE LADEN */
-async function loadAuftraege() {
-    auftraegeEl.innerHTML = '';
-    const { data } = await supabase
-        .from('auftraege')
-        .select('*')
-        .order('id', { ascending: false });
-
-    data.forEach(a => {
-        const el = createAuftragElement(a);
-        if (el) auftraegeEl.appendChild(el);
-    });
+// --- Auftrag Element ---
+function createSelect(options, selected, disabled=true){
+    const sel=document.createElement('select');
+    options.forEach(o=>{ const opt=document.createElement('option'); opt.value=o; opt.textContent=o; if(o===selected) opt.selected=true; sel.appendChild(opt);});
+    sel.disabled=disabled; sel.style.flexGrow='1'; sel.style.backgroundColor=disabled?'transparent':'#334155'; sel.style.color=disabled?'#94a3b8':'#e2e8f0'; sel.style.borderRadius='0.6rem'; sel.style.border=disabled?'none':'1px solid #1e293b'; sel.style.padding='0.5rem 0.8rem';
+    return sel;
 }
-
-/* 🧠 AUFTRAGS-KARTE */
-function createAuftragElement(auftrag) {
-    const isAdminOrManager = roles.includes('admin') || roles.includes('manager');
-    const isDevOwn = roles.includes('dev') && auftrag.dev === currentUser;
-
-    if (!isAdminOrManager && !isDevOwn) return null;
-
-    const div = document.createElement('div');
-    div.className = 'auftrag';
-
-    div.innerHTML = `
-        <div class="row"><label>Dev:</label><div>${auftrag.dev || ''}</div></div>
-        <div class="row"><label>Deadline:</label><div>${auftrag.deadline || '-'}</div></div>
-        <div class="row"><label>Text:</label></div>
-        <textarea readonly>${auftrag.text}</textarea>
-        <div class="row"><label>Status:</label></div>
+function createAuftragElement(a){
+    const div=document.createElement('div'); div.className='auftrag';
+    const isAdmin=roles.includes('admin')||roles.includes('manager');
+    const isDevAndOwn=roles.includes('dev') && a.dev===currentUser;
+    if(!isAdmin && !isDevAndOwn) return div;
+    div.innerHTML=`
+    <div class="row"><label>Dev:</label></div>
+    <div class="row"><label>Deadline:</label></div>
+    <div class="row"><label>Text:</label></div>
+    <div class="row"><label>Status:</label></div>
+    <div class="row"><label>Erstellt:</label><div>${new Date(a.createdAt).toLocaleString()}</div></div>
+    <div class="buttons-wrapper">
+        <button class="edit-btn">Bearbeiten</button>
+        <button class="primary" style="display:none">Speichern</button>
+        <button class="danger" style="display:none">Abbrechen</button>
+        <button class="danger delete-btn" style="background:#b91c1c;margin-left:0.5rem;">Löschen</button>
+    </div>
     `;
-
-    const select = document.createElement('select');
-    STATUS_OPTIONS.forEach(s => {
-        const o = document.createElement('option');
-        o.value = s;
-        o.textContent = s;
-        o.selected = s === auftrag.status;
-        select.appendChild(o);
+    const devInput=document.createElement('input'); devInput.value=a.dev||''; devInput.disabled=true;
+    const deadlineInput=document.createElement('input'); deadlineInput.type='date'; deadlineInput.value=a.deadline||''; deadlineInput.disabled=true;
+    const textArea=document.createElement('textarea'); textArea.value=a.text; textArea.disabled=true;
+    const statusSelect=createSelect(STATUS_OPTIONS,a.status,true);
+    const rows=div.querySelectorAll('.row'); rows[0].appendChild(devInput); rows[1].appendChild(deadlineInput); rows[2].appendChild(textArea); rows[3].appendChild(statusSelect);
+    const editBtn=div.querySelector('.edit-btn'), saveBtn=div.querySelector('.primary'), cancelBtn=div.querySelector('.danger:not(.delete-btn)'), deleteBtn=div.querySelector('.delete-btn');
+    editBtn.addEventListener('click', ()=>{ devInput.disabled=false; deadlineInput.disabled=false; textArea.disabled=false; statusSelect.disabled=false; editBtn.style.display='none'; saveBtn.style.display='inline-block'; cancelBtn.style.display='inline-block'; deleteBtn.style.display='none'; });
+    cancelBtn.addEventListener('click', ()=>{ devInput.value=a.dev||''; deadlineInput.value=a.deadline||''; textArea.value=a.text; statusSelect.value=a.status||STATUS_OPTIONS[0]; devInput.disabled=true; deadlineInput.disabled=true; textArea.disabled=true; statusSelect.disabled=true; editBtn.style.display='inline-block'; saveBtn.style.display='none'; cancelBtn.style.display='none'; deleteBtn.style.display='inline-block'; });
+    saveBtn.addEventListener('click', async ()=>{
+        const { error } = await supabase.from('auftraege').update({dev:devInput.value,deadline:deadlineInput.value,text:textArea.value,status:statusSelect.value}).eq('id',a.id);
+        if(error){ alert(error.message); return; } loadAuftraege();
     });
-
-    select.disabled = !isAdminOrManager && !isDevOwn;
-    div.appendChild(select);
-
-    select.onchange = async () => {
-        await supabase
-            .from('auftraege')
-            .update({ status: select.value })
-            .eq('id', auftrag.id);
-    };
-
+    deleteBtn.addEventListener('click', async ()=>{ if(!confirm('Löschen?')) return; const {error}=await supabase.from('auftraege').delete().eq('id',a.id); if(error){ alert(error.message); return;} div.remove(); });
     return div;
 }
 </script>
