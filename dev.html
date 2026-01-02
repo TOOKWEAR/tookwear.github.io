@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TookWar Dev Board</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TookWar Dev Board</title>
 <style>
 
 *, *::before, *::after {
@@ -296,23 +296,23 @@ button.danger {
 <body>
 
 <header id="top" style="display:none">
-<div class="logo">TookWar Dev Board</div>
-<div>
-<span id="userInfo"></span>
-<button id="logoutBtn">Logout</button>
-</div>
+    <div class="logo">TookWar Dev Board</div>
+    <div>
+        <span id="userInfo"></span>
+        <button id="logoutBtn">Logout</button>
+    </div>
 </header>
 
 <div id="login">
-<h2>Login</h2>
-<input type="email" id="username" placeholder="Email" autocomplete="username">
-<input type="password" id="password" placeholder="Passwort" autocomplete="current-password">
-<button id="loginBtn" class="primary">Login</button>
+    <h2>Login</h2>
+    <input type="email" id="username" placeholder="Email">
+    <input type="password" id="password" placeholder="Passwort">
+    <button id="loginBtn" class="primary" style="width:100%">Login</button>
 </div>
 
 <main id="app" style="display:none">
-<h2>Aufträge</h2>
-<div id="auftraege"></div>
+    <h2 style="margin-bottom: 1rem;">Aktuelle Aufträge</h2>
+    <div id="auftraege"></div>
 </main>
 
 <button id="addBtn">+</button>
@@ -327,128 +327,131 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const STATUS_OPTIONS = ['Offen','In Arbeit','Abgeschlossen','Warten'];
 let currentUser = null, roles = [];
 
-const loginEl = document.getElementById('login');
-const appEl = document.getElementById('app');
-const topEl = document.getElementById('top');
-const addBtn = document.getElementById('addBtn');
-const auftraegeEl = document.getElementById('auftraege');
-const usernameEl = document.getElementById('username');
-const passwordEl = document.getElementById('password');
-const userInfoEl = document.getElementById('userInfo');
-const loginBtnEl = document.getElementById('loginBtn');
-const logoutBtnEl = document.getElementById('logoutBtn');
+const loginEl = document.getElementById('login'), appEl = document.getElementById('app'), topEl = document.getElementById('top'), addBtn = document.getElementById('addBtn');
+const auftraegeEl = document.getElementById('auftraege'), usernameEl = document.getElementById('username'), passwordEl = document.getElementById('password');
 
+// --- LOGIN LOGIK ---
+document.getElementById('loginBtn').addEventListener('click', async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({ 
+        email: usernameEl.value, 
+        password: passwordEl.value 
+    });
 
-loginBtnEl.addEventListener('click', async ()=>{
-    const email = usernameEl.value.trim();
-    const password = passwordEl.value.trim();
-    try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return alert('Login Fehler: ' + error.message);
 
-        if (error) {
-            alert('Login fehlgeschlagen: ' + error.message);
-            return;
-        }
+    currentUser = data.user.email;
+    const { data: profile } = await supabase.from('profiles').select('roles').eq('id', data.user.id).single();
+    roles = profile?.roles || [];
 
-        currentUser = data.user.email;
-
-        // Holen der Rolle aus profiles-Tabelle
-        const { data: profile, error: profileError } = await supabase
-            .from('profiles')
-            .select('roles')
-            .eq('id', data.user.id)
-            .single();
-
-        if (profileError) {
-            console.error('Fehler beim Abrufen des Profils:', profileError.message);
-            roles = []; // Setze roles auf ein leeres Array, um Fehler zu vermeiden
-        } else {
-            roles = profile?.roles || [];
-        }
-
-        loginEl.style.display = 'none';
-        appEl.style.display = 'block';
-        topEl.style.display = 'flex';
-        userInfoEl.textContent = `${currentUser} (${roles.join(', ')})`;
-        addBtn.style.display = (roles.includes('admin') || roles.includes('manager')) ? 'flex' : 'none';
-        loadAuftraege();
-    } catch (error) {
-        console.error('Unerwarteter Fehler beim Login:', error);
-        alert('Ein unerwarteter Fehler ist aufgetreten.');
-    }
+    loginEl.style.display = 'none';
+    appEl.style.display = 'block';
+    topEl.style.display = 'flex';
+    document.getElementById('userInfo').textContent = `${currentUser} (${roles.join(', ')})`;
+    
+    if (roles.includes('admin') || roles.includes('manager')) addBtn.style.display = 'flex';
+    
+    loadAuftraege();
 });
 
-logoutBtnEl.addEventListener('click', ()=>{ supabase.auth.signOut(); location.reload(); });
+document.getElementById('logoutBtn').addEventListener('click', () => { supabase.auth.signOut(); location.reload(); });
 
-
-async function loadAuftraege(){
-    auftraegeEl.innerHTML='';
-    let query = supabase.from('auftraege').select('*').order('createdAt',{ascending:true});
+// --- DATEN LADEN ---
+async function loadAuftraege() {
+    auftraegeEl.innerHTML = '<p>Lade Aufträge...</p>';
+    let query = supabase.from('auftraege').select('*').order('createdAt', { ascending: false });
     
-    if (roles.includes('dev')) {
+    if (roles.includes('dev') && !roles.includes('admin')) {
         query = query.eq('dev', currentUser);
     }
 
     const { data, error } = await query;
+    auftraegeEl.innerHTML = '';
 
-    if(error){ alert('Fehler beim Laden: '+error.message); return; }
-    data.forEach(a=>auftraegeEl.appendChild(createAuftragElement(a)));
-}
+    if (error) return alert('Fehler: ' + error.message);
+    if (data.length === 0) auftraegeEl.innerHTML = '<p>Keine Aufträge gefunden.</p>';
 
-
-function createSelect(options, selected, disabled=true){
-    const sel=document.createElement('select');
-    options.forEach(o=>{ const opt=document.createElement('option'); opt.value=o; opt.textContent=o; if(o===selected) opt.selected=true; sel.appendChild(opt);});
-    sel.disabled=disabled; sel.style.flexGrow='1'; sel.style.backgroundColor=disabled?'transparent':'#334155'; sel.style.color=disabled?'#94a3b8':'#e2e8f0'; sel.style.borderRadius='0.6rem'; sel.style.border=disabled?'none':'1px solid #1e293b'; sel.style.padding='0.5rem 0.8rem';
-    return sel;
-}
-function createAuftragElement(a){
-    const div=document.createElement('div'); div.className='auftrag';
-    const isAdmin=roles.includes('admin')||roles.includes('manager');
-    const isDevAndOwn=roles.includes('dev') && a.dev===currentUser;
-    if(!isAdmin && !isDevAndOwn) return div;
-    div.innerHTML=`
-    <div class="row"><label>Dev:</label></div>
-    <div class="row"><label>Deadline:</label></div>
-    <div class="row"><label>Text:</label></div>
-    <div class="row"><label>Status:</label></div>
-    <div class="row"><label>Erstellt:</label><div>${new Date(a.createdAt).toLocaleString()}</div></div>
-    <div class="buttons-wrapper">
-        <button class="edit-btn">Bearbeiten</button>
-        <button class="primary" style="display:none">Speichern</button>
-        <button class="danger" style="display:none">Abbrechen</button>
-        <button class="danger delete-btn" style="background:#b91c1c;margin-left:0.5rem;">Löschen</button>
-    </div>
-    `;
-    const devInput=document.createElement('input'); devInput.value=a.dev||''; devInput.disabled=true;
-    const deadlineInput=document.createElement('input'); deadlineInput.type='date'; deadlineInput.value=a.deadline||''; deadlineInput.disabled=true;
-    const textArea=document.createElement('textarea'); textArea.value=a.text; textArea.disabled=true;
-    const statusSelect=createSelect(STATUS_OPTIONS,a.status,true);
-    const rows=div.querySelectorAll('.row'); rows[0].appendChild(devInput); rows[1].appendChild(deadlineInput); rows[2].appendChild(textArea); rows[3].appendChild(statusSelect);
-    const editBtn=div.querySelector('.edit-btn'), saveBtn=div.querySelector('.primary'), cancelBtn=div.querySelector('.danger:not(.delete-btn)'), deleteBtn=div.querySelector('.delete-btn');
-    editBtn.addEventListener('click', ()=>{ devInput.disabled=false; deadlineInput.disabled=false; textArea.disabled=false; statusSelect.disabled=false; editBtn.style.display='none'; saveBtn.style.display='inline-block'; cancelBtn.style.display='inline-block'; deleteBtn.style.display='none'; });
-    cancelBtn.addEventListener('click', ()=>{ devInput.value=a.dev||''; deadlineInput.value=a.deadline||''; textArea.value=a.text; statusSelect.value=a.status||STATUS_OPTIONS[0]; devInput.disabled=true; deadlineInput.disabled=true; textArea.disabled=true; statusSelect.disabled=true; editBtn.style.display='inline-block'; saveBtn.style.display='none'; cancelBtn.style.display='none'; deleteBtn.style.display='inline-block'; });
-    saveBtn.addEventListener('click', async ()=>{
-        try {
-            const { error } = await supabase
-                .from('auftraege')
-                .update({ dev: devInput.value, deadline: deadlineInput.value, text: textArea.value, status: statusSelect.value })
-                .eq('id', a.id);
-
-            if (error) {
-                alert(error.message);
-                return;
-            }
-
-            loadAuftraege();
-        } catch (err) {
-            console.error("Fehler beim Speichern des Auftrags:", err);
-            alert("Fehler beim Speichern des Auftrags. Bitte versuche es erneut.");
-        }
+    data.forEach(a => {
+        const el = createAuftragElement(a);
+        if(el) auftraegeEl.appendChild(el);
     });
-    deleteBtn.addEventListener('click', async ()=>{ if(!confirm('Löschen?')) return; const {error}=await supabase.from('auftraege').delete().eq('id',a.id); if(error){ alert(error.message); return;} div.remove(); });
+}
+
+// --- ELEMENT ERSTELLEN ---
+function createAuftragElement(a) {
+    const div = document.createElement('div');
+    div.className = 'auftrag';
+    
+    const isAdmin = roles.includes('admin') || roles.includes('manager');
+    const isDev = roles.includes('dev') && a.dev === currentUser;
+
+    if (!isAdmin && !isDev) return null;
+
+    div.innerHTML = `
+        <div class="row"><label>Dev:</label><input type="text" class="d-input" value="${a.dev || ''}" disabled></div>
+        <div class="row"><label>Deadline:</label><input type="date" class="l-input" value="${a.deadline || ''}" disabled></div>
+        <div class="row"><label>Text:</label><textarea class="t-input" disabled>${a.text || ''}</textarea></div>
+        <div class="row"><label>Status:</label><select class="s-input" disabled></select></div>
+        <div class="buttons-wrapper" style="text-align:right; margin-top:1rem;">
+            <button class="edit-btn">Bearbeiten</button>
+            <button class="primary save-btn" style="display:none">Speichern</button>
+            <button class="danger cancel-btn" style="display:none">Abbrechen</button>
+            ${isAdmin ? '<button class="danger del-btn" style="margin-left:0.5rem">Löschen</button>' : ''}
+        </div>
+    `;
+
+    const sInp = div.querySelector('.s-input');
+    STATUS_OPTIONS.forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o; opt.textContent = o;
+        if(o === a.status) opt.selected = true;
+        sInp.appendChild(opt);
+    });
+
+    const editBtn = div.querySelector('.edit-btn'), saveBtn = div.querySelector('.save-btn'), 
+          cancelBtn = div.querySelector('.cancel-btn'), delBtn = div.querySelector('.del-btn');
+    const inputs = div.querySelectorAll('input, textarea, select');
+
+    editBtn.onclick = () => {
+        inputs.forEach(i => i.disabled = false);
+        editBtn.style.display = 'none';
+        saveBtn.style.display = 'inline-block';
+        cancelBtn.style.display = 'inline-block';
+    };
+
+    cancelBtn.onclick = () => loadAuftraege();
+
+    saveBtn.onclick = async () => {
+        const { error } = await supabase.from('auftraege').update({
+            dev: div.querySelector('.d-input').value,
+            deadline: div.querySelector('.l-input').value,
+            text: div.querySelector('.t-input').value,
+            status: sInp.value
+        }).eq('id', a.id);
+        if(error) alert(error.message); else loadAuftraege();
+    };
+
+    if(delBtn) delBtn.onclick = async () => {
+        if(confirm('Löschen?')) {
+            await supabase.from('auftraege').delete().eq('id', a.id);
+            loadAuftraege();
+        }
+    };
+
     return div;
 }
+
+// --- NEUER AUFTRAG ---
+addBtn.onclick = async () => {
+    const { data, error } = await supabase.from('auftraege').insert([{
+        text: 'Neuer Auftrag...',
+        status: 'Offen',
+        createdAt: new Date().toISOString()
+    }]).select();
+    
+    if(error) alert(error.message);
+    else loadAuftraege();
+};
+
 </script>
 </body>
 </html>
