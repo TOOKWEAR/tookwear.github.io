@@ -538,7 +538,7 @@
                     div.innerHTML = `
                         <div class="row"><label>Dev:</label><div>${escapeHtml(auftrag.dev || '')}</div></div>
                         <div class="row"><label>Deadline:</label><div>${auftrag.deadline ? new Date(auftrag.deadline).toLocaleDateString() : '-'}</div></div>
-                        <div class="row"><label>Text:</label></div>${escapeHtml(auftrag.text)}</div></div>
+                        <div class="row"><label>Text:</label></div>
                         <div class="row"><label>Status:</label></div>
                         <div class="row"><label>Erstellt:</label><div>${new Date(auftrag.createdAt).toLocaleString()}</div></div>
                         <div class="buttons-wrapper"><button class="primary" aria-label="Status speichern">Status speichern</button></div>
