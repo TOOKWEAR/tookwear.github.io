@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>TookWar Dev Board (Supabase)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif; /* Added sans-serif for better readability */
+  background: #020617;
+  color: #e5e7eb;
+  line-height: 1.6; /* Added for better text spacing */
+}
+
+header {
+  background: #020617;
+  padding: 16px;
+  border-bottom: 1px solid #1e293b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #22c55e;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+.login {
+  max-width: 420px;
+  margin: 120px auto;
+  background: #020617;
+  border: 1px solid #1e293b;
+  padding: 24px;
+  border-radius: 14px;
+}
+
+.auftrag {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+input,
+textarea,
+select,
+button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+  background: #111827; /* Slightly lighter background for better contrast */
+  color: #e5e7eb;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical; /* Allows vertical resizing */
+}
+
+button {
+  cursor: pointer;
+  transition: background-color 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.primary {
+  background: #22c55e;
+  color: #022c22;
+  border: none;
+}
+
+.primary:hover {
+  background: #15803d; /* Darker shade for hover effect */
+}
+
+.danger {
+  background: #ef4444;
+  border: none;
+  color: white;
+}
+
+.danger:hover {
+  background: #b91c1c; /* Darker shade for hover effect */
+}
+
+.badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #1e293b;
+}
+
+.add-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 36px;
+  background: #22c55e;
+  color: #022c22;
+  border: none;
+  display: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.add-btn:hover {
+  background: #15803d; /* Darker shade for hover effect */
+}
+
+header button {
+  width: auto;
+  padding: 8px 16px;
+  margin-left: 10px;
+}
+
+.login input {
+  margin-bottom: 10px;
+}
+
+.login button {
+  width: 100%;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .login {
+    max-width: 90%;
+    margin: 60px auto;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header id="top" style="display:none">
+  <div class="logo">TookWar Dev Board</div>
+  <div>
+    <span id="userInfo" class="badge"></span>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</header>
+
+<div id="login" class="login">
+  <h2>Login</h2>
+  <input id="username" placeholder="Name">
+  <input id="password" type="password" placeholder="Passwort">
+  <button id="loginBtn" class="primary" type="button">Login</button>
+</div>
+
+<div id="app" class="container" style="display:none">
+  <h2>Aufträge</h2>
+  <div id="auftraege"></div>
+</div>
+
+<button id="addBtn" class="add-btn">+</button>
+
+<script>
+(function() {
+  const SUPABASE_URL = 'https://canbmnjlmzxiscmohtqy.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhbmJtbmpsbXp4aXNjbW9odHF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNTMwMDUsImV4cCI6MjA4MjkyOTAwNX0.WxS_wRHL6dARReG1IPAfJV0JeNfWwcvnO2Kg_-qd22o';
+
+  // Supabase REST API Helper
+  async function supabaseFetch(endpoint, options = {}) {
+    const url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
+    const headers = {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    };
+
+    const fetchOptions = {
+      ...options,
+      headers: { ...headers, ...options.headers }
+    };
+
+    try {
+      const response = await fetch(url, fetchOptions);
+
+      if (!response.ok) {
+        const error = await response.text();
+        console.error('API Error:', error);
+        throw new Error(`API Error: ${error}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Fetch error:', error);
+      throw error;
+    }
+  }
+
+  const users = {
+    varex: { pass: 'xerav', roles: ['dev'] },
+    meow: { pass: '2409', roles: ['admin'] },
+    ontey: { pass: 'yento', roles: ['dev'] },
+    Paull: { pass: 'lluap', roles: ['manager', 'dev'] },
+    stiko: { pass: 'okits', roles: ['dev'] }
+  };
+
+  let currentUser = null;
+  let roles = [];
+  let pollInterval = null;
+
+  const loginEl = document.getElementById('login');
+  const appEl = document.getElementById('app');
+  const topEl = document.getElementById('top');
+  const addBtnEl = document.getElementById('addBtn');
+  const userInfoEl = document.getElementById('userInfo');
+  const usernameEl = document.getElementById('username');
+  const passwordEl = document.getElementById('password');
+  const auftraegeDiv = document.getElementById('auftraege');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  function hasRole(r) {
+    return roles.includes(r);
+  }
+
+  function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, m => {
+      switch (m) {
+        case '&':
+          return '&amp;';
+        case '<':
+          return '&lt;';
+        case '>':
+          return '&gt;';
+        case '\"':
+          return '&quot;';
+        case "'":
+          return '&#039;';
+        default:
+          return m;
+      }
+    });
+  }
+
+  async function doLogin() {
+    const u = usernameEl.value.trim();
+    const p = passwordEl.value.trim();
+
+    if (!users[u] || users[u].pass !== p) {
+      alert('Login fehlgeschlagen');
+      return;
+    }
+
+    currentUser = u;
+    roles = users[u].roles;
+
+    loginEl.style.display = 'none';
+    appEl.style.display = 'block';
+    topEl.style.display = 'flex';
+    userInfoEl.innerText = `${u} (${roles.join(', ')})`;
+
+    if (hasRole('admin') || hasRole('manager')) {
+      addBtnEl.style.display = 'block';
+    }
+
+    await render();
+    startPolling();
+  }
+
+  function logout() {
+    if (pollInterval) clearInterval(pollInterval);
+    location.reload();
+  }
+
+  async function addAuftrag() {
+    if (!(hasRole('admin') || hasRole('manager'))) return;
+
+    try {
+      await supabaseFetch('auftraege', {
+        method: 'POST',
+        // Setze deadline auf null, nicht auf leeren String
+        body: JSON.stringify({ dev: '', deadline: null, text: '', status: 'offen' })
+      });
+      await render();
+    } catch (error) {
+      console.error('Fehler beim Erstellen:', error);
+      alert(`Fehler beim Erstellen: ${error.message}`);
+    }
+  }
+
+  async function update(id, field, value) {
+    try {
+      await supabaseFetch(`auftraege?id=eq.${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ [field]: value })
+      });
+    } catch (error) {
+      console.error('Update-Fehler:', error);
+      alert(`Update-Fehler: ${error.message}`);
+    }
+  }
+
+  async function remove(id) {
+    if (!hasRole('admin')) return;
+
+    if (!confirm('Auftrag wirklich löschen?')) return;
+
+    try {
+      await supabaseFetch(`auftraege?id=eq.${id}`, {
+        method: 'DELETE'
+      });
+      await render();
+    } catch (error) {
+      console.error('Lösch-Fehler:', error);
+      alert(`Fehler beim Löschen: ${error.message}`);
+    }
+  }
+
+  async function render() {
+    try {
+      const data = await supabaseFetch('auftraege?order=id.desc');
+
+      auftraegeDiv.innerHTML = '';
+
+      if (!data || data.length === 0) {
+        auftraegeDiv.innerHTML = '<p style="color:#94a3b8">Keine Aufträge vorhanden</p>';
+        return;
+      }
+
+      data.forEach(a => {
+        if (hasRole('dev') && !hasRole('admin') && !hasRole('manager') && a.dev && a.dev !== currentUser) {
+          return;
+        }
+
+        const d = document.createElement('div');
+        d.className = 'auftrag';
+
+        const devDisabled = hasRole('dev') && !hasRole('admin') && !hasRole('manager');
+        const deleteBtn = hasRole('admin') ? `<button class="danger" data-id="${a.id}" data-action="delete">❌ Löschen</button>` : '';
+
+        d.innerHTML =
+          `<div class="row">
+            <input value="${escapeHtml(a.dev || '')}" placeholder="Developer" ${devDisabled ? 'disabled' : ''} data-id="${a.id}" data-field="dev">
+            <input type="date" value="${a.deadline || ''}" data-id="${a.id}" data-field="deadline">
+            <select data-id="${a.id}" data-field="status">
+              <option ${a.status === 'offen' ? 'selected' : ''}>offen</option>
+              <option ${a.status === 'in Arbeit' ? 'selected' : ''}>in Arbeit</option>
+              <option ${a.status === 'fertig' ? 'selected' : ''}>fertig</option>
+            </select>
+          </div>
+          <textarea data-id="${a.id}" data-field="text">${escapeHtml(a.text || '')}</textarea>
+          ${deleteBtn}`;
+
+        const inputs = d.querySelectorAll('input[data-field], textarea[data-field], select[data-field]');
+        inputs.forEach(inp => {
+          const eventType = inp.tagName === 'SELECT' ? 'change' : 'input';
+          inp.addEventListener(eventType, function() {
+            update(parseInt(this.dataset.id), this.dataset.field, this.value);
+          });
+        });
+
+        const delBtn = d.querySelector('button[data-action="delete"]');
+        if (delBtn) {
+          delBtn.addEventListener('click', function() {
+            remove(parseInt(this.dataset.id));
+          });
+        }
+
+        auftraegeDiv.appendChild(d);
+      });
+    } catch (error) {
+      console.error('Render-Fehler:', error);
+      auftraegeDiv.innerHTML = `<p style="color:#ef4444">Fehler beim Laden: ${error.message}</p>`;
+    }
+  }
+
+  function startPolling() {
+    pollInterval = setInterval(render, 2000);
+  }
+
+  loginBtn.addEventListener('click', doLogin);
+  logoutBtn.addEventListener('click', logout);
+  addBtnEl.addEventListener('click', addAuftrag);
+})();
+</script>
+</body>
+</html>
