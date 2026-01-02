@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TookWar Dev Board</title>
 <style>
-/* -------------------- Design von dir -------------------- */
+
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -338,7 +338,7 @@ const userInfoEl = document.getElementById('userInfo');
 const loginBtnEl = document.getElementById('loginBtn');
 const logoutBtnEl = document.getElementById('logoutBtn');
 
-// --- Login mit Supabase Auth ---
+
 loginBtnEl.addEventListener('click', async ()=>{
     const email = usernameEl.value.trim();
     const password = passwordEl.value.trim();
@@ -380,15 +380,22 @@ loginBtnEl.addEventListener('click', async ()=>{
 
 logoutBtnEl.addEventListener('click', ()=>{ supabase.auth.signOut(); location.reload(); });
 
-// --- Aufträge laden ---
+
 async function loadAuftraege(){
     auftraegeEl.innerHTML='';
-    const { data, error } = await supabase.from('auftraege').select('*').order('createdAt',{ascending:true});
+    let query = supabase.from('auftraege').select('*').order('createdAt',{ascending:true});
+    
+    if (roles.includes('dev')) {
+        query = query.eq('dev', currentUser);
+    }
+
+    const { data, error } = await query;
+
     if(error){ alert('Fehler beim Laden: '+error.message); return; }
     data.forEach(a=>auftraegeEl.appendChild(createAuftragElement(a)));
 }
 
-// --- Auftrag Element ---
+
 function createSelect(options, selected, disabled=true){
     const sel=document.createElement('select');
     options.forEach(o=>{ const opt=document.createElement('option'); opt.value=o; opt.textContent=o; if(o===selected) opt.selected=true; sel.appendChild(opt);});
