@@ -546,7 +546,12 @@ if (isDevAndOwn) {
         </div>
         <div class="row">
             <label>Text:</label>
-            <div>${escapeHtml(auftrag.text)}</div>
+            <div>
+                <textarea 
+                    class="editable-text" 
+                    style="width: 100%; min-height: 100px; resize: vertical;"
+                >${escapeHtml(auftrag.text)}</textarea>
+            </div>
         </div>
         <div class="row">
             <label>Status:</label>
@@ -560,6 +565,7 @@ if (isDevAndOwn) {
             <button class="primary" aria-label="Status speichern">Status speichern</button>
         </div>
     `;
+
 
                     const statusSelect = createSelect(STATUS_OPTIONS, auftrag.status, false);
                     div.querySelector('.row:nth-child(4)').appendChild(statusSelect);
