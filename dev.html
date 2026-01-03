@@ -1,771 +1,210 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TookWar Dev Board</title>
-    <style>
-        :root {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #22c55e;
-            --text: #e2e8f0;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tw-Dev Home Dashboard</title>
+<style>
+/* Grundlayout */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* Header */
+header { background-color: #1e293b; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: #22c55e; }
+.logo { font-weight: 700; font-size: 1.3rem; user-select: none; }
+#userInfo { margin-right: 1rem; font-weight: 600; }
+header a { color: #22c55e; text-decoration: none; margin-left: 1rem; }
+header a:hover { text-decoration: underline; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+/* Buttons */
+button { padding: 0.5rem 1rem; font-weight: 600; border: none; border-radius: 0.5rem; background-color: transparent; color: inherit; cursor: pointer; transition: background-color 0.2s ease; }
+button:focus { outline: 2px solid #22c55e; outline-offset: 2px; }
+.primary { background-color: #22c55e; color: #022c22; font-weight: 700; }
+.primary:hover { background-color: #16a34a; }
+.danger { background-color: #dc2626; color: white; font-weight: 700; }
+.danger:hover { background-color: #b91c1c; }
 
-        header {
-            background-color: #1e293b;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--accent);
-        }
+/* Login */
+#login { margin: 100px auto; background-color: #1e293b; max-width: 400px; padding: 2rem; border-radius: 1rem; box-shadow: 0 0 15px rgba(34, 197, 94, 0.5); }
+#login h2 { margin-bottom: 1.5rem; color: #22c55e; text-align: center; }
+#login input { width: 100%; padding: 0.8rem 1rem; margin-bottom: 1rem; border-radius: 0.6rem; border: none; font-size: 1rem; background-color: #334155; color: #e2e8f0; }
+#login input::placeholder { color: #94a3b8; }
+#login button { width: 100%; font-size: 1.1rem; border-radius: 0.6rem; }
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.3rem;
-            user-select: none;
-        }
+/* App Container */
+#app { flex-grow: 1; max-width: 900px; margin: 2rem auto 4rem auto; padding: 0 1rem; }
+#app h2 { border-bottom: 2px solid #22c55e; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+#auftraege { display: flex; flex-direction: column; gap: 1rem; }
+.auftrag { background-color: #1e293b; border-radius: 1rem; padding: 1rem 1.5rem; box-shadow: 0 0 15px rgba(34, 197, 94, 0.15); }
+.row { display: flex; gap: 1rem; margin-bottom: 0.8rem; align-items: center; }
+.row label { min-width: 90px; font-weight: 700; color: #6ee7b7; user-select: none; }
+input, textarea, select { background-color: #334155; border: none; border-radius: 0.6rem; color: #e2e8f0; font-size: 1rem; padding: 0.5rem 0.8rem; flex-grow: 1; }
+textarea { min-height: 80px; resize: vertical; font-family: inherit; }
+textarea[readonly] { background-color: #1e293b; color: #94a3b8; }
+.buttons-wrapper { text-align: right; margin-top: 0.5rem; }
 
-        #userInfo {
-            margin-right: 1rem;
-            font-weight: 600;
-        }
+/* Add Button */
+#addBtn { position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; font-size: 40px; font-weight: 600; background-color: #22c55e; border-radius: 50%; border: none; color: #022c22; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.6); }
+#addBtn:hover { background-color: #16a34a; }
 
-        button {
-            padding: 0.5rem 1rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 0.5rem;
-            background-color: transparent;
-            color: inherit;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        button:focus {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
-
-        #logoutBtn {
-            background-color: var(--danger);
-            color: white;
-        }
-
-        #logoutBtn:hover:not(:disabled) {
-            background-color: #dc2626;
-        }
-
-        .primary {
-            background-color: var(--accent);
-            color: #022c22;
-            font-weight: 700;
-        }
-
-        .primary:hover:not(:disabled) {
-            background-color: #16a34a;
-        }
-
-        .danger {
-            background-color: #dc2626;
-            color: white;
-            font-weight: 700;
-        }
-
-        .danger:hover:not(:disabled) {
-            background-color: #b91c1c;
-        }
-
-        .edit-btn {
-            background-color: #2563eb;
-            color: white;
-        }
-
-        .edit-btn:hover:not(:disabled) {
-            background-color: #1d4ed8;
-        }
-
-        #login {
-            margin: 100px auto;
-            background-color: var(--card-bg);
-            max-width: 400px;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
-        }
-
-        #login h2 {
-            margin-bottom: 1.5rem;
-            color: var(--accent);
-            text-align: center;
-        }
-
-        #login input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            margin-bottom: 1rem;
-            border-radius: 0.6rem;
-            border: none;
-            font-size: 1rem;
-            background-color: #334155;
-            color: var(--text);
-        }
-
-        #login input::placeholder {
-            color: #94a3b8;
-        }
-
-        #login button {
-            width: 100%;
-            font-size: 1.1rem;
-            border-radius: 0.6rem;
-        }
-
-        #app {
-            flex-grow: 1;
-            max-width: 900px;
-            margin: 2rem auto 4rem auto;
-            padding: 0 1rem;
-        }
-
-        #app h2 {
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        #auftraege {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .auftrag {
-            background-color: var(--card-bg);
-            border-radius: 1rem;
-            padding: 1.5rem 2rem;
-            box-shadow: 0 0 15px rgba(34, 197, 94, 0.15);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .row {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 0.9rem;
-            align-items: center;
-        }
-
-        .row label {
-            min-width: 90px;
-            font-weight: 700;
-            color: #6ee7b7;
-            user-select: none;
-        }
-
-        input[type="text"],
-        input[type="date"],
-        select,
-        textarea {
-            background-color: #334155;
-            border: none;
-            border-radius: 0.6rem;
-            color: var(--text);
-            font-size: 1rem;
-            padding: 0.5rem 0.8rem;
-            flex-grow: 1;
-            transition: background-color 0.2s ease;
-        }
-
-        input[type="text"]:disabled,
-        input[type="date"]:disabled,
-        select:disabled,
-        textarea:disabled {
-            background-color: transparent;
-            color: #94a3b8;
-            cursor: default;
-        }
-
-        textarea {
-            min-height: 70px;
-            resize: vertical;
-            font-family: inherit;
-        }
-
-        .buttons-wrapper {
-            margin-top: 1rem;
-            text-align: right;
-        }
-
-        button.primary,
-        button.danger {
-            padding: 0.5rem 1.4rem;
-            margin-left: 0.75rem;
-        }
-
-        #addBtn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 60px;
-            height: 60px;
-            font-size: 40px;
-            font-weight: 600;
-            background-color: var(--accent);
-            border-radius: 50%;
-            border: none;
-            color: #022c22;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(34, 197, 94, 0.6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-        }
-
-        #addBtn:hover {
-            background-color: #16a34a;
-            transform: scale(1.05);
-        }
-
-        /* Toast Notifications */
-        .toast {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background-color: var(--card-bg);
-            color: var(--text);
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            animation: slideIn 0.3s ease;
-        }
-
-        .toast.success {
-            border-left: 4px solid var(--accent);
-        }
-
-        .toast.error {
-            border-left: 4px solid var(--danger);
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            border: 3px solid #334155;
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 2rem auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(15, 23, 42, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-    </style>
+/* Responsive */
+@media (max-width: 550px) {
+    .row { flex-direction: column; align-items: flex-start; }
+    .row label { min-width: auto; margin-bottom: 0.25rem; }
+    #login { width: 90vw; }
+}
+</style>
 </head>
 <body>
 
-<div class="loading-overlay" id="loadingOverlay">
-    <div class="spinner"></div>
-</div>
-
 <header id="top" style="display:none">
-    <div class="logo">TookWar Dev Board</div>
-    <div>
-        <span id="userInfo"></span>
-        <button id="logoutBtn" aria-label="Logout">Logout</button>
-    </div>
+  <div class="logo">Tw-Dev Home</div>
+  <div>
+    <span id="userInfo"></span>
+    <a href="https://twdash.taile21cd7.ts.net/" target="_blank">TWDash</a>
+    <a href="https://github.com/TOOKWEAR/tookwear.github.io" target="_blank">GitHub</a>
+    <button id="logoutBtn" class="danger">Logout</button>
+  </div>
 </header>
 
 <div id="login" role="main" aria-label="Login-Bereich">
-    <h2>Login</h2>
-    <input id="email" type="email" placeholder="E-Mail" autocomplete="email" aria-label="E-Mail">
-    <input id="password" type="password" placeholder="Passwort" autocomplete="current-password" aria-label="Passwort">
-    <button id="loginBtn" class="primary" aria-label="Login">Anmelden</button>
+  <h2>Login</h2>
+  <input id="email" type="email" placeholder="Email" autocomplete="username" aria-label="Email">
+  <input id="password" type="password" placeholder="Passwort" autocomplete="current-password" aria-label="Passwort">
+  <button id="loginBtn" class="primary">Login</button>
 </div>
 
-<main id="app" style="display:none" role="main" aria-label="Auftragsübersicht">
-    <h2>Aufträge</h2>
-    <div id="auftraege"></div>
+<main id="app" style="display:none">
+  <h2>Aufträge</h2>
+  <div id="auftraege"></div>
 </main>
 
-<button id="addBtn" title="Neuen Auftrag erstellen" aria-label="Neuen Auftrag erstellen">+</button>
+<button id="addBtn" title="Neuen Auftrag erstellen">+</button>
 
 <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    const ADMIN_EMAIL = 'cattech3d@gmail.com';
-    const DEV_EMAIL = 'dervarex@proton.me';
-    const DEVELOPER_EMAIL = 'dervarex@proton.me';
-    const SUPABASE_URL = 'https://canbmnjlmzxiscmohtqy.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhbmJtbmpsbXp4aXNjbW9odHF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNTMwMDUsImV4cCI6MjA4MjkyOTAwNX0.WxS_wRHL6dARReG1IPAfJV0JeNfWwcvnO2Kg_-qd22o';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    const STATUS_OPTIONS = ['Offen', 'In Arbeit', 'Abgeschlossen', 'Warten'];
+const SUPABASE_URL = 'https://canbmnjlmzxiscmohtqy.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhbmJtbmpsbXp4aXNjbW9odHF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNTMwMDUsImV4cCI6MjA4MjkyOTAwNX0.WxS_wRHL6dARReG1IPAfJV0JeNfWwcvnO2Kg_-qd22o';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // State
-    const state = {
-        currentUser: null,
-        auftraege: [],
-        isLoading: false
-    };
+const loginEl = document.getElementById('login');
+const appEl = document.getElementById('app');
+const topEl = document.getElementById('top');
+const auftraegeEl = document.getElementById('auftraege');
+const addBtn = document.getElementById('addBtn');
+const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const userInfoEl = document.getElementById('userInfo');
+const emailEl = document.getElementById('email');
+const passwordEl = document.getElementById('password');
 
-    // DOM Elements
-    const el = {
-        login: document.getElementById('login'),
-        app: document.getElementById('app'),
-        top: document.getElementById('top'),
-        addBtn: document.getElementById('addBtn'),
-        auftraege: document.getElementById('auftraege'),
-        email: document.getElementById('email'),
-        password: document.getElementById('password'),
-        userInfo: document.getElementById('userInfo'),
-        loginBtn: document.getElementById('loginBtn'),
-        logoutBtn: document.getElementById('logoutBtn'),
-        loadingOverlay: document.getElementById('loadingOverlay')
-    };
+// Dropdown Status Optionen
+const STATUS_OPTIONS = ['Offen', 'In Arbeit', 'Abgeschlossen', 'Warten'];
 
-    // Utility Functions
-    const showToast = (message, type = 'success') => {
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    };
+// Supabase Auth Login
+loginBtn.addEventListener('click', async () => {
+  const email = emailEl.value.trim();
+  const password = passwordEl.value.trim();
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) { alert('Login fehlgeschlagen: ' + error.message); return; }
+  loginEl.style.display = 'none';
+  appEl.style.display = 'block';
+  topEl.style.display = 'flex';
+  userInfoEl.textContent = email;
+  loadAuftraege();
+});
 
-    const setLoading = (loading) => {
-        state.isLoading = loading;
-        el.loadingOverlay.classList.toggle('active', loading);
-    };
+// Logout
+logoutBtn.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  location.reload();
+});
 
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleString('de-DE', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
+// Load Aufträge
+async function loadAuftraege() {
+  auftraegeEl.innerHTML = '';
+  const { data, error } = await supabase.from('auftraege').select('*').order('id', { ascending: true });
+  if (error) { alert(error.message); return; }
 
-    // Auth Functions
-    const showApp = async (user) => {
-        state.currentUser = user.email.split('@')[0];
-        el.login.style.display = 'none';
-        el.app.style.display = 'block';
-        el.top.style.display = 'flex';
-        
-        // Rolle laden
-        await runDiagnostics();
-        
-        el.userInfo.textContent = `${state.currentUser} (${state.userRole})`;
-        
-        // UI basierend auf Rolle anpassen
-        // Nur Admins können neue Aufträge erstellen
-        if (state.userRole === 'Admin') {
-            el.addBtn.style.display = 'flex';
-        } else {
-            el.addBtn.style.display = 'none';
-        }
-    };
+  data.forEach(a => {
+    const div = document.createElement('div');
+    div.className = 'auftrag';
 
-    const hideApp = () => {
-        state.currentUser = null;
-        el.login.style.display = 'block';
-        el.app.style.display = 'none';
-        el.top.style.display = 'none';
-        el.addBtn.style.display = 'none';
-        el.email.value = '';
-        el.password.value = '';
-    };
+    // Dropdown für Status
+    const statusOptionsHtml = STATUS_OPTIONS.map(s => `<option value="${s}" ${s===a.status?'selected':''}>${s}</option>`).join('');
 
-    const handleLogin = async () => {
-        const email = el.email.value.trim();
-        const password = el.password.value.trim();
+    div.innerHTML = `
+      <div class="row"><label>Dev:</label><div>${a.dev || ''}</div></div>
+      <div class="row"><label>Deadline:</label><input type="date" value="${a.deadline || ''}" /></div>
+      <div class="row"><label>Text:</label><textarea readonly>${a.text || ''}</textarea></div>
+      <div class="row"><label>Status:</label><select>${statusOptionsHtml}</select></div>
+      <div class="buttons-wrapper">
+        <button class="primary">Speichern</button>
+        <button class="danger delete-btn" style="background:#b91c1c;">Löschen</button>
+      </div>
+    `;
 
-        if (!email || !password) {
-            showToast('Bitte E-Mail und Passwort eingeben', 'error');
-            return;
-        }
+    const statusSelect = div.querySelector('select');
+    const deadlineInput = div.querySelector('input[type="date"]');
+    const saveBtn = div.querySelector('.primary');
+    const deleteBtn = div.querySelector('.delete-btn');
 
-        setLoading(true);
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        setLoading(false);
+    saveBtn.addEventListener('click', async () => {
+      const { error } = await supabase.from('auftraege').update({
+        status: statusSelect.value,
+        deadline: deadlineInput.value
+      }).eq('id', a.id);
+      if (error) { alert(error.message); return; }
+      alert('Auftrag gespeichert!');
+    });
 
-        if (error) {
-            showToast('Login fehlgeschlagen: ' + error.message, 'error');
-            return;
-        }
+    deleteBtn.addEventListener('click', async () => {
+      if (!confirm('Diesen Auftrag löschen?')) return;
+      const { error } = await supabase.from('auftraege').delete().eq('id', a.id);
+      if (error) { alert(error.message); return; }
+      div.remove();
+    });
 
-        showApp(data.user);
-        await loadAuftraege();
-    };
+    auftraegeEl.appendChild(div);
+  });
+}
 
-    const handleLogout = async () => {
-        setLoading(true);
-        await supabase.auth.signOut();
-        setLoading(false);
-        hideApp();
-        showToast('Erfolgreich abgemeldet');
-    };
+// Neuen Auftrag erstellen
+addBtn.addEventListener('click', () => {
+  if (document.getElementById('newAuftragForm')) return;
+  const form = document.createElement('div');
+  form.className = 'auftrag';
+  form.id = 'newAuftragForm';
 
-    // Aufträge Functions
-    const loadAuftraege = async () => {
-        el.auftraege.innerHTML = '<div class="spinner"></div>';
+  const statusOptionsHtml = STATUS_OPTIONS.map(s => `<option value="${s}">${s}</option>`).join('');
 
-        try {
-            let query = supabase.from('auftraege').select('*');
-            
-            // Developer sehen nur ihre eigenen Aufträge
-            if (state.userRole === 'Developer') {
-                query = query.eq('dev', state.currentUser);
-            }
-            
-            const { data, error } = await query.order('id', { ascending: false });
+  form.innerHTML = `
+    <div class="row"><label>Dev:</label><input id="newDev" placeholder="Dev"></div>
+    <div class="row"><label>Deadline:</label><input id="newDeadline" type="date"></div>
+    <div class="row"><label>Text:</label><textarea id="newText" style="min-height:80px; resize:vertical;" readonly></textarea></div>
+    <div class="row"><label>Status:</label><select id="newStatus">${statusOptionsHtml}</select></div>
+    <div class="buttons-wrapper">
+      <button id="saveNewBtn" class="primary">Speichern</button>
+      <button id="cancelNewBtn" class="danger">Abbrechen</button>
+    </div>
+  `;
 
-            if (error) throw error;
+  auftraegeEl.prepend(form);
+  addBtn.style.display = 'none';
 
-            state.auftraege = data || [];
-            renderAuftraege();
-        } catch (err) {
-            console.error('Fehler beim Laden:', err);
-            el.auftraege.innerHTML = `<p style="color: var(--danger);">Fehler beim Laden: ${err.message}</p>`;
-            showToast('Fehler beim Laden der Aufträge', 'error');
-        }
-    };
-
-    const renderAuftraege = () => {
-        el.auftraege.innerHTML = '';
-        
-        if (state.auftraege.length === 0) {
-            el.auftraege.innerHTML = '<p>Keine Aufträge gefunden. Erstellen Sie den ersten Auftrag!</p>';
-            return;
-        }
-
-        const fragment = document.createDocumentFragment();
-        state.auftraege.forEach(auftrag => {
-            fragment.appendChild(createAuftragElement(auftrag));
-        });
-        el.auftraege.appendChild(fragment);
-    };
-
-    const createInput = (type, value, disabled = true) => {
-        const input = document.createElement(type === 'textarea' ? 'textarea' : 'input');
-        if (type !== 'textarea') input.type = type;
-        input.value = value || '';
-        input.disabled = disabled;
-        input.style.flexGrow = '1';
-        return input;
-    };
-
-    const createSelect = (options, selectedValue, disabled = true) => {
-        const select = document.createElement('select');
-        select.style.flexGrow = '1';
-        select.disabled = disabled;
-        
-        options.forEach(optionValue => {
-            const option = document.createElement('option');
-            option.value = optionValue;
-            option.textContent = optionValue;
-            option.selected = optionValue === selectedValue;
-            select.appendChild(option);
-        });
-        
-        return select;
-    };
-
-    const toggleEditMode = (elements, isEditing) => {
-        const { devInput, deadlineInput, textArea, statusSelect, editBtn, saveBtn, cancelBtn, deleteBtn } = elements;
-        
-        devInput.disabled = !isEditing;
-        deadlineInput.disabled = !isEditing;
-        textArea.disabled = !isEditing;
-        statusSelect.disabled = !isEditing;
-        
-        editBtn.style.display = isEditing ? 'none' : 'inline-block';
-        saveBtn.style.display = isEditing ? 'inline-block' : 'none';
-        cancelBtn.style.display = isEditing ? 'inline-block' : 'none';
-        deleteBtn.style.display = isEditing ? 'none' : 'inline-block';
-    };
-
-    const createAuftragElement = (auftrag) => {
-        const div = document.createElement('div');
-        div.className = 'auftrag';
-        div.dataset.id = auftrag.id;
-
-        const devInput = createInput('text', auftrag.dev);
-        const deadlineInput = createInput('date', auftrag.deadline);
-        const textArea = createInput('textarea', auftrag.text);
-        const statusSelect = createSelect(STATUS_OPTIONS, auftrag.status);
-
-        // Berechtigungen: Nur Admins können bearbeiten und löschen
-        const canEdit = state.userRole === 'Admin';
-        const canDelete = state.userRole === 'Admin';
-
-        div.innerHTML = `
-            <div class="row"><label>Dev:</label></div>
-            <div class="row"><label>Deadline:</label></div>
-            <div class="row"><label>Text:</label></div>
-            <div class="row"><label>Status:</label></div>
-            <div class="row"><label>Erstellt:</label><div>${formatDate(auftrag.createdAt)}</div></div>
-            <div class="buttons-wrapper">
-                ${canEdit ? '<button class="edit-btn">Bearbeiten</button>' : ''}
-                <button class="primary" style="display:none">Speichern</button>
-                <button class="danger" style="display:none">Abbrechen</button>
-                ${canDelete ? '<button class="danger delete-btn" style="background:#b91c1c;margin-left:0.5rem;">Löschen</button>' : ''}
-            </div>
-        `;
-
-        const rows = div.querySelectorAll('.row');
-        rows[0].appendChild(devInput);
-        rows[1].appendChild(deadlineInput);
-        rows[2].appendChild(textArea);
-        rows[3].appendChild(statusSelect);
-
-        const editBtn = div.querySelector('.edit-btn');
-        const saveBtn = div.querySelector('.primary');
-        const cancelBtn = div.querySelector('.danger:not(.delete-btn)');
-        const deleteBtn = div.querySelector('.delete-btn');
-
-        const elements = { devInput, deadlineInput, textArea, statusSelect, editBtn, saveBtn, cancelBtn, deleteBtn };
-
-        if (canEdit && editBtn) {
-            editBtn.onclick = () => toggleEditMode(elements, true);
-
-            cancelBtn.onclick = () => {
-                devInput.value = auftrag.dev || '';
-                deadlineInput.value = auftrag.deadline || '';
-                textArea.value = auftrag.text;
-                statusSelect.value = auftrag.status || STATUS_OPTIONS[0];
-                toggleEditMode(elements, false);
-            };
-
-            saveBtn.onclick = async () => {
-                if (!textArea.value.trim()) {
-                    showToast('Text darf nicht leer sein', 'error');
-                    return;
-                }
-
-                setLoading(true);
-                try {
-                    const updates = {
-                        dev: devInput.value.trim() || null,
-                        deadline: deadlineInput.value || null,
-                        text: textArea.value.trim(),
-                        status: statusSelect.value || null
-                    };
-
-                    const { error } = await supabase
-                        .from('auftraege')
-                        .update(updates)
-                        .eq('id', auftrag.id);
-
-                    if (error) throw error;
-
-                    Object.assign(auftrag, updates);
-                    toggleEditMode(elements, false);
-                    showToast('Auftrag gespeichert');
-                } catch (err) {
-                    showToast('Fehler beim Speichern: ' + err.message, 'error');
-                } finally {
-                    setLoading(false);
-                }
-            };
-        }
-
-        if (canDelete && deleteBtn) {
-            deleteBtn.onclick = async () => {
-                if (!confirm('Diesen Auftrag wirklich löschen?')) return;
-
-                setLoading(true);
-                try {
-                    const { error } = await supabase
-                        .from('auftraege')
-                        .delete()
-                        .eq('id', auftrag.id);
-
-                    if (error) throw error;
-
-                    div.remove();
-                    state.auftraege = state.auftraege.filter(a => a.id !== auftrag.id);
-                    showToast('Auftrag gelöscht');
-                } catch (err) {
-                    showToast('Fehler beim Löschen: ' + err.message, 'error');
-                } finally {
-                    setLoading(false);
-                }
-            };
-        }
-
-        return div;
-    };
-
-    const createNewAuftragForm = () => {
-        if (document.getElementById('newAuftragForm')) return;
-        
-        // Berechtigung prüfen - nur Admins können Aufträge erstellen
-        if (state.userRole !== 'Admin') {
-            showToast('Keine Berechtigung zum Erstellen von Aufträgen', 'error');
-            return;
-        }
-
-        const form = document.createElement('div');
-        form.className = 'auftrag';
-        form.id = 'newAuftragForm';
-
-        const optionsHtml = STATUS_OPTIONS.map(opt => `<option value="${opt}">${opt}</option>`).join('');
-        form.innerHTML = `
-            <h3 style="margin-bottom: 1rem; color: var(--accent);">Neuen Auftrag erstellen</h3>
-            <div class="row"><label for="newDev">Dev:</label><input id="newDev" type="text" placeholder="Dev"></div>
-            <div class="row"><label for="newDeadline">Deadline:</label><input id="newDeadline" type="date"></div>
-            <div class="row"><label for="newText">Text:</label><textarea id="newText" placeholder="Text"></textarea></div>
-            <div class="row"><label for="newStatus">Status:</label><select id="newStatus">${optionsHtml}</select></div>
-            <div class="buttons-wrapper">
-                <button id="saveNewBtn" class="primary">Speichern</button>
-                <button id="cancelNewBtn" class="danger">Abbrechen</button>
-            </div>
-        `;
-
-        el.auftraege.prepend(form);
-        el.addBtn.style.display = 'none';
-        form.querySelector('#newText').focus();
-
-        form.querySelector('#cancelNewBtn').onclick = () => {
-            form.remove();
-            el.addBtn.style.display = 'flex';
-        };
-
-        form.querySelector('#saveNewBtn').onclick = async () => {
-            const newAuftrag = {
-                dev: form.querySelector('#newDev').value.trim() || null,
-                deadline: form.querySelector('#newDeadline').value || null,
-                text: form.querySelector('#newText').value.trim(),
-                status: form.querySelector('#newStatus').value || null,
-                createdAt: new Date().toISOString()
-            };
-
-            if (!newAuftrag.text) {
-                showToast('Bitte mindestens den Text ausfüllen', 'error');
-                return;
-            }
-
-            setLoading(true);
-            try {
-                const { data, error } = await supabase
-                    .from('auftraege')
-                    .insert([newAuftrag])
-                    .select();
-
-                if (error) throw error;
-
-                await loadAuftraege();
-                form.remove();
-                el.addBtn.style.display = 'flex';
-                showToast('Auftrag erstellt');
-            } catch (err) {
-                showToast('Fehler beim Erstellen: ' + err.message, 'error');
-            } finally {
-                setLoading(false);
-            }
-        };
-    };
-
-    // Event Listeners
-    el.loginBtn.onclick = handleLogin;
-    el.logoutBtn.onclick = handleLogout;
-    el.addBtn.onclick = createNewAuftragForm;
-
-    el.email.onkeypress = el.password.onkeypress = (e) => {
-        if (e.key === 'Enter') handleLogin();
-    };
-
-    // Diagnose-Funktion
-    const runDiagnostics = async () => {
-        console.log('🔍 Starte Diagnose...');
-        
-        // Test 1: Supabase Verbindung
-        try {
-            const { data, error } = await supabase.from('auftraege').select('count');
-            if (error) {
-                console.error('❌ Datenbankzugriff fehlgeschlagen:', error.message);
-                console.log('💡 Mögliche Ursachen:');
-                console.log('   1. Tabelle "auftraege" existiert nicht');
-                console.log('   2. Row Level Security blockiert Zugriff');
-                console.log('   3. Ungültige Credentials');
-                showToast(`DB-Fehler: ${error.message}`, 'error');
-            } else {
-                console.log('✅ Datenbankverbindung OK');
-            }
-        } catch (err) {
-            console.error('❌ Netzwerkfehler:', err);
-        }
-    };
-
-    // Initialize
-    (async () => {
-        await runDiagnostics();
-        
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session?.user) {
-            showApp(session.user);
-            await loadAuftraege();
-        }
-    })();
+  form.querySelector('#cancelNewBtn').addEventListener('click', () => { form.remove(); addBtn.style.display='flex'; });
+  form.querySelector('#saveNewBtn').addEventListener('click', async () => {
+    const dev = form.querySelector('#newDev').value;
+    const deadline = form.querySelector('#newDeadline').value;
+    const status = form.querySelector('#newStatus').value;
+    const text = form.querySelector('#newText').value || 'Neuer Auftrag';
+    await supabase.from('auftraege').insert([{ dev, deadline, text, status }]);
+    form.remove();
+    addBtn.style.display = 'flex';
+    loadAuftraege();
+  });
+});
 </script>
 
 </body>
