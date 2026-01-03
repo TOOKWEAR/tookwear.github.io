@@ -5,54 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tw-Dev Home Dashboard</title>
 <style>
-/* Grundlayout */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; }
-
-/* Header */
-header { background-color: #1e293b; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: #22c55e; }
-.logo { font-weight: 700; font-size: 1.3rem; user-select: none; }
-#userInfo { margin-right: 1rem; font-weight: 600; }
-header a { color: #22c55e; text-decoration: none; margin-left: 1rem; }
-header a:hover { text-decoration: underline; }
-
-/* Buttons */
-button { padding: 0.5rem 1rem; font-weight: 600; border: none; border-radius: 0.5rem; background-color: transparent; color: inherit; cursor: pointer; transition: background-color 0.2s ease; }
-button:focus { outline: 2px solid #22c55e; outline-offset: 2px; }
-.primary { background-color: #22c55e; color: #022c22; font-weight: 700; }
-.primary:hover { background-color: #16a34a; }
-.danger { background-color: #dc2626; color: white; font-weight: 700; }
-.danger:hover { background-color: #b91c1c; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#0f172a; color:#e2e8f0; min-height:100vh; display:flex; flex-direction:column; }
+header { background:#1e293b; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; color:#22c55e; }
+.logo { font-weight:700; font-size:1.3rem; user-select:none; }
+#userInfo { margin-right:1rem; font-weight:600; }
+button { padding:0.5rem 1rem; font-weight:600; border:none; border-radius:0.5rem; cursor:pointer; transition:0.2s; }
+button:focus { outline:2px solid #22c55e; outline-offset:2px; }
+.primary { background:#22c55e; color:#022c22; font-weight:700; }
+.primary:hover { background:#16a34a; }
+.danger { background:#dc2626; color:white; font-weight:700; }
+.danger:hover { background:#b91c1c; }
+.edit-btn { background:#2563eb; color:white; }
+.edit-btn:hover { background:#1d4ed8; }
 
 /* Login */
-#login { margin: 100px auto; background-color: #1e293b; max-width: 400px; padding: 2rem; border-radius: 1rem; box-shadow: 0 0 15px rgba(34, 197, 94, 0.5); }
-#login h2 { margin-bottom: 1.5rem; color: #22c55e; text-align: center; }
-#login input { width: 100%; padding: 0.8rem 1rem; margin-bottom: 1rem; border-radius: 0.6rem; border: none; font-size: 1rem; background-color: #334155; color: #e2e8f0; }
-#login input::placeholder { color: #94a3b8; }
-#login button { width: 100%; font-size: 1.1rem; border-radius: 0.6rem; }
+#login { margin:100px auto; background:#1e293b; max-width:400px; padding:2rem; border-radius:1rem; box-shadow:0 0 15px rgba(34,197,94,0.5);}
+#login h2 { margin-bottom:1.5rem; color:#22c55e; text-align:center; }
+#login input { width:100%; padding:0.8rem 1rem; margin-bottom:1rem; border-radius:0.6rem; border:none; font-size:1rem; background:#334155; color:#e2e8f0; }
+#login input::placeholder { color:#94a3b8; }
+#login button { width:100%; font-size:1.1rem; border-radius:0.6rem; }
 
-/* App Container */
-#app { flex-grow: 1; max-width: 900px; margin: 2rem auto 4rem auto; padding: 0 1rem; }
-#app h2 { border-bottom: 2px solid #22c55e; padding-bottom: 0.5rem; margin-bottom: 1rem; }
-#auftraege { display: flex; flex-direction: column; gap: 1rem; }
-.auftrag { background-color: #1e293b; border-radius: 1rem; padding: 1rem 1.5rem; box-shadow: 0 0 15px rgba(34, 197, 94, 0.15); }
-.row { display: flex; gap: 1rem; margin-bottom: 0.8rem; align-items: center; }
-.row label { min-width: 90px; font-weight: 700; color: #6ee7b7; user-select: none; }
-input, textarea, select { background-color: #334155; border: none; border-radius: 0.6rem; color: #e2e8f0; font-size: 1rem; padding: 0.5rem 0.8rem; flex-grow: 1; }
-textarea { min-height: 80px; resize: vertical; font-family: inherit; }
-textarea[readonly] { background-color: #1e293b; color: #94a3b8; }
-.buttons-wrapper { text-align: right; margin-top: 0.5rem; }
+/* App */
+#app { flex-grow:1; max-width:900px; margin:2rem auto; padding:0 1rem; display:none; }
+#app h2 { border-bottom:2px solid #22c55e; padding-bottom:0.5rem; margin-bottom:1rem; }
+#auftraege { display:flex; flex-direction:column; gap:1rem; }
+.auftrag { background:#1e293b; border-radius:1rem; padding:1rem 1.5rem; box-shadow:0 0 15px rgba(34,197,94,0.15); }
+.row { display:flex; gap:1rem; margin-bottom:0.8rem; align-items:center; }
+.row label { min-width:90px; font-weight:700; color:#6ee7b7; user-select:none; }
+input, textarea, select { background:#334155; border:none; border-radius:0.6rem; color:#e2e8f0; font-size:1rem; padding:0.5rem 0.8rem; flex-grow:1; }
+textarea { min-height:80px; resize:vertical; font-family:inherit; }
+textarea[readonly] { background:#1e293b; color:#94a3b8; }
+.buttons-wrapper { text-align:right; margin-top:0.5rem; }
 
 /* Add Button */
-#addBtn { position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; font-size: 40px; font-weight: 600; background-color: #22c55e; border-radius: 50%; border: none; color: #022c22; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.6); }
-#addBtn:hover { background-color: #16a34a; }
+#addBtn { position:fixed; bottom:2rem; right:2rem; width:60px; height:60px; font-size:40px; font-weight:600; background:#22c55e; border-radius:50%; border:none; color:#022c22; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(34,197,94,0.6);}
+#addBtn:hover { background:#16a34a; }
+
+/* Modal */
+#welcomeModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; }
+#welcomeModal .modal-content { background:#1e293b; padding:2rem; border-radius:1rem; text-align:center; max-width:350px; }
+#welcomeModal .modal-content h2 { margin-bottom:1rem; color:#22c55e; }
+#welcomeModal .modal-content button { margin:0.5rem; }
 
 /* Responsive */
-@media (max-width: 550px) {
-    .row { flex-direction: column; align-items: flex-start; }
-    .row label { min-width: auto; margin-bottom: 0.25rem; }
-    #login { width: 90vw; }
-}
+@media(max-width:550px){ .row{flex-direction:column;align-items:flex-start} .row label{min-width:auto;margin-bottom:0.25rem} #login{width:90vw} }
 </style>
 </head>
 <body>
@@ -61,29 +57,35 @@ textarea[readonly] { background-color: #1e293b; color: #94a3b8; }
   <div class="logo">Tw-Dev Home</div>
   <div>
     <span id="userInfo"></span>
-    <a href="https://twdash.taile21cd7.ts.net/" target="_blank">TWDash</a>
-    <a href="https://github.com/TOOKWEAR/tookwear.github.io" target="_blank">GitHub</a>
     <button id="logoutBtn" class="danger">Logout</button>
   </div>
 </header>
 
 <div id="login" role="main" aria-label="Login-Bereich">
   <h2>Login</h2>
-  <input id="email" type="email" placeholder="Email" autocomplete="username" aria-label="Email">
-  <input id="password" type="password" placeholder="Passwort" autocomplete="current-password" aria-label="Passwort">
+  <input id="email" type="email" placeholder="Email" autocomplete="username">
+  <input id="password" type="password" placeholder="Passwort" autocomplete="current-password">
   <button id="loginBtn" class="primary">Login</button>
 </div>
 
-<main id="app" style="display:none">
+<main id="app">
   <h2>Aufträge</h2>
   <div id="auftraege"></div>
 </main>
 
 <button id="addBtn" title="Neuen Auftrag erstellen">+</button>
 
+<div id="welcomeModal">
+  <div class="modal-content">
+    <h2 id="welcomeText">Hallo USER!</h2>
+    <button onclick="window.open('https://twdash.taile21cd7.ts.net/','_blank')">Crafty Dashboard</button>
+    <button onclick="document.getElementById('welcomeModal').style.display='none';">Aufträge</button>
+    <button onclick="window.open('https://github.com/TOOKWEAR/tookwear.github.io','_blank')">GitHub</button>
+  </div>
+</div>
+
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
 const SUPABASE_URL = 'https://canbmnjlmzxiscmohtqy.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhbmJtbmpsbXp4aXNjbW9odHF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNTMwMDUsImV4cCI6MjA4MjkyOTAwNX0.WxS_wRHL6dARReG1IPAfJV0JeNfWwcvnO2Kg_-qd22o';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -98,114 +100,135 @@ const logoutBtn = document.getElementById('logoutBtn');
 const userInfoEl = document.getElementById('userInfo');
 const emailEl = document.getElementById('email');
 const passwordEl = document.getElementById('password');
+const welcomeModal = document.getElementById('welcomeModal');
+const welcomeText = document.getElementById('welcomeText');
 
-// Dropdown Status Optionen
-const STATUS_OPTIONS = ['Offen', 'In Arbeit', 'Abgeschlossen', 'Warten'];
+const STATUS_OPTIONS = ['Offen','In Arbeit','Abgeschlossen','Warten'];
 
-// Supabase Auth Login
+// Login
 loginBtn.addEventListener('click', async () => {
   const email = emailEl.value.trim();
   const password = passwordEl.value.trim();
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) { alert('Login fehlgeschlagen: ' + error.message); return; }
-  loginEl.style.display = 'none';
-  appEl.style.display = 'block';
-  topEl.style.display = 'flex';
-  userInfoEl.textContent = email;
+  if (error) { alert('Login fehlgeschlagen: '+error.message); return; }
+  loginEl.style.display='none';
+  appEl.style.display='block';
+  topEl.style.display='flex';
+  userInfoEl.textContent=email;
+  welcomeText.textContent = `Hallo ${email}!`;
+  welcomeModal.style.display='flex';
   loadAuftraege();
 });
 
 // Logout
-logoutBtn.addEventListener('click', async () => {
-  await supabase.auth.signOut();
-  location.reload();
-});
+logoutBtn.addEventListener('click', async ()=>{ await supabase.auth.signOut(); location.reload(); });
 
 // Load Aufträge
-async function loadAuftraege() {
-  auftraegeEl.innerHTML = '';
-  const { data, error } = await supabase.from('auftraege').select('*').order('id', { ascending: true });
-  if (error) { alert(error.message); return; }
+async function loadAuftraege(){
+  auftraegeEl.innerHTML='';
+  const { data, error } = await supabase.from('auftraege').select('*').order('id',{ascending:true});
+  if(error){ alert(error.message); return; }
 
-  data.forEach(a => {
-    const div = document.createElement('div');
-    div.className = 'auftrag';
-
-    // Dropdown für Status
-    const statusOptionsHtml = STATUS_OPTIONS.map(s => `<option value="${s}" ${s===a.status?'selected':''}>${s}</option>`).join('');
-
-    div.innerHTML = `
-      <div class="row"><label>Dev:</label><div>${a.dev || ''}</div></div>
-      <div class="row"><label>Deadline:</label><input type="date" value="${a.deadline || ''}" /></div>
-      <div class="row"><label>Text:</label><textarea readonly>${a.text || ''}</textarea></div>
+  data.forEach(a=>{
+    const div = document.createElement('div'); div.className='auftrag';
+    const statusOptionsHtml = STATUS_OPTIONS.map(s=>`<option value="${s}" ${s===a.status?'selected':''}>${s}</option>`).join('');
+    div.innerHTML=`
+      <div class="row"><label>Dev:</label><div>${a.dev||''}</div></div>
+      <div class="row"><label>Deadline:</label><input type="date" value="${a.deadline||''}" disabled /></div>
+      <div class="row"><label>Text:</label><textarea readonly>${a.text||''}</textarea></div>
       <div class="row"><label>Status:</label><select>${statusOptionsHtml}</select></div>
       <div class="buttons-wrapper">
-        <button class="primary">Speichern</button>
-        <button class="danger delete-btn" style="background:#b91c1c;">Löschen</button>
+        <button class="edit-btn">Editieren</button>
+        <button class="primary" style="display:none;">Speichern</button>
+        <button class="danger" style="display:none;">Abbrechen</button>
+        <button class="danger delete-btn">Löschen</button>
       </div>
     `;
-
-    const statusSelect = div.querySelector('select');
-    const deadlineInput = div.querySelector('input[type="date"]');
+    const editBtn = div.querySelector('.edit-btn');
     const saveBtn = div.querySelector('.primary');
+    const cancelBtn = div.querySelector('.danger:not(.delete-btn)');
     const deleteBtn = div.querySelector('.delete-btn');
+    const textArea = div.querySelector('textarea');
+    const deadlineInput = div.querySelector('input[type="date"]');
 
-    saveBtn.addEventListener('click', async () => {
-      const { error } = await supabase.from('auftraege').update({
-        status: statusSelect.value,
-        deadline: deadlineInput.value
-      }).eq('id', a.id);
-      if (error) { alert(error.message); return; }
+    // Editieren
+    editBtn.addEventListener('click', ()=>{
+      textArea.readOnly=false;
+      deadlineInput.disabled=false;
+      editBtn.style.display='none';
+      saveBtn.style.display='inline-block';
+      cancelBtn.style.display='inline-block';
+    });
+
+    // Speichern
+    saveBtn.addEventListener('click', async ()=>{
+      const { error } = await supabase.from('auftraege').update({text:textArea.value, deadline:deadlineInput.value}).eq('id',a.id);
+      if(error){ alert(error.message); return; }
+      textArea.readOnly=true;
+      deadlineInput.disabled=true;
+      editBtn.style.display='inline-block';
+      saveBtn.style.display='none';
+      cancelBtn.style.display='none';
       alert('Auftrag gespeichert!');
     });
 
-    deleteBtn.addEventListener('click', async () => {
-      if (!confirm('Diesen Auftrag löschen?')) return;
-      const { error } = await supabase.from('auftraege').delete().eq('id', a.id);
-      if (error) { alert(error.message); return; }
+    // Abbrechen
+    cancelBtn.addEventListener('click', ()=>{
+      textArea.value=a.text;
+      deadlineInput.value=a.deadline||'';
+      textArea.readOnly=true;
+      deadlineInput.disabled=true;
+      editBtn.style.display='inline-block';
+      saveBtn.style.display='none';
+      cancelBtn.style.display='none';
+    });
+
+    // Löschen
+    deleteBtn.addEventListener('click', async ()=>{
+      if(!confirm('Diesen Auftrag löschen?')) return;
+      const { error } = await supabase.from('auftraege').delete().eq('id',a.id);
+      if(error){ alert(error.message); return; }
       div.remove();
+    });
+
+    // Status immer editierbar
+    const statusSelect = div.querySelector('select');
+    statusSelect.addEventListener('change', async ()=>{
+      const { error } = await supabase.from('auftraege').update({status:statusSelect.value}).eq('id',a.id);
+      if(error){ alert(error.message); return; }
     });
 
     auftraegeEl.appendChild(div);
   });
 }
 
-// Neuen Auftrag erstellen
-addBtn.addEventListener('click', () => {
-  if (document.getElementById('newAuftragForm')) return;
-  const form = document.createElement('div');
-  form.className = 'auftrag';
-  form.id = 'newAuftragForm';
-
-  const statusOptionsHtml = STATUS_OPTIONS.map(s => `<option value="${s}">${s}</option>`).join('');
-
-  form.innerHTML = `
+// Neuer Auftrag
+addBtn.addEventListener('click', ()=>{
+  if(document.getElementById('newAuftragForm')) return;
+  const form = document.createElement('div'); form.className='auftrag'; form.id='newAuftragForm';
+  const statusOptionsHtml = STATUS_OPTIONS.map(s=>`<option value="${s}">${s}</option>`).join('');
+  form.innerHTML=`
     <div class="row"><label>Dev:</label><input id="newDev" placeholder="Dev"></div>
     <div class="row"><label>Deadline:</label><input id="newDeadline" type="date"></div>
-    <div class="row"><label>Text:</label><textarea id="newText" style="min-height:80px; resize:vertical;" readonly></textarea></div>
+    <div class="row"><label>Text:</label><textarea id="newText" placeholder="Text"></textarea></div>
     <div class="row"><label>Status:</label><select id="newStatus">${statusOptionsHtml}</select></div>
     <div class="buttons-wrapper">
       <button id="saveNewBtn" class="primary">Speichern</button>
       <button id="cancelNewBtn" class="danger">Abbrechen</button>
     </div>
   `;
+  auftraegeEl.prepend(form); addBtn.style.display='none';
 
-  auftraegeEl.prepend(form);
-  addBtn.style.display = 'none';
-
-  form.querySelector('#cancelNewBtn').addEventListener('click', () => { form.remove(); addBtn.style.display='flex'; });
-  form.querySelector('#saveNewBtn').addEventListener('click', async () => {
-    const dev = form.querySelector('#newDev').value;
-    const deadline = form.querySelector('#newDeadline').value;
-    const status = form.querySelector('#newStatus').value;
-    const text = form.querySelector('#newText').value || 'Neuer Auftrag';
-    await supabase.from('auftraege').insert([{ dev, deadline, text, status }]);
-    form.remove();
-    addBtn.style.display = 'flex';
-    loadAuftraege();
+  form.querySelector('#cancelNewBtn').addEventListener('click', ()=>{ form.remove(); addBtn.style.display='flex'; });
+  form.querySelector('#saveNewBtn').addEventListener('click', async ()=>{
+    const dev=form.querySelector('#newDev').value;
+    const deadline=form.querySelector('#newDeadline').value;
+    const text=form.querySelector('#newText').value || 'Neuer Auftrag';
+    const status=form.querySelector('#newStatus').value;
+    await supabase.from('auftraege').insert([{dev, deadline, text, status}]);
+    form.remove(); addBtn.style.display='flex'; loadAuftraege();
   });
 });
 </script>
-
 </body>
 </html>
