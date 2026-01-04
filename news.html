@@ -6,34 +6,483 @@
 <title>TOOK WAR — News</title>
 <meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! News & Events.">
 <meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear">
-<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+/* ===== Grundlegendes Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background: #f0f2f5;
+  scroll-behavior: smooth;
+}
+
+/* ===== Typografie ===== */
+h1, h2, h3, h4, h5 {
+  font-family: 'Playfair Display', serif;
+  color: #1e3a8a;
+  margin-bottom: 20px;
+}
+
+p, li, span {
+  font-size: 1.2rem;
+  color: #4b5563;
+}
+
+a {
+  text-decoration: none;
+  color: #2563eb;
+  transition: color 0.3s, transform 0.2s;
+}
+
+a:hover {
+  color: #4338ca;
+  transform: scale(1.05);
+}
+
+/* ===== Navigation ===== */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #1f2937;
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  border-bottom: 2px solid #2563eb;
+}
+
+nav a {
+  margin: 0 25px;
+  font-weight: bold;
+  color: #f9fafb;
+  transition: color 0.3s, transform 0.3s;
+}
+
+nav a:hover {
+  color: #60a5fa;
+  transform: translateY(-2px);
+}
+
+/* ===== Header / Hero ===== */
+header {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: white;
+  padding: 150px 20px;
+  text-align: center;
+  border-radius: 0 0 50px 50px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  margin-top: 60px;
+}
+
+header h1 {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  color: white;
+}
+
+header p {
+  font-size: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+  color: white;
+}
+
+/* ===== News Section ===== */
+.news-section {
+  padding: 100px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #e5e7eb;
+  border-radius: 25px;
+  margin: 40px auto;
+  width: 90%;
+  max-width: 1200px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.news-section h2 {
+  font-size: 3rem;
+  color: #1e3a8a;
+  margin-bottom: 40px;
+}
+
+/* ===== News Grid ===== */
+.news-grid {
+  display: grid;
+  gap: 30px;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.news-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: left;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.news-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+}
+
+.news-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 15px;
+  font-family: 'Playfair Display', serif;
+}
+
+.news-text {
+  color: #4b5563;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+  font-size: 1.1rem;
+}
+
+.news-meta {
+  font-size: 0.95rem;
+  color: #6b7280;
+  border-top: 2px solid #e5e7eb;
+  padding-top: 15px;
+  font-style: italic;
+}
+
+/* ===== Footer ===== */
+footer {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 80px 20px;
+  text-align: center;
+  border-top: 2px solid #2563eb;
+  border-radius: 50px 50px 0 0;
+}
+
+footer p {
+  color: #f9fafb;
+}
+
+footer a {
+  color: #60a5fa;
+  margin: 0 10px;
+  transition: color 0.3s, transform 0.2s;
+}
+
+footer a:hover {
+  color: #4338ca;
+  transform: translateY(-2px);
+}
+
+/* ===== Admin FAB Button ===== */
+.admin-fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+  z-index: 1000;
+}
+
+.admin-fab:hover {
+  transform: scale(1.15);
+  box-shadow: 0 6px 30px rgba(37, 99, 235, 0.6);
+}
+
+/* ===== Modal Overlay ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal {
+  background: white;
+  border-radius: 25px;
+  padding: 40px;
+  max-width: 550px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.modal-header h3 {
+  font-family: 'Playfair Display', serif;
+  color: #1e3a8a;
+  font-size: 2rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #6b7280;
+  line-height: 1;
+  padding: 0;
+  width: 35px;
+  height: 35px;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.close-btn:hover {
+  color: #1e3a8a;
+  transform: rotate(90deg);
+}
+
+/* ===== Form Styles ===== */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #1e3a8a;
+  font-size: 1.1rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  padding: 15px 35px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  width: 100%;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+  margin-top: 15px;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+}
+
+/* ===== Messages ===== */
+.error {
+  background: #fef2f2;
+  color: #991b1b;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-left: 4px solid #dc2626;
+  font-weight: 500;
+}
+
+.success {
+  background: #f0fdf4;
+  color: #166534;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-left: 4px solid #16a34a;
+  font-weight: 500;
+}
+
+.user-info {
+  background: #f3f4f6;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  border-left: 4px solid #2563eb;
+}
+
+.user-info p {
+  margin: 8px 0;
+  color: #4b5563;
+  font-size: 1rem;
+}
+
+.user-info strong {
+  color: #1e3a8a;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  header h1 {
+    font-size: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 3rem;
+  }
+  .news-section h2 {
+    font-size: 2.5rem;
+  }
+  nav a {
+    margin: 0 15px;
+    font-size: 0.9rem;
+  }
+  .btn {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+  .admin-fab {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  .modal {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 2.5rem;
+  }
+  .news-section {
+    padding: 80px 15px;
+  }
+  nav a {
+    margin: 0 8px;
+    font-size: 0.8rem;
+  }
+}
+</style>
 </head>
 <body>
-
 <!-- Navbar -->
-<nav class="navbar apple-glass">
-  <div class="nav-container">
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="about.html" class="nav-link">About</a>
-    <a href="community.html" class="nav-link">Community</a>
-    <a href="events.html" class="nav-link">Events</a>
-    <a href="support.html" class="nav-link">Support</a>
-    <a href="news.html" class="nav-link">News</a>
-    <a href="conventions.html" class="nav-link">Konventionen</a>
-    <a href="rules.html" class="nav-link">wargear & miniwargear Regelwerk</a>
-  </div>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="community.html">Community</a>
+  <a href="events.html">Events</a>
+  <a href="support.html">Support</a>
+  <a href="news.html">News</a>
+  <a href="conventions.html">Konventionen</a>
+  <a href="rules.html">Regelwerk</a>
 </nav>
 
 <!-- Hero Section -->
-<header class="hero-section">
+<header>
   <h1>News</h1>
   <p>Die aktuellsten News findest du hier unten.</p>
 </header>
 
 <!-- Main Content -->
 <main>
-  <section class="news-section container" id="news">
+  <section class="news-section">
     <h2>Server News</h2>
     <div id="newsContainer" class="news-grid">
       <p>News werden geladen...</p>
@@ -46,40 +495,251 @@
   <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
 </footer>
 
-<!-- Script zum Laden der News -->
-<script>
-async function loadNews() {
-  try {
-    const res = await fetch('news.json'); // news.json muss im gleichen Ordner liegen
-    const news = await res.json();
-    const container = document.getElementById('newsContainer');
-    container.innerHTML = '';
+<!-- Admin FAB Button -->
+<button class="admin-fab" id="adminFab" title="Admin Login">🔐</button>
 
-    if(news.length === 0){
-      container.innerHTML = '<p>Keine News vorhanden.</p>';
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Admin Login</h3>
+      <button class="close-btn" id="closeModal">&times;</button>
+    </div>
+    
+    <div id="modalContent">
+      <!-- Login Form -->
+      <div id="loginView">
+        <div id="loginMessage"></div>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">E-Mail:</label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+      
+      <!-- Admin Dashboard -->
+      <div id="adminView" class="hidden">
+        <div class="user-info">
+          <p><strong>Eingeloggt als:</strong></p>
+          <p id="userEmail"></p>
+        </div>
+        
+        <div id="newsFormMessage"></div>
+        <form id="newsForm">
+          <div class="form-group">
+            <label for="newsTitle">Titel:</label>
+            <input type="text" id="newsTitle" required>
+          </div>
+          <div class="form-group">
+            <label for="newsText">Text:</label>
+            <textarea id="newsText" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">News veröffentlichen</button>
+        </form>
+        
+        <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Supabase Client initialisieren
+  const SUPABASE_URL = 'https://canbmnjlmzxiscmohtqy.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhbmJtbmpsbXp4aXNjbW9odHF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNTMwMDUsImV4cCI6MjA4MjkyOTAwNX0.WxS_wRHL6dARReG1IPAfJV0JeNfWwcvnO2Kg_-qd22o';
+
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let currentUser = null;
+
+  // UI Elemente
+  const adminFab = document.getElementById('adminFab');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const closeModal = document.getElementById('closeModal');
+  const loginView = document.getElementById('loginView');
+  const adminView = document.getElementById('adminView');
+  const loginForm = document.getElementById('loginForm');
+  const newsForm = document.getElementById('newsForm');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const userEmail = document.getElementById('userEmail');
+  const loginMessage = document.getElementById('loginMessage');
+  const newsFormMessage = document.getElementById('newsFormMessage');
+  const modalTitle = document.getElementById('modalTitle');
+
+  // Modal öffnen/schließen
+  adminFab.addEventListener('click', () => {
+    modalOverlay.classList.add('active');
+  });
+
+  closeModal.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+  });
+
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+      modalOverlay.classList.remove('active');
+    }
+  });
+
+  // Prüfe Authentifizierungsstatus beim Laden
+  async function checkAuth() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+      currentUser = session.user;
+      showAdminView();
+    }
+  }
+
+  // Login Handler
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    try {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+      
+      if (error) throw error;
+      
+      currentUser = data.user;
+      showMessage(loginMessage, 'Login erfolgreich!', 'success');
+      setTimeout(() => {
+        showAdminView();
+        loginForm.reset();
+      }, 1000);
+    } catch (error) {
+      showMessage(loginMessage, 'Login fehlgeschlagen: ' + error.message, 'error');
+    }
+  });
+
+  // Logout Handler
+  logoutBtn.addEventListener('click', async () => {
+    try {
+      await supabaseClient.auth.signOut();
+      currentUser = null;
+      showLoginView();
+      showMessage(loginMessage, 'Erfolgreich ausgeloggt', 'success');
+    } catch (error) {
+      showMessage(newsFormMessage, 'Logout fehlgeschlagen: ' + error.message, 'error');
+    }
+  });
+
+  // News erstellen
+  newsForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (!currentUser) {
+      showMessage(newsFormMessage, 'Du musst eingeloggt sein!', 'error');
       return;
     }
+    
+    const title = document.getElementById('newsTitle').value;
+    const text = document.getElementById('newsText').value;
+    
+    try {
+      const { data, error } = await supabaseClient
+        .from('news')
+        .insert([
+          {
+            title: title,
+            text: text,
+            author: currentUser.email
+          }
+        ]);
+      
+      if (error) throw error;
+      
+      showMessage(newsFormMessage, 'News erfolgreich veröffentlicht!', 'success');
+      newsForm.reset();
+      loadNews();
+      
+      setTimeout(() => {
+        modalOverlay.classList.remove('active');
+      }, 2000);
+    } catch (error) {
+      showMessage(newsFormMessage, 'Fehler beim Veröffentlichen: ' + error.message, 'error');
+    }
+  });
 
-    news.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
-        .forEach(n => {
-          const div = document.createElement('div');
-          div.classList.add('news-card'); // Card-Klasse für Styling
-          div.innerHTML = `
-            <div class="news-title">${n.title}</div>
-            <div class="news-text">${n.text}</div>
-            <div class="news-meta">Autor: ${n.author} • ${new Date(n.created_at).toLocaleString()}</div>
-          `;
-          container.appendChild(div);
-        });
-
-  } catch (err) {
-    document.getElementById('newsContainer').innerHTML = '<p>Fehler beim Laden der News.</p>';
-    console.error(err);
+  // News laden
+  async function loadNews() {
+    try {
+      const { data: news, error } = await supabaseClient
+        .from('news')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      const container = document.getElementById('newsContainer');
+      container.innerHTML = '';
+      
+      if (news.length === 0) {
+        container.innerHTML = '<p>Keine News vorhanden.</p>';
+        return;
+      }
+      
+      news.forEach(n => {
+        const div = document.createElement('div');
+        div.classList.add('news-card');
+        div.innerHTML = `
+          <div class="news-title">${escapeHtml(n.title)}</div>
+          <div class="news-text">${escapeHtml(n.text)}</div>
+          <div class="news-meta">Autor: ${escapeHtml(n.author)} • ${new Date(n.created_at).toLocaleString('de-DE')}</div>
+        `;
+        container.appendChild(div);
+      });
+    } catch (err) {
+      document.getElementById('newsContainer').innerHTML = '<p>Fehler beim Laden der News.</p>';
+      console.error(err);
+    }
   }
-}
 
-document.addEventListener('DOMContentLoaded', loadNews);
+  // View Helper
+  function showAdminView() {
+    loginView.classList.add('hidden');
+    adminView.classList.remove('hidden');
+    modalTitle.textContent = 'Admin Dashboard';
+    userEmail.textContent = currentUser.email;
+    loginMessage.innerHTML = '';
+  }
+
+  function showLoginView() {
+    loginView.classList.remove('hidden');
+    adminView.classList.add('hidden');
+    modalTitle.textContent = 'Admin Login';
+    newsFormMessage.innerHTML = '';
+  }
+
+  function showMessage(element, message, type) {
+    element.innerHTML = `<div class="${type}">${message}</div>`;
+    setTimeout(() => {
+      element.innerHTML = '';
+    }, 5000);
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Initialisierung
+  document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    loadNews();
+  });
+})();
 </script>
-
 </body>
 </html>
