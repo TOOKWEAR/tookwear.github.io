@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TOOK WAR — News</title>
-<meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! News & Events.">
-<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear">
+<meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! News & Events." />
+<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 <style>
 /* ===== Grundlegendes Reset ===== */
 * {
@@ -136,6 +136,7 @@ header p {
   transition: transform 0.3s, box-shadow 0.3s;
   text-align: left;
   animation: fadeInUp 0.6s ease-out;
+  position: relative;
 }
 
 .news-card:hover {
@@ -165,6 +166,45 @@ header p {
   border-top: 2px solid #e5e7eb;
   padding-top: 15px;
   font-style: italic;
+}
+
+/* ===== Admin Controls on News Cards ===== */
+.news-admin-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.news-admin-controls button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-edit {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #d97706;
+  transform: scale(1.05);
+}
+
+.btn-delete {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #b91c1c;
+  transform: scale(1.05);
 }
 
 /* ===== Footer ===== */
@@ -213,6 +253,10 @@ footer a:hover {
 .admin-fab:hover {
   transform: scale(1.15);
   box-shadow: 0 6px 30px rgba(37, 99, 235, 0.6);
+}
+
+.admin-fab.logged-in {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
 }
 
 /* ===== Modal Overlay ===== */
@@ -513,11 +557,11 @@ footer a:hover {
         <form id="loginForm">
           <div class="form-group">
             <label for="email">E-Mail:</label>
-            <input type="email" id="email" required>
+            <input type="email" id="email" required />
           </div>
           <div class="form-group">
             <label for="password">Passwort:</label>
-            <input type="password" id="password" required>
+            <input type="password" id="password" required />
           </div>
           <button type="submit" class="btn btn-primary">Login</button>
         </form>
@@ -532,15 +576,17 @@ footer a:hover {
         
         <div id="newsFormMessage"></div>
         <form id="newsForm">
+          <input type="hidden" id="editNewsId" />
           <div class="form-group">
             <label for="newsTitle">Titel:</label>
-            <input type="text" id="newsTitle" required>
+            <input type="text" id="newsTitle" required />
           </div>
           <div class="form-group">
             <label for="newsText">Text:</label>
             <textarea id="newsText" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">News veröffentlichen</button>
+          <button type="submit" class="btn btn-primary" id="submitNewsBtn">News veröffentlichen</button>
+          <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display:none;">Bearbeitung abbrechen</button>
         </form>
         
         <button class="btn btn-secondary" id="logoutBtn">Logout</button>
@@ -558,6 +604,7 @@ footer a:hover {
   const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   let currentUser = null;
+  let isEditMode = false;
 
   // UI Elemente
   const adminFab = document.getElementById('adminFab');
@@ -572,6 +619,9 @@ footer a:hover {
   const loginMessage = document.getElementById('loginMessage');
   const newsFormMessage = document.getElementById('newsFormMessage');
   const modalTitle = document.getElementById('modalTitle');
+  const submitNewsBtn = document.getElementById('submitNewsBtn');
+  const cancelEditBtn = document.getElementById('cancelEditBtn');
+  const editNewsId = document.getElementById('editNewsId');
 
   // Modal öffnen/schließen
   adminFab.addEventListener('click', () => {
@@ -580,11 +630,13 @@ footer a:hover {
 
   closeModal.addEventListener('click', () => {
     modalOverlay.classList.remove('active');
+    resetNewsForm();
   });
 
   modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) {
       modalOverlay.classList.remove('active');
+      resetNewsForm();
     }
   });
 
@@ -594,6 +646,8 @@ footer a:hover {
     if (session) {
       currentUser = session.user;
       showAdminView();
+      adminFab.classList.add('logged-in');
+      adminFab.title = 'Admin Dashboard';
     }
   }
 
@@ -602,20 +656,23 @@ footer a:hover {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    
+
     try {
       const { data, error } = await supabaseClient.auth.signInWithPassword({
         email: email,
         password: password
       });
-      
+
       if (error) throw error;
-      
+
       currentUser = data.user;
       showMessage(loginMessage, 'Login erfolgreich!', 'success');
       setTimeout(() => {
         showAdminView();
         loginForm.reset();
+        adminFab.classList.add('logged-in');
+        adminFab.title = 'Admin Dashboard';
+        loadNews();
       }, 1000);
     } catch (error) {
       showMessage(loginMessage, 'Login fehlgeschlagen: ' + error.message, 'error');
@@ -628,75 +685,170 @@ footer a:hover {
       await supabaseClient.auth.signOut();
       currentUser = null;
       showLoginView();
+      adminFab.classList.remove('logged-in');
+      adminFab.title = 'Admin Login';
       showMessage(loginMessage, 'Erfolgreich ausgeloggt', 'success');
+      loadNews();
+      modalOverlay.classList.remove('active');
     } catch (error) {
       showMessage(newsFormMessage, 'Logout fehlgeschlagen: ' + error.message, 'error');
     }
   });
 
-  // News erstellen
+  // News erstellen/bearbeiten
   newsForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     if (!currentUser) {
       showMessage(newsFormMessage, 'Du musst eingeloggt sein!', 'error');
       return;
     }
-    
+
     const title = document.getElementById('newsTitle').value;
     const text = document.getElementById('newsText').value;
-    
+    const newsId = editNewsId.value;
+
     try {
-      const { data, error } = await supabaseClient
-        .from('news')
-        .insert([
-          {
+      if (isEditMode && newsId) {
+        // News bearbeiten
+        const { error } = await supabaseClient
+          .from('news')
+          .update({
             title: title,
-            text: text,
-            author: currentUser.email
-          }
-        ]);
-      
-      if (error) throw error;
-      
-      showMessage(newsFormMessage, 'News erfolgreich veröffentlicht!', 'success');
-      newsForm.reset();
+            text: text
+          })
+          .eq('id', newsId);
+
+        if (error) throw error;
+        showMessage(newsFormMessage, 'News erfolgreich aktualisiert!', 'success');
+      } else {
+        // News erstellen
+        const { error } = await supabaseClient
+          .from('news')
+          .insert([
+            {
+              title: title,
+              text: text,
+              author: currentUser.email
+            }
+          ]);
+
+        if (error) throw error;
+        showMessage(newsFormMessage, 'News erfolgreich veröffentlicht!', 'success');
+      }
+
+      resetNewsForm();
       loadNews();
-      
+
       setTimeout(() => {
         modalOverlay.classList.remove('active');
       }, 2000);
     } catch (error) {
-      showMessage(newsFormMessage, 'Fehler beim Veröffentlichen: ' + error.message, 'error');
+      showMessage(newsFormMessage, 'Fehler: ' + error.message, 'error');
     }
   });
 
-  // News laden
+  // Bearbeitung abbrechen
+  cancelEditBtn.addEventListener('click', () => {
+    resetNewsForm();
+  });
+
+  // News bearbeiten (wird über EventListener aufgerufen)
+  function editNews(id, title, text) {
+    isEditMode = true;
+    editNewsId.value = id;
+    document.getElementById('newsTitle').value = title;
+    document.getElementById('newsText').value = text;
+    submitNewsBtn.textContent = 'News aktualisieren';
+    cancelEditBtn.style.display = 'block';
+    modalOverlay.classList.add('active');
+    showAdminView();
+  }
+
+  // News löschen (wird über EventListener aufgerufen)
+  async function deleteNews(id, title) {
+    if (!confirm(`Möchtest du die News "${title}" wirklich löschen?`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabaseClient
+        .from('news')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      loadNews();
+      showMessage(newsFormMessage, 'News erfolgreich gelöscht!', 'success');
+    } catch (error) {
+      alert('Fehler beim Löschen: ' + error.message);
+    }
+  }
+
+  // News-Formular zurücksetzen
+  function resetNewsForm() {
+    isEditMode = false;
+    newsForm.reset();
+    editNewsId.value = '';
+    submitNewsBtn.textContent = 'News veröffentlichen';
+    cancelEditBtn.style.display = 'none';
+    newsFormMessage.innerHTML = '';
+  }
+
+  // News laden mit EventListenern für Admin-Buttons (ohne Inline onclick)
   async function loadNews() {
     try {
       const { data: news, error } = await supabaseClient
         .from('news')
         .select('*')
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
-      
+
       const container = document.getElementById('newsContainer');
       container.innerHTML = '';
-      
+
       if (news.length === 0) {
         container.innerHTML = '<p>Keine News vorhanden.</p>';
         return;
       }
-      
+
       news.forEach(n => {
         const div = document.createElement('div');
         div.classList.add('news-card');
+
         div.innerHTML = `
           <div class="news-title">${escapeHtml(n.title)}</div>
           <div class="news-text">${escapeHtml(n.text)}</div>
           <div class="news-meta">Autor: ${escapeHtml(n.author)} • ${new Date(n.created_at).toLocaleString('de-DE')}</div>
         `;
+
+        if (currentUser) {
+          const controls = document.createElement('div');
+          controls.className = 'news-admin-controls';
+
+          // Edit Button
+          const editBtn = document.createElement('button');
+          editBtn.className = 'btn-edit';
+          editBtn.textContent = '✏️ Bearbeiten';
+          editBtn.addEventListener('click', () => {
+            editNews(n.id, n.title, n.text);
+          });
+
+          // Delete Button
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'btn-delete';
+          deleteBtn.textContent = '🗑️ Löschen';
+          deleteBtn.addEventListener('click', () => {
+            deleteNews(n.id, n.title);
+          });
+
+          controls.appendChild(editBtn);
+          controls.appendChild(deleteBtn);
+          div.appendChild(controls);
+        }
+
         container.appendChild(div);
       });
     } catch (err) {
