@@ -38,7 +38,7 @@ textarea[readonly] { background:#1e293b; color:#94a3b8; }
 .buttons-wrapper { text-align:right; margin-top:0.5rem; }
 
 /* Add Button */
-#addBtn { position:fixed; bottom:2rem; right:2rem; width:60px; height:60px; font-size:40px; font-weight:600; background:#22c55e; border-radius:50%; border:none; color:#022c22; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(34,197,94,0.6);}
+#addBtn { position:fixed; bottom:2rem; right:2rem; width:60px; height:60px; font-size:40px; font-weight:600; background:#22c55e; border-radius:50%; border:none; color:#022c22; cursor:pointer; display:none; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(34,197,94,0.6);}
 #addBtn:hover { background:#16a34a; }
 
 /* Modal */
@@ -108,29 +108,77 @@ const welcomeText = document.getElementById('welcomeText');
 
 const STATUS_OPTIONS = ['Offen','In Arbeit','Abgeschlossen','Warten'];
 
+// Globale Variable für Auth-Status
+let isAuthenticated = false;
+
+// Funktion zum Verifizieren der Session vor jeder Aktion
+async function verifySession() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    isAuthenticated = false;
+    alert('Nicht authentifiziert! Bitte melden Sie sich an.');
+    location.reload();
+    return false;
+  }
+  isAuthenticated = true;
+  return true;
+}
+
+// Funktion zum Anzeigen der App nach erfolgreichem Login
+async function showApp(userEmail) {
+  // Session nochmal verifizieren
+  if (!await verifySession()) return;
+  
+  loginEl.style.display='none';
+  appEl.style.display='block';
+  topEl.style.display='flex';
+  addBtn.style.display='flex';
+  userInfoEl.textContent=userEmail;
+  welcomeText.textContent = `Hallo ${userEmail}!`;
+  welcomeModal.style.display='flex';
+  loadAuftraege();
+}
+
+// Beim Laden der Seite: Prüfen ob bereits eine Session existiert
+(async function checkSession() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    await showApp(session.user.email);
+  }
+})();
+
 // Login
 loginBtn.addEventListener('click', async () => {
   const email = emailEl.value.trim();
   const password = passwordEl.value.trim();
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) { alert('Login fehlgeschlagen: '+error.message); return; }
-  loginEl.style.display='none';
-  appEl.style.display='block';
-  topEl.style.display='flex';
-  userInfoEl.textContent=email;
-  welcomeText.textContent = `Hallo ${email}!`;
-  welcomeModal.style.display='flex';
-  loadAuftraege();
+  await showApp(email);
 });
 
 // Logout
-logoutBtn.addEventListener('click', async ()=>{ await supabase.auth.signOut(); location.reload(); });
+logoutBtn.addEventListener('click', async ()=>{ 
+  await supabase.auth.signOut(); 
+  location.reload(); 
+});
 
 // Load Aufträge
 async function loadAuftraege(){
+  // Session verifizieren vor dem Laden
+  if (!await verifySession()) return;
+  
   auftraegeEl.innerHTML='';
   const { data, error } = await supabase.from('auftraege').select('*').order('id',{ascending:true});
-  if(error){ alert(error.message); return; }
+  if(error){ 
+    if(error.message.includes('JWT') || error.message.includes('auth')) {
+      alert('Session abgelaufen. Bitte melden Sie sich erneut an.');
+      await supabase.auth.signOut();
+      location.reload();
+      return;
+    }
+    alert(error.message); 
+    return; 
+  }
 
   data.forEach(a=>{
     const div = document.createElement('div'); div.className='auftrag';
@@ -165,8 +213,18 @@ async function loadAuftraege(){
 
     // Speichern
     saveBtn.addEventListener('click', async ()=>{
+      if (!await verifySession()) return;
       const { error } = await supabase.from('auftraege').update({text:textArea.value, deadline:deadlineInput.value}).eq('id',a.id);
-      if(error){ alert(error.message); return; }
+      if(error){ 
+        if(error.message.includes('JWT') || error.message.includes('auth')) {
+          alert('Session abgelaufen. Bitte melden Sie sich erneut an.');
+          await supabase.auth.signOut();
+          location.reload();
+          return;
+        }
+        alert(error.message); 
+        return; 
+      }
       textArea.readOnly=true;
       deadlineInput.disabled=true;
       editBtn.style.display='inline-block';
@@ -188,17 +246,37 @@ async function loadAuftraege(){
 
     // Löschen
     deleteBtn.addEventListener('click', async ()=>{
+      if (!await verifySession()) return;
       if(!confirm('Diesen Auftrag löschen?')) return;
       const { error } = await supabase.from('auftraege').delete().eq('id',a.id);
-      if(error){ alert(error.message); return; }
+      if(error){ 
+        if(error.message.includes('JWT') || error.message.includes('auth')) {
+          alert('Session abgelaufen. Bitte melden Sie sich erneut an.');
+          await supabase.auth.signOut();
+          location.reload();
+          return;
+        }
+        alert(error.message); 
+        return; 
+      }
       div.remove();
     });
 
     // Status immer editierbar
     const statusSelect = div.querySelector('select');
     statusSelect.addEventListener('change', async ()=>{
+      if (!await verifySession()) return;
       const { error } = await supabase.from('auftraege').update({status:statusSelect.value}).eq('id',a.id);
-      if(error){ alert(error.message); return; }
+      if(error){ 
+        if(error.message.includes('JWT') || error.message.includes('auth')) {
+          alert('Session abgelaufen. Bitte melden Sie sich erneut an.');
+          await supabase.auth.signOut();
+          location.reload();
+          return;
+        }
+        alert(error.message); 
+        return; 
+      }
     });
 
     auftraegeEl.appendChild(div);
@@ -206,7 +284,8 @@ async function loadAuftraege(){
 }
 
 // Neuer Auftrag
-addBtn.addEventListener('click', ()=>{
+addBtn.addEventListener('click', async ()=>{
+  if (!await verifySession()) return;
   if(document.getElementById('newAuftragForm')) return;
   const form = document.createElement('div'); form.className='auftrag'; form.id='newAuftragForm';
   const statusOptionsHtml = STATUS_OPTIONS.map(s=>`<option value="${s}">${s}</option>`).join('');
@@ -224,11 +303,22 @@ addBtn.addEventListener('click', ()=>{
 
   form.querySelector('#cancelNewBtn').addEventListener('click', ()=>{ form.remove(); addBtn.style.display='flex'; });
   form.querySelector('#saveNewBtn').addEventListener('click', async ()=>{
+    if (!await verifySession()) return;
     const dev=form.querySelector('#newDev').value;
     const deadline=form.querySelector('#newDeadline').value;
     const text=form.querySelector('#newText').value || 'Neuer Auftrag';
     const status=form.querySelector('#newStatus').value;
-    await supabase.from('auftraege').insert([{dev, deadline, text, status}]);
+    const { error } = await supabase.from('auftraege').insert([{dev, deadline, text, status}]);
+    if(error){ 
+      if(error.message.includes('JWT') || error.message.includes('auth')) {
+        alert('Session abgelaufen. Bitte melden Sie sich erneut an.');
+        await supabase.auth.signOut();
+        location.reload();
+        return;
+      }
+      alert(error.message); 
+      return; 
+    }
     form.remove(); addBtn.style.display='flex'; loadAuftraege();
   });
 });
