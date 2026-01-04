@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tw-Dev Home Dashboard</title>
 <style>
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#0f172a; color:#e2e8f0; min-height:100vh; display:flex; flex-direction:column; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#0f172a; color:#e2e8f0; min-height:100vh; display:flex; flex-direction:column; margin:0; }
 header { background:#1e293b; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; color:#22c55e; }
 .logo { font-weight:700; font-size:1.3rem; user-select:none; }
-#userInfo { margin-right:1rem; font-weight:600; }
+.header-right { display:flex; align-items:center; gap:1rem; }
+#userInfo { font-weight:600; }
 button { padding:0.5rem 1rem; font-weight:600; border:none; border-radius:0.5rem; cursor:pointer; transition:0.2s; }
 button:focus { outline:2px solid #22c55e; outline-offset:2px; }
 .primary { background:#22c55e; color:#022c22; font-weight:700; }
@@ -18,15 +19,27 @@ button:focus { outline:2px solid #22c55e; outline-offset:2px; }
 .edit-btn { background:#2563eb; color:white; }
 .edit-btn:hover { background:#1d4ed8; }
 
+/* Menu Button */
+#menuBtn { background:#334155; color:#22c55e; padding:0.5rem 1rem; font-size:1.2rem; display:flex; align-items:center; gap:0.5rem; }
+#menuBtn:hover { background:#475569; }
+
+/* Dropdown Menu */
+.menu-dropdown { position:relative; }
+.menu-content { display:none; position:absolute; right:0; top:100%; margin-top:0.5rem; background:#1e293b; border:2px solid #22c55e; border-radius:0.5rem; min-width:220px; box-shadow:0 4px 15px rgba(34,197,94,0.3); z-index:1000; }
+.menu-content.show { display:block; }
+.menu-content a, .menu-content button { display:block; width:100%; text-align:left; padding:0.8rem 1.2rem; background:transparent; color:#e2e8f0; border:none; border-radius:0; text-decoration:none; font-weight:600; transition:0.2s; }
+.menu-content a:hover, .menu-content button:hover { background:#334155; color:#22c55e; }
+.menu-content button { cursor:pointer; }
+
 /* Login */
 #login { margin:100px auto; background:#1e293b; max-width:400px; padding:2rem; border-radius:1rem; box-shadow:0 0 15px rgba(34,197,94,0.5);}
 #login h2 { margin-bottom:1.5rem; color:#22c55e; text-align:center; }
-#login input { width:100%; padding:0.8rem 1rem; margin-bottom:1rem; border-radius:0.6rem; border:none; font-size:1rem; background:#334155; color:#e2e8f0; }
+#login input { width:100%; padding:0.8rem 1rem; margin-bottom:1rem; border-radius:0.6rem; border:none; font-size:1rem; background:#334155; color:#e2e8f0; box-sizing:border-box; }
 #login input::placeholder { color:#94a3b8; }
 #login button { width:100%; font-size:1.1rem; border-radius:0.6rem; }
 
 /* App */
-#app { flex-grow:1; max-width:900px; margin:2rem auto; padding:0 1rem; display:none; }
+#app { flex-grow:1; max-width:900px; margin:2rem auto; padding:0 1rem; display:none; width:100%; box-sizing:border-box; }
 #app h2 { border-bottom:2px solid #22c55e; padding-bottom:0.5rem; margin-bottom:1rem; }
 #auftraege { display:flex; flex-direction:column; gap:1rem; }
 .auftrag { background:#1e293b; border-radius:1rem; padding:1rem 1.5rem; box-shadow:0 0 15px rgba(34,197,94,0.15); }
@@ -42,22 +55,38 @@ textarea[readonly] { background:#1e293b; color:#94a3b8; }
 #addBtn:hover { background:#16a34a; }
 
 /* Modal */
-#welcomeModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; }
-#welcomeModal .modal-content { background:#1e293b; padding:2rem; border-radius:1rem; text-align:center; max-width:350px; }
+#welcomeModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:999; }
+#welcomeModal .modal-content { background:#1e293b; padding:2rem; border-radius:1rem; text-align:center; max-width:350px; border:2px solid #22c55e; }
 #welcomeModal .modal-content h2 { margin-bottom:1rem; color:#22c55e; }
 #welcomeModal .modal-content button { margin:0.5rem; }
 
 /* Responsive */
-@media(max-width:550px){ .row{flex-direction:column;align-items:flex-start} .row label{min-width:auto;margin-bottom:0.25rem} #login{width:90vw} }
+@media(max-width:550px){ 
+  .row{flex-direction:column;align-items:flex-start} 
+  .row label{min-width:auto;margin-bottom:0.25rem} 
+  #login{width:90vw; margin:50px auto;} 
+  header { padding:1rem; }
+  #userInfo { display:none; }
+}
 </style>
 </head>
 <body>
 
 <header id="top" style="display:none">
   <div class="logo">Tw-Dev Home</div>
-  <div>
+  <div class="header-right">
     <span id="userInfo"></span>
-    <button id="logoutBtn" class="danger">Logout</button>
+    <div class="menu-dropdown">
+      <button id="menuBtn">☰ Menü</button>
+      <div id="menuContent" class="menu-content">
+        <a href="https://twdash.taile21cd7.ts.net/" target="_blank">Crafty Dashboard</a>
+        <a href="https://github.com/TOOKWEAR/tookwear.github.io" target="_blank">GitHub-page</a>
+        <a href="https://github.com/TOOKWEAR/TookWar-core" target="_blank">GitHub-core</a>
+        <a href="https://discord.gg/2M9dA4Ae7T" target="_blank">Discord</a>
+        <a href="https://tookwar.statuspage.io/" target="_blank">Status</a>
+        <button id="logoutBtn" class="danger" style="margin-top:0.5rem; border-radius:0.5rem;">Logout</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -78,12 +107,7 @@ textarea[readonly] { background:#1e293b; color:#94a3b8; }
 <div id="welcomeModal">
   <div class="modal-content">
     <h2 id="welcomeText">Hallo USER!</h2>
-    <button onclick="window.open('https://twdash.taile21cd7.ts.net/','_blank')">Crafty Dashboard</button>
-    <button onclick="document.getElementById('welcomeModal').style.display='none';">Aufträge</button>
-    <button onclick="window.open('https://github.com/TOOKWEAR/tookwear.github.io','_blank')">GitHub-page</button>
-    <button onclick="window.open('https://github.com/TOOKWEAR/TookWar-core','_blank')">GitHub-core</button>
-    <button onclick="window.open('https://discord.gg/2M9dA4Ae7T','_blank')">Discord</button>
-    <button onclick="window.open('https://tookwar.statuspage.io/','_blank')">status</button>
+    <button onclick="document.getElementById('welcomeModal').style.display='none';">Los geht's!</button>
   </div>
 </div>
 
@@ -105,13 +129,25 @@ const emailEl = document.getElementById('email');
 const passwordEl = document.getElementById('password');
 const welcomeModal = document.getElementById('welcomeModal');
 const welcomeText = document.getElementById('welcomeText');
+const menuBtn = document.getElementById('menuBtn');
+const menuContent = document.getElementById('menuContent');
 
 const STATUS_OPTIONS = ['Offen','In Arbeit','Abgeschlossen','Warten'];
-
-// Globale Variable für Auth-Status
 let isAuthenticated = false;
 
-// Funktion zum Verifizieren der Session vor jeder Aktion
+// Menu Toggle
+menuBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  menuContent.classList.toggle('show');
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!menuBtn.contains(e.target) && !menuContent.contains(e.target)) {
+    menuContent.classList.remove('show');
+  }
+});
+
 async function verifySession() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) {
@@ -124,9 +160,7 @@ async function verifySession() {
   return true;
 }
 
-// Funktion zum Anzeigen der App nach erfolgreichem Login
 async function showApp(userEmail) {
-  // Session nochmal verifizieren
   if (!await verifySession()) return;
   
   loginEl.style.display='none';
@@ -139,7 +173,6 @@ async function showApp(userEmail) {
   loadAuftraege();
 }
 
-// Beim Laden der Seite: Prüfen ob bereits eine Session existiert
 (async function checkSession() {
   const { data: { session } } = await supabase.auth.getSession();
   if (session) {
@@ -147,7 +180,6 @@ async function showApp(userEmail) {
   }
 })();
 
-// Login
 loginBtn.addEventListener('click', async () => {
   const email = emailEl.value.trim();
   const password = passwordEl.value.trim();
@@ -156,15 +188,12 @@ loginBtn.addEventListener('click', async () => {
   await showApp(email);
 });
 
-// Logout
 logoutBtn.addEventListener('click', async ()=>{ 
   await supabase.auth.signOut(); 
   location.reload(); 
 });
 
-// Load Aufträge
 async function loadAuftraege(){
-  // Session verifizieren vor dem Laden
   if (!await verifySession()) return;
   
   auftraegeEl.innerHTML='';
@@ -202,7 +231,6 @@ async function loadAuftraege(){
     const textArea = div.querySelector('textarea');
     const deadlineInput = div.querySelector('input[type="date"]');
 
-    // Editieren
     editBtn.addEventListener('click', ()=>{
       textArea.readOnly=false;
       deadlineInput.disabled=false;
@@ -211,7 +239,6 @@ async function loadAuftraege(){
       cancelBtn.style.display='inline-block';
     });
 
-    // Speichern
     saveBtn.addEventListener('click', async ()=>{
       if (!await verifySession()) return;
       const { error } = await supabase.from('auftraege').update({text:textArea.value, deadline:deadlineInput.value}).eq('id',a.id);
@@ -233,7 +260,6 @@ async function loadAuftraege(){
       alert('Auftrag gespeichert!');
     });
 
-    // Abbrechen
     cancelBtn.addEventListener('click', ()=>{
       textArea.value=a.text;
       deadlineInput.value=a.deadline||'';
@@ -244,7 +270,6 @@ async function loadAuftraege(){
       cancelBtn.style.display='none';
     });
 
-    // Löschen
     deleteBtn.addEventListener('click', async ()=>{
       if (!await verifySession()) return;
       if(!confirm('Diesen Auftrag löschen?')) return;
@@ -262,7 +287,6 @@ async function loadAuftraege(){
       div.remove();
     });
 
-    // Status immer editierbar
     const statusSelect = div.querySelector('select');
     statusSelect.addEventListener('change', async ()=>{
       if (!await verifySession()) return;
@@ -283,7 +307,6 @@ async function loadAuftraege(){
   });
 }
 
-// Neuer Auftrag
 addBtn.addEventListener('click', async ()=>{
   if (!await verifySession()) return;
   if(document.getElementById('newAuftragForm')) return;
