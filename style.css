@@ -9,30 +9,30 @@ body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
   color: #333;
-  background: #f0f2f5; /* weniger weiß, sanftes Grau */
+  background: #f0f2f5; /* sanftes Grau */
   scroll-behavior: smooth;
 }
 
 /* ===== Typografie ===== */
 h1, h2, h3, h4, h5 {
   font-family: 'Playfair Display', serif;
-  color: #1e3a8a; /* dunkles Blau für Überschriften */
+  color: #1e3a8a; 
   margin-bottom: 20px;
 }
 
 p, li, span {
   font-size: 1.2rem;
-  color: #4b5563; /* dezentes Grau für Text */
+  color: #4b5563; 
 }
 
 a {
   text-decoration: none;
-  color: #2563eb; /* Blau für Links */
+  color: #2563eb; 
   transition: color 0.3s, transform 0.2s;
 }
 
 a:hover {
-  color: #4338ca; /* dunkleres Blau beim Hover */
+  color: #4338ca; 
   transform: scale(1.05);
 }
 
@@ -41,30 +41,30 @@ nav {
   position: fixed;
   top: 0;
   width: 100%;
-  background: #1f2937; /* dunkles, elegantes Grau für Navbar */
+  background: #1f2937; 
   display: flex;
   justify-content: center;
   padding: 15px 0;
   z-index: 1000;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  border-bottom: 2px solid #2563eb; /* kleine Farbakzentlinie */
+  border-bottom: 2px solid #2563eb; 
 }
 
 nav a {
   margin: 0 25px;
   font-weight: bold;
-  color: #f9fafb; /* fast weiß für Kontrast */
+  color: #f9fafb; 
   transition: color 0.3s, transform 0.3s;
 }
 
 nav a:hover {
-  color: #60a5fa; /* helleres Blau beim Hover */
+  color: #60a5fa; 
   transform: translateY(-2px);
 }
 
 /* ===== Header / Hero ===== */
 header {
-  background: linear-gradient(135deg, #2563eb, #60a5fa); /* schöner Farbverlauf */
+  background: linear-gradient(135deg, #2563eb, #60a5fa); 
   color: white;
   padding: 150px 20px;
   text-align: center;
@@ -92,7 +92,7 @@ section {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: #e5e7eb; /* sanftes Grau für Abschnitte */
+  background: #e5e7eb; 
   border-radius: 25px;
   margin: 40px auto;
   width: 90%;
@@ -101,7 +101,7 @@ section {
 }
 
 section:nth-child(even) {
-  background: #f3f4f6; /* leichtes Wechselspiel */
+  background: #f3f4f6; 
 }
 
 /* ===== Buttons ===== */
@@ -121,72 +121,72 @@ section:nth-child(even) {
   box-shadow: 0 6px 25px rgba(0,0,0,0.15);
 }
 
-/* ===== Grid / Portfolio ===== */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  width: 100%;
-  margin-top: 40px;
+/* ===== Connect Section Buttons & Input ===== */
+.connect-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
-.grid-item {
-  background: #fff;
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
+.connect-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
 
-.grid-item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
-}
-
-.grid-item a {
-  color: #2563eb;
-  font-weight: bold;
-  display: inline-block;
-  margin-top: 10px;
-}
-
-.grid-item a:hover {
-  color: #4338ca;
-  transform: scale(1.05);
-}
-
-/* ===== Team ===== */
-.team {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 40px;
-  width: 100%;
-  margin-top: 40px;
-}
-
-.team-member {
+.connect-wrapper input {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border: 2px solid #2563eb;
+  border-radius: 50px;
+  outline: none;
+  width: 250px;
   text-align: center;
-  padding: 20px;
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
+  background: #f9fafb;
 }
 
-.team-member:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+.connect-wrapper input:focus {
+  border-color: #4338ca;
+  box-shadow: 0 0 12px rgba(67, 56, 202, 0.3);
 }
 
-.team-member img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  margin-bottom: 15px;
-  border: 3px solid #2563eb;
+/* Buttons */
+#copyBtn,
+.connect-section button {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: white;
+  padding: 12px 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-/* ===== Footer ===== */
+#copyBtn:hover,
+.connect-section button:hover {
+  background: linear-gradient(135deg, #4338ca, #2563eb);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Kopier-Feedback */
+#copyMsg {
+  display: none;
+  margin-top: 8px;
+  font-size: 1rem;
+  color: #16a34a; 
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+/* Footer */
 footer {
   background: #1f2937;
   color: #f9fafb;
@@ -196,149 +196,11 @@ footer {
   border-radius: 50px 50px 0 0;
 }
 
-footer a {
-  color: #60a5fa;
-  margin: 0 10px;
-  transition: color 0.3s, transform 0.2s;
-}
-
-footer a:hover {
-  color: #4338ca;
-  transform: translateY(-2px);
-}
-
-/* ===== Social Icons ===== */
-.social-icons a {
-  display: inline-block;
-  width: 45px;
-  height: 45px;
-  line-height: 45px;
-  border-radius: 50%;
-  background: #2563eb;
-  color: white;
-  text-align: center;
-  font-size: 1.2rem;
-  margin: 0 10px;
-  transition: background 0.3s, transform 0.3s;
-}
-
-.social-icons a:hover {
-  background: #4338ca;
-  transform: scale(1.2);
-}
-
-/* ===== Animation ===== */
-.fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInUp 1s forwards;
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* ===== Responsive ===== */
-@media (max-width: 1024px) {
-  header h1 {
-    font-size: 3.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  header h1 {
-    font-size: 3rem;
-  }
-  section h2 {
-    font-size: 2.5rem;
-  }
-  nav a {
-    margin: 0 15px;
-  }
-  .btn {
-    padding: 12px 25px;
-    font-size: 1rem;
-  }
-  .social-icons a {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  header h1 {
-    font-size: 2.5rem;
-  }
-  section {
-    padding: 80px 15px;
-  }
-}
-/* ===== Connect Section Buttons ===== */
-.connect-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-.connect-wrapper input {
-  padding: 12px 20px;
-  font-size: 1.1rem;
-  border: 2px solid #2563eb;
-  border-radius: 50px;
-  outline: none;
-  width: 250px;
-  text-align: center;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.connect-wrapper input:focus {
-  border-color: #4338ca;
-  box-shadow: 0 0 10px rgba(67, 56, 202, 0.3);
-}
-
-#copyBtn,
-.connect-section button {
-  background: #2563eb;
-  color: white;
-  padding: 12px 30px;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-}
-
-#copyBtn:hover,
-.connect-section button:hover {
-  background: #4338ca;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
-
-#copyMsg {
-  display: none;
-  margin-top: 10px;
-  font-size: 1rem;
-  color: #16a34a; /* grüner Hinweis für erfolgreich kopiert */
-  transition: opacity 0.3s;
-}
-
-/* Status Button Extra Styling */
-.connect-section button {
-  margin-left: 10px;
-}
-
 @media (max-width: 480px) {
   .connect-wrapper {
     flex-direction: column;
+    gap: 10px;
   }
 
   .connect-wrapper input,
@@ -346,7 +208,18 @@ footer a:hover {
   .connect-section button {
     width: 100%;
     max-width: 300px;
-    margin: 5px 0;
+    margin: 0;
+  }
+
+  .connect-section button {
+    margin-left: 0;
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+  }
+
+  section {
+    padding: 80px 15px;
   }
 }
-
