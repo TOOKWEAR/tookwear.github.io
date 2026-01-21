@@ -12,6 +12,40 @@ body {
   background: #f0f2f5; /* sanftes Grau */
   scroll-behavior: smooth;
 }
+/* Hintergrund mit rotierendem Minecraft-Titelbild */
+.bg-rotate {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 140%;
+  background-image: url("minecraft-title.jpg"); /* dein Bild */
+  background-size: cover;
+  background-position: center;
+  transform: translate(-50%, -50%);
+  z-index: -2;
+  animation: slowRotate 60s linear infinite;
+}
+
+/* Dunkle Glass-Overlay-Schicht für bessere Lesbarkeit */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: -1;
+}
+
+/* Dreh-Animation */
+@keyframes slowRotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 
 /* ===== Typografie ===== */
 h1, h2, h3, h4, h5 {
