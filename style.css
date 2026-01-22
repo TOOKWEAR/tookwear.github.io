@@ -19,7 +19,7 @@ body {
   left: 50%;
   width: 140%;
   height: 140%;
-  background-image: url("minecraft-title.jpg"); /* dein Bild */
+  background-image: url("90.png"); /* dein Bild */
   background-size: cover;
   background-position: center;
   transform: translate(-50%, -50%);
