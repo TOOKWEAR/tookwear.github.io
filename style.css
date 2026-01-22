@@ -12,20 +12,10 @@ body {
   background: #f0f2f5; /* sanftes Grau */
   scroll-behavior: smooth;
 }
-/* Hintergrund mit rotierendem Minecraft-Titelbild */
-.bg-rotate {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 140%;
-  height: 140%;
-  background-image: url("90.png"); /* dein Bild */
-  background-size: cover;
-  background-position: center;
-  transform: translate(-50%, -50%);
-  z-index: -2;
-  animation: slowRotate 60s linear infinite;
+body {
+  background-image: url("90.png");
 }
+
 
 /* Dunkle Glass-Overlay-Schicht für bessere Lesbarkeit */
 body::before {
