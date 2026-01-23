@@ -215,7 +215,7 @@ p {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  min-height: 200px;   /* WICHTIG */
+  min-height: 200000px;   /* WICHTIG */
 }
 
 /* Footer */
