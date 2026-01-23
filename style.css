@@ -13,9 +13,14 @@ body {
   scroll-behavior: smooth;
 }
 
-p {
-  background-image: url('90.png');
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background: url('90.png') center / cover no-repeat fixed;
+  scroll-behavior: smooth;
 }
+
 
 
 /* Dunkle Glass-Overlay-Schicht für bessere Lesbarkeit */
