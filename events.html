@@ -125,34 +125,46 @@
 </div>
 <script>
 (function() {
+  // ===============================
   // Supabase Client initialisieren
+  // ===============================
   const SUPABASE_URL = 'https://canbmnjlmzxiscmohtqy.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhbmJtbmpsbXp4aXNjbW9odHF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNTMwMDUsImV4cCI6MjA4MjkyOTAwNX0.WxS_wRHL6dARReG1IPAfJV0JeNfWwcvnO2Kg_-qd22o';
   const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  // ===============================
+  // Globale Variablen
+  // ===============================
   let currentUser = null;
   let isEditMode = false;
 
+  // ===============================
   // UI Elemente
+  // ===============================
   const adminFab = document.getElementById('adminFab');
   const modalOverlay = document.getElementById('modalOverlay');
   const closeModal = document.getElementById('closeModal');
+
   const loginView = document.getElementById('loginView');
   const adminView = document.getElementById('adminView');
+
   const loginForm = document.getElementById('loginForm');
   const eventForm = document.getElementById('eventForm');
+
   const logoutBtn = document.getElementById('logoutBtn');
   const userEmail = document.getElementById('userEmail');
+
   const loginMessage = document.getElementById('loginMessage');
   const eventFormMessage = document.getElementById('eventFormMessage');
+
   const modalTitle = document.getElementById('modalTitle');
   const submitEventBtn = document.getElementById('submitEventBtn');
   const cancelEditBtn = document.getElementById('cancelEditBtn');
 
+  // ===============================
   // Modal öffnen/schließen
-  adminFab.addEventListener('click', () => {
-    modalOverlay.classList.add('active');
-  });
+  // ===============================
+  adminFab.addEventListener('click', () => modalOverlay.classList.add('active'));
   closeModal.addEventListener('click', () => {
     modalOverlay.classList.remove('active');
     resetEventForm();
@@ -164,7 +176,9 @@
     }
   });
 
-  // Prüfe Authentifizierungsstatus beim Laden
+  // ===============================
+  // Authentifizierung
+  // ===============================
   async function checkAuth() {
     try {
       const { data: { session }, error } = await supabaseClient.auth.getSession();
@@ -178,28 +192,36 @@
     }
   }
 
-  // Login Handler
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+
     if (!email || !password) {
       showMessage(loginMessage, 'Bitte fülle alle Felder aus!', 'error');
       return;
     }
+
     try {
       const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) throw new Error('Ungültige E-Mail oder Passwort!');
+        else if (error.message.includes('Email not confirmed')) throw new Error('Bitte bestätige zuerst deine E-Mail-Adresse!');
+        else throw error;
+      }
       currentUser = data.user;
       showMessage(loginMessage, '✓ Login erfolgreich!', 'success');
-      setTimeout(() => { showAdminView(); loginForm.reset(); loadEvents(); }, 1000);
+      setTimeout(() => {
+        showAdminView();
+        loginForm.reset();
+        loadEvents();
+      }, 1000);
     } catch (error) {
       showMessage(loginMessage, '✗ ' + error.message, 'error');
       console.error('Login Error:', error);
     }
   });
 
-  // Logout Handler
   logoutBtn.addEventListener('click', async () => {
     try {
       const { error } = await supabaseClient.auth.signOut();
@@ -215,53 +237,74 @@
     }
   });
 
+  // ===============================
   // Event erstellen / bearbeiten
+  // ===============================
   eventForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!currentUser) { showMessage(eventFormMessage, '✗ Du musst eingeloggt sein!', 'error'); return; }
+    if (!currentUser) return showMessage(eventFormMessage, '✗ Du musst eingeloggt sein!', 'error');
+
     const title = document.getElementById('eventTitle').value.trim();
     const dateInput = document.getElementById('eventDate').value;
     const location = document.getElementById('eventLocation').value.trim();
     const description = document.getElementById('eventDescription').value.trim();
-    if (!title || !dateInput || !location || !description) { showMessage(eventFormMessage, '✗ Bitte fülle alle Felder aus!', 'error'); return; }
-    if (title.length < 3) { showMessage(eventFormMessage, '✗ Der Titel muss mindestens 3 Zeichen lang sein!', 'error'); return; }
-    if (description.length < 10) { showMessage(eventFormMessage, '✗ Die Beschreibung muss mindestens 10 Zeichen lang sein!', 'error'); return; }
+
+    // Validierung
+    if (!title || !dateInput || !location || !description)
+      return showMessage(eventFormMessage, '✗ Bitte fülle alle Felder aus!', 'error');
+    if (title.length < 3)
+      return showMessage(eventFormMessage, '✗ Der Titel muss mindestens 3 Zeichen lang sein!', 'error');
+    if (description.length < 10)
+      return showMessage(eventFormMessage, '✗ Die Beschreibung muss mindestens 10 Zeichen lang sein!', 'error');
+
     const eventDate = new Date(dateInput);
-    if (eventDate < new Date()) { showMessage(eventFormMessage, '✗ Das Event-Datum muss in der Zukunft liegen!', 'error'); return; }
+    if (eventDate < new Date())
+      return showMessage(eventFormMessage, '✗ Das Event-Datum muss in der Zukunft liegen!', 'error');
 
     try {
       let error = null;
       if (isEditMode) {
-        error = (await supabaseClient.from('events').update({ title, date: eventDate.toISOString(), location, description }).eq('id', eventForm.dataset.editId)).error;
+        error = (await supabaseClient.from('events').update({
+          title, date: eventDate.toISOString(), location, description
+        }).eq('id', eventForm.dataset.editId)).error;
       } else {
-        error = (await supabaseClient.from('events').insert([{ title, date: eventDate.toISOString(), location, description, author: currentUser.email }])).error;
+        error = (await supabaseClient.from('events').insert([{
+          title, date: eventDate.toISOString(), location, description, author: currentUser.email
+        }])).error;
       }
       if (error) throw error;
+
       showMessage(eventFormMessage, isEditMode ? '✓ Event erfolgreich aktualisiert!' : '✓ Event erfolgreich erstellt!', 'success');
       resetEventForm();
       loadEvents();
-      setTimeout(() => { modalOverlay.classList.remove('active'); eventFormMessage.innerHTML = ''; }, 2000);
-    } catch (error) { showMessage(eventFormMessage, '✗ ' + error.message, 'error'); console.error('Event Operation Error:', error); }
+      setTimeout(() => modalOverlay.classList.remove('active'), 2000);
+    } catch (error) {
+      showMessage(eventFormMessage, '✗ ' + error.message, 'error');
+      console.error('Event Operation Error:', error);
+    }
   });
 
   cancelEditBtn.addEventListener('click', resetEventForm);
 
-  // Event bearbeiten
+  // ===============================
+  // Event bearbeiten / löschen
+  // ===============================
   function editEvent(id, title, date, location, description) {
     isEditMode = true;
     modalTitle.textContent = 'Event bearbeiten';
     submitEventBtn.textContent = 'Event aktualisieren';
     cancelEditBtn.style.display = 'block';
     eventForm.dataset.editId = id;
+
     document.getElementById('eventTitle').value = title;
     document.getElementById('eventLocation').value = location;
     document.getElementById('eventDescription').value = description;
     document.getElementById('eventDate').value = new Date(date).toISOString().substring(0,16);
+
     modalOverlay.classList.add('active');
     showAdminView();
   }
 
-  // Event löschen
   async function deleteEvent(id, title) {
     if (!confirm(`Möchtest du das Event "${title}" wirklich löschen?`)) return;
     try {
@@ -274,25 +317,31 @@
     }
   }
 
+  // ===============================
   // Events laden
+  // ===============================
   async function loadEvents() {
     try {
       const { data: events, error } = await supabaseClient.from('events').select('*').order('date', { ascending: true });
       if (error) throw error;
+
       const container = document.getElementById('eventsContainer');
       container.innerHTML = '';
       if (!events || events.length === 0) {
-        container.innerHTML = '<p style="color: #6b7280; font-size: 1.2rem;">📅 Noch keine Events vorhanden.</p>';
+        container.innerHTML = '<p style="color: #6b7280; font-size: 1.2rem;">📅 Noch keine Events vorhanden. Erstelle das erste Event!</p>';
         return;
       }
+
       const upcomingEvents = events.filter(e => new Date(e.date) >= new Date());
       if (upcomingEvents.length === 0) {
-        container.innerHTML = '<p style="color: #6b7280; font-size: 1.2rem;">📅 Keine kommenden Events.</p>';
+        container.innerHTML = '<p style="color: #6b7280; font-size: 1.2rem;">📅 Keine kommenden Events. Alle Events sind bereits vorbei.</p>';
         return;
       }
+
       upcomingEvents.forEach(e => {
         const div = document.createElement('div');
         div.classList.add('event-card');
+
         const eventDate = new Date(e.date);
         div.innerHTML = `
           <h3>${escapeHtml(e.title)}</h3>
@@ -301,33 +350,45 @@
           <div class="event-description">${escapeHtml(e.description)}</div>
           <div class="event-meta">Organisiert von: ${escapeHtml(e.author)}</div>
         `;
+
         if (currentUser) {
           const controls = document.createElement('div');
           controls.className = 'news-admin-controls';
+
           const editBtn = document.createElement('button');
           editBtn.className = 'btn-edit';
           editBtn.textContent = '✏️ Bearbeiten';
           editBtn.addEventListener('click', () => editEvent(e.id, e.title, e.date, e.location, e.description));
+
           const deleteBtn = document.createElement('button');
           deleteBtn.className = 'btn-delete';
           deleteBtn.textContent = '🗑️ Löschen';
           deleteBtn.addEventListener('click', () => deleteEvent(e.id, e.title));
+
           controls.appendChild(editBtn);
           controls.appendChild(deleteBtn);
           div.appendChild(controls);
         }
+
         container.appendChild(div);
       });
+
     } catch (err) {
       const container = document.getElementById('eventsContainer');
-      container.innerHTML = `<div style="background: #fef2f2; color: #991b1b; padding: 20px; border-radius: 12px; border-left: 4px solid #dc2626;">
-        <strong>✗ Fehler beim Laden der Events</strong><br>${escapeHtml(err.message)}
-      </div>`;
+      container.innerHTML = `
+        <div style="background: #fef2f2; color: #991b1b; padding: 20px; border-radius: 12px; border-left: 4px solid #dc2626;">
+          <strong>✗ Fehler beim Laden der Events</strong><br>
+          ${escapeHtml(err.message)}<br><br>
+          <small>Bitte überprüfe die Datenbankverbindung und stelle sicher, dass die Tabelle 'events' existiert.</small>
+        </div>
+      `;
       console.error('Load Events Error:', err);
     }
   }
 
+  // ===============================
   // Hilfsfunktionen
+  // ===============================
   function resetEventForm() {
     isEditMode = false;
     eventForm.reset();
@@ -355,7 +416,7 @@
 
   function showMessage(element, message, type) {
     element.innerHTML = `<div class="${type}">${message}</div>`;
-    setTimeout(() => { element.innerHTML = ''; }, 5000);
+    setTimeout(() => element.innerHTML = '', 5000);
   }
 
   function escapeHtml(text) {
@@ -364,8 +425,13 @@
     return div.innerHTML;
   }
 
-  // Initialisierung
-  document.addEventListener('DOMContentLoaded', () => { checkAuth(); loadEvents(); });
+  // ===============================
+  // Initialisierung beim Laden
+  // ===============================
+  document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    loadEvents();
+  });
 
 })();
 </script>
