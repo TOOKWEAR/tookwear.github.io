@@ -11,9 +11,170 @@
 <link rel="icon" type="image/png" href="https://tookwear.github.io/assets/images/favicon.png" sizes="32x32">
 <link rel="shortcut icon" type="image/png" href="https://tookwear.github.io/assets/images/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+<!-- DEIN HAUPTSTYLE -->
 <link rel="stylesheet" href="style.css">
+
+<!-- EXTRA DESIGN NUR FÜR SIDEBAR + MODAL -->
+<style>
+
+/* ===== Menü Button ===== */
+.menu-btn {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1500;
+  color: #f9fafb;
+  background: rgba(31,41,55,0.8);
+  padding: 8px 14px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: background 0.3s, transform 0.3s;
+}
+
+.menu-btn:hover {
+  background: rgba(37,99,235,0.9);
+  transform: scale(1.05);
+}
+
+/* ===== Sidebar Navbar ===== */
+.sidebar {
+  position: fixed;
+  left: -280px;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  padding-top: 120px;
+  background: rgba(31,41,55,0.95);
+  backdrop-filter: blur(12px);
+  transition: left 0.35s ease;
+  z-index: 1400;
+  box-shadow: 6px 0 25px rgba(0,0,0,0.25);
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar a {
+  display: block;
+  padding: 16px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f9fafb;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.sidebar a:hover {
+  background: rgba(37,99,235,0.25);
+  color: #93c5fd;
+  transform: translateX(5px);
+}
+
+/* Support Button hervorheben */
+.sidebar a#supportBtn {
+  margin-top: 30px;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  border-radius: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
+  text-align: center;
+  color: white;
+}
+
+.sidebar a#supportBtn:hover {
+  background: linear-gradient(135deg, #4338ca, #2563eb);
+}
+
+/* ===== Support Modal ===== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.modal-content {
+  background: rgba(255,255,255,0.92);
+  padding: 35px 30px;
+  width: 340px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+  animation: popup 0.3s ease;
+}
+
+@keyframes popup {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-content h2 {
+  color: #2563eb;
+}
+
+.modal-content p {
+  color: #374151;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 50px;
+  border: 2px solid #2563eb;
+  font-size: 1rem;
+  outline: none;
+  text-align: center;
+}
+
+.modal-content input:focus {
+  border-color: #4338ca;
+  box-shadow: 0 0 10px rgba(67,56,202,0.3);
+}
+
+.modal-content button {
+  margin-top: 15px;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: white;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-content button:hover {
+  background: linear-gradient(135deg, #4338ca, #2563eb);
+  transform: scale(1.05);
+}
+
+/* Close Button */
+.close-btn {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+  color: #374151;
+}
+
+.close-btn:hover {
+  color: #2563eb;
+}
+
+</style>
 </head>
+
 <body>
+
 <!-- Menü Button -->
 <div class="menu-btn" id="menuBtn">☰</div>
 
@@ -49,6 +210,7 @@
     <p id="copyMsg" class="copy-msg">IP kopiert!</p>
   </section>
 </main>
+
 <!-- Support Popup -->
 <div id="supportModal" class="modal">
   <div class="modal-content apple-glass">
@@ -72,20 +234,22 @@
   <p>&copy; 2026 TOOK WAR. Alle Rechte vorbehalten.</p>
 </footer>
 
-<!-- Script zum Kopieren der IP -->
+<!-- SCRIPT KOMPLETT INTEGRIERT -->
 <script>
-const copyBtn = document.getElementById('copyBtn');
-copyBtn.addEventListener('click', () => {
+
+/* Copy IP */
+document.getElementById('copyBtn').addEventListener('click', () => {
   const ipInput = document.getElementById('serverIP');
   ipInput.select();
-  ipInput.setSelectionRange(0, 99999); // für mobile Geräte
+  ipInput.setSelectionRange(0, 99999);
   document.execCommand('copy');
 
   const msg = document.getElementById('copyMsg');
   msg.style.display = 'block';
   setTimeout(() => { msg.style.display = 'none'; }, 2000);
 });
-/* Sidebar öffnen/schließen */
+
+/* Sidebar öffnen / schließen */
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
 
@@ -124,9 +288,11 @@ sendBtn.addEventListener('click', () => {
   const subject = "TOOK WAR Support – Paysafecard";
   const body = "Zahlungsmethode: Paysafecard\nCode: " + code;
 
-  window.location.href = `mailto:${mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href =
+    `mailto:${mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
+
 </script>
-<script src="script.js"></script>
+
 </body>
 </html>
