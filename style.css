@@ -235,4 +235,83 @@ footer {
   section {
     padding: 80px 15px;
   }
+
+/* Menü Button */
+.menu-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 1001;
+  color: white;
+}
+
+/* Sidebar Navbar */
+.sidebar {
+  position: fixed;
+  left: -260px;
+  top: 0;
+  width: 260px;
+  height: 100%;
+  padding-top: 80px;
+  transition: 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar a {
+  display: block;
+  padding: 15px 25px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+}
+
+.sidebar a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+/* Support Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  padding: 25px;
+  width: 320px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.close-btn {
+  float: right;
+  font-size: 22px;
+  cursor: pointer;
+}
 }
