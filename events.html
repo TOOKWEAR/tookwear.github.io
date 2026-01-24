@@ -8,7 +8,6 @@
 <meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear" />
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -50,8 +49,8 @@
 </header>
 
 <!-- Main Content -->
-<main>
-  <section class="events-section">
+<main class="container">
+  <section class="events-section apple-glass">
     <h2>Kommende Events</h2>
     <div id="eventsContainer" class="events-grid">
       <p>Events werden geladen...</p>
@@ -64,66 +63,90 @@
   <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
 </footer>
 
-<!-- Admin FAB Button -->
-<button class="admin-fab" id="adminFab" title="Admin Login">📅</button>
+<!-- Dein altes Script -->
+<script>
+const ADMIN_PASS="2409";
 
-<!-- Modal -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="modalTitle">Admin Login</h3>
-      <button class="close-btn" id="closeModal">&times;</button>
-    </div>
-    <div id="modalContent">
-      <!-- Login Form -->
-      <div id="loginView">
-        <div id="loginMessage"></div>
-        <form id="loginForm">
-          <div class="form-group">
-            <label for="email">E-Mail:</label>
-            <input type="email" id="email" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Passwort:</label>
-            <input type="password" id="password" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-      </div>
+function loadNews(){
+ const c=document.getElementById("newsContainer");
+ if(!c)return;
+ let n=JSON.parse(localStorage.getItem("news"))||[];
+ c.innerHTML="";
+ n.reverse().forEach(e=>{
+  let d=document.createElement("div");
+  d.className="apple-glass";
+  d.innerHTML=`<h3>${e.title}</h3><p>${e.text}</p><small>${e.author} • ${e.date}</small>`;
+  c.appendChild(d);
+ });
+}
 
-      <!-- Admin Dashboard -->
-      <div id="adminView" class="hidden">
-        <div class="user-info">
-          <p><strong>Eingeloggt als:</strong></p>
-          <p id="userEmail"></p>
-        </div>
-        <div id="eventFormMessage"></div>
-        <form id="eventForm">
-          <div class="form-group">
-            <label for="eventTitle">Event-Titel:</label>
-            <input type="text" id="eventTitle" required>
-          </div>
-          <div class="form-group">
-            <label for="eventDate">Datum:</label>
-            <input type="datetime-local" id="eventDate" required>
-          </div>
-          <div class="form-group">
-            <label for="eventLocation">Ort:</label>
-            <input type="text" id="eventLocation" required>
-          </div>
-          <div class="form-group">
-            <label for="eventDescription">Beschreibung:</label>
-            <textarea id="eventDescription" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" id="submitEventBtn">Event erstellen</button>
-          <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display:none;">Bearbeitung abbrechen</button>
-        </form>
-        <button class="btn btn-secondary" id="logoutBtn">Logout</button>
-      </div>
-    </div>
-  </div>
-</div>
+function loginAdmin(){
+ let n=document.getElementById("adminName").value;
+ let p=document.getElementById("adminPass").value;
+ if(p===ADMIN_PASS && n){
+   document.getElementById("adminSection").style.display="none";
+   document.getElementById("postSection").style.display="block";
+   sessionStorage.setItem("admin",n);
+ }else alert("Falsches Passwort");
+}
 
-<script src="script.js"></script>
+function postNews(){
+ let t=document.getElementById("newsTitle").value;
+ let x=document.getElementById("newsText").value;
+ let a=sessionStorage.getItem("admin");
+ let n=JSON.parse(localStorage.getItem("news"))||[];
+ n.push({title:t,text:x,author:a,date:new Date().toLocaleString()});
+ localStorage.setItem("news",JSON.stringify(n));
+ loadNews();
+}
+
+document.addEventListener("DOMContentLoaded",loadNews);
+</script>
+
+<!-- Sidebar & Support Modal Script -->
+<script>
+/* Sidebar öffnen/schließen */
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.getElementById("sidebar");
+
+menuBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+});
+
+/* Support Modal */
+const supportBtn = document.getElementById('supportBtn');
+const modal = document.getElementById('supportModal');
+const closeBtn = document.getElementById('closeSupport');
+const sendBtn = document.getElementById('sendSupport');
+
+supportBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  modal.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === modal) modal.style.display = 'none';
+});
+
+sendBtn.addEventListener('click', () => {
+  const code = document.getElementById('pscCode').value.trim();
+
+  if (code.length !== 16) {
+    alert("Bitte einen gültigen 16-stelligen Paysafecard-Code eingeben.");
+    return;
+  }
+
+  const mail = "meowtroid24@proton.me";
+  const subject = "TOOK WAR Support – Paysafecard";
+  const body = "Zahlungsmethode: Paysafecard\nCode: " + code;
+
+  window.location.href = `mailto:${mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+});
+</script>
+
 </body>
 </html>
