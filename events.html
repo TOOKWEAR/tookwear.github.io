@@ -441,88 +441,90 @@
   <a href="#" id="supportBtn">💛 Support Us</a>
 </div>
 
-    <!-- Hero Section -->
-    <header>
-        <h1>Events & Turniere</h1>
-        <p>Alle aktuellen Wettbewerbe, Turniere und Community-Events von TOOK WAR.</p>
-    </header>
+<!-- Hero Section -->
+<header>
+  <h1>Events & Turniere</h1>
+  <p>Alle aktuellen Wettbewerbe, Turniere und Community-Events von TOOK WAR.</p>
+</header>
 
-    <!-- Main Content -->
-    <main>
-        <section class="events-section">
-            <h2>Kommende Events</h2>
-            <div id="eventsContainer" class="events-grid">
-                <p>Events werden geladen...</p>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
-    </footer>
-
-    <!-- Admin FAB Button -->
-    <button class="admin-fab" id="adminFab" title="Admin Login">📅</button>
-
-    <!-- Modal -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 id="modalTitle">Admin Login</h3>
-                <button class="close-btn" id="closeModal">&times;</button>
-            </div>
-            <div id="modalContent">
-                <!-- Login Form -->
-                <div id="loginView">
-                    <div id="loginMessage"></div>
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="email">E-Mail:</label>
-                            <input type="email" id="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Passwort:</label>
-                            <input type="password" id="password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
-                    </form>
-                </div>
-
-                <!-- Admin Dashboard -->
-                <div id="adminView" class="hidden">
-                    <div class="user-info">
-                        <p><strong>Eingeloggt als:</strong></p>
-                        <p id="userEmail"></p>
-                    </div>
-                    <div id="eventFormMessage"></div>
-                    <form id="eventForm">
-                        <div class="form-group">
-                            <label for="eventTitle">Event-Titel:</label>
-                            <input type="text" id="eventTitle" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="eventDate">Datum:</label>
-                            <input type="datetime-local" id="eventDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="eventLocation">Ort:</label>
-                            <input type="text" id="eventLocation" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="eventDescription">Beschreibung:</label>
-                            <textarea id="eventDescription" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="submitEventBtn">Event erstellen</button>
-                        <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display:none;">Bearbeitung abbrechen</button>
-                    </form>
-                    <button class="btn btn-secondary" id="logoutBtn">Logout</button>
-                </div>
-            </div>
-        </div>
+<!-- Main Content -->
+<main>
+  <section class="events-section">
+    <h2>Kommende Events</h2>
+    <div id="eventsContainer" class="events-grid">
+      <p>Events werden geladen...</p>
     </div>
+  </section>
+</main>
 
-    <!-- Scripts -->
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
+</footer>
+
+<!-- Admin FAB Button -->
+<button class="admin-fab" id="adminFab" title="Admin Login">📅</button>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Admin Login</h3>
+      <button class="close-btn" id="closeModal">&times;</button>
+    </div>
+    
+    <div id="modalContent">
+      <!-- Login Form -->
+      <div id="loginView">
+        <div id="loginMessage"></div>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">E-Mail:</label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+      
+      <!-- Admin Dashboard -->
+      <div id="adminView" class="hidden">
+        <div class="user-info">
+          <p><strong>Eingeloggt als:</strong></p>
+          <p id="userEmail"></p>
+        </div>
+        
+        <div id="eventFormMessage"></div>
+        <form id="eventForm">
+          <div class="form-group">
+            <label for="eventTitle">Event-Titel:</label>
+            <input type="text" id="eventTitle" required>
+          </div>
+          <div class="form-group">
+            <label for="eventDate">Datum:</label>
+            <input type="datetime-local" id="eventDate" required>
+          </div>
+          <div class="form-group">
+            <label for="eventLocation">Ort:</label>
+            <input type="text" id="eventLocation" required>
+          </div>
+          <div class="form-group">
+            <label for="eventDescription">Beschreibung:</label>
+            <textarea id="eventDescription" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" id="submitEventBtn">Event erstellen</button>
+          <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display:none;">Bearbeitung abbrechen</button>
+        </form>
+        
+        <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function() {
   // Supabase Client initialisieren
@@ -888,5 +890,6 @@
   });
 })();
 </script>
+
 </body>
 </html>
