@@ -10,7 +10,7 @@ html, body {
   height: 100%;
 }
 
-/* ===== BODY MIT HINTERGRUNDBILD (GITHUB PAGES SAFE) ===== */
+/* ===== BODY MIT HINTERGRUNDBILD ===== */
 body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
@@ -21,7 +21,7 @@ body {
   position: relative;
 }
 
-/* ===== DUNKLES OVERLAY FÜR LESBARKEIT ===== */
+/* ===== DUNKLES OVERLAY ===== */
 body::before {
   content: "";
   position: fixed;
@@ -33,55 +33,55 @@ body::before {
 /* ===== Typografie ===== */
 h1, h2, h3, h4, h5 {
   font-family: 'Playfair Display', serif;
-  color: #1e3a8a; 
+  color: #1e3a8a;
   margin-bottom: 20px;
 }
 
 p, li, span {
   font-size: 1.2rem;
-  color: #4b5563; 
+  color: #4b5563;
 }
 
 a {
   text-decoration: none;
-  color: #2563eb; 
+  color: #2563eb;
   transition: color 0.3s, transform 0.2s;
 }
 
 a:hover {
-  color: #4338ca; 
+  color: #4338ca;
   transform: scale(1.05);
 }
 
-/* ===== Navigation ===== */
+/* ===== Navigation (alte Top-Navbar bleibt) ===== */
 nav {
   position: fixed;
   top: 0;
   width: 100%;
-  background: #1f2937; 
+  background: #1f2937;
   display: flex;
   justify-content: center;
   padding: 15px 0;
   z-index: 1000;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  border-bottom: 2px solid #2563eb; 
+  border-bottom: 2px solid #2563eb;
 }
 
 nav a {
   margin: 0 25px;
   font-weight: bold;
-  color: #f9fafb; 
+  color: #f9fafb;
   transition: color 0.3s, transform 0.3s;
 }
 
 nav a:hover {
-  color: #60a5fa; 
+  color: #60a5fa;
   transform: translateY(-2px);
 }
 
 /* ===== Header / Hero ===== */
 header {
-  background: linear-gradient(135deg, #2563eb, #60a5fa); 
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
   color: white;
   padding: 150px 20px;
   text-align: center;
@@ -100,7 +100,7 @@ header p {
   margin: 0 auto;
 }
 
-/* ===== Sektionen (HALBTRANSPARENT, DAMIT HINTERGRUND SICHTBAR BLEIBT) ===== */
+/* ===== Sektionen ===== */
 section {
   padding: 100px 20px;
   min-height: 100vh;
@@ -134,7 +134,7 @@ section {
   box-shadow: 0 6px 25px rgba(0,0,0,0.15);
 }
 
-/* ===== Connect Section Buttons & Input ===== */
+/* ===== Connect Section ===== */
 .connect-section {
   display: flex;
   flex-direction: column;
@@ -194,12 +194,11 @@ section {
   display: none;
   margin-top: 8px;
   font-size: 1rem;
-  color: #16a34a; 
+  color: #16a34a;
   font-weight: 500;
-  transition: opacity 0.3s ease;
 }
 
-/* Footer */
+/* ===== Footer ===== */
 footer {
   background: #1f2937;
   color: #f9fafb;
@@ -209,23 +208,104 @@ footer {
   border-radius: 50px 50px 0 0;
 }
 
+/* =================================================
+   SIDEBAR NAVBAR + SUPPORT MODAL
+   ================================================= */
+
+/* Menü Button */
+.menu-btn {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1500;
+  color: #f9fafb;
+  background: rgba(31,41,55,0.8);
+  padding: 8px 14px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.menu-btn:hover {
+  background: rgba(37,99,235,0.9);
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  left: -280px;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  padding-top: 120px;
+  background: rgba(31,41,55,0.95);
+  backdrop-filter: blur(12px);
+  transition: left 0.35s ease;
+  z-index: 1400;
+  box-shadow: 6px 0 25px rgba(0,0,0,0.25);
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar a {
+  display: block;
+  padding: 16px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.sidebar a:hover {
+  background: rgba(37,99,235,0.25);
+  color: #93c5fd;
+}
+
+/* Support Button */
+.sidebar a#supportBtn {
+  margin-top: 30px;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  border-radius: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
+  text-align: center;
+  color: white;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.modal-content {
+  background: rgba(255,255,255,0.92);
+  padding: 35px 30px;
+  width: 340px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+  color: #374151;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 480px) {
   .connect-wrapper {
     flex-direction: column;
-    gap: 10px;
-  }
-
-  .connect-wrapper input,
-  #copyBtn,
-  .connect-section button {
-    width: 100%;
-    max-width: 300px;
-    margin: 0;
-  }
-
-  .connect-section button {
-    margin-left: 0;
   }
 
   header h1 {
@@ -235,83 +315,4 @@ footer {
   section {
     padding: 80px 15px;
   }
-
-/* Menü Button */
-.menu-btn {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  font-size: 26px;
-  cursor: pointer;
-  z-index: 1001;
-  color: white;
-}
-
-/* Sidebar Navbar */
-.sidebar {
-  position: fixed;
-  left: -260px;
-  top: 0;
-  width: 260px;
-  height: 100%;
-  padding-top: 80px;
-  transition: 0.3s ease;
-  z-index: 1000;
-}
-
-.sidebar a {
-  display: block;
-  padding: 15px 25px;
-  text-decoration: none;
-  font-size: 18px;
-  color: white;
-}
-
-.sidebar a:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-.sidebar.open {
-  left: 0;
-}
-
-/* Support Modal */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-}
-
-.modal-content {
-  padding: 25px;
-  width: 320px;
-  border-radius: 14px;
-  text-align: center;
-}
-
-.modal-content input,
-.modal-content select {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: none;
-}
-
-.modal-content button {
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.close-btn {
-  float: right;
-  font-size: 22px;
-  cursor: pointer;
-}
 }
