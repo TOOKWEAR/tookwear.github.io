@@ -1,53 +1,77 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>Community — TOOK WAR</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord, tookwear, took wear">
-<meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! Baue auf deinem eigenen Bau-Server, kämpfe in Arenen und lerne in Tutorials.">
-<meta property="og:image" content="logo.jpg">
-
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOOK WAR — Social</title>
+  <meta name="description" content="Folge TOOK WAR auf TikTok, Instagram & YouTube!">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar apple-glass">
-  <div class="nav-container">
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="about.html" class="nav-link">About</a>
-    <a href="community.html" class="nav-link active">Community</a>
-    <a href="events.html" class="nav-link">Events</a>
-    <a href="support.html" class="nav-link">Support</a>
-    <a href="news.html" class="nav-link">News</a>
-    <a href="conventions.html" class="nav-link">Konventionen</a>
-    <a href="rules.html" class="nav-link">wargear & miniwargear Regelwerk</a>
-  </div>
-</nav>
+<!-- Menü Button -->
+<div class="menu-btn" id="menuBtn">☰</div>
 
-<!-- Hero Section -->
+<!-- Sidebar Navbar -->
+<div class="sidebar apple-glass" id="sidebar">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="community.html">Community</a>
+  <a href="events.html">Events</a>
+  <a href="support.html">Support</a>
+  <a href="news.html">News</a>
+  <a href="conventions.html">Konventionen</a>
+  <a href="rules.html">wargear & miniwargear Regelwerk</a>
+  <a href="#" id="supportBtn">💛 Support Us</a>
+</div>
+
+<!-- Support Modal -->
+<div id="supportModal" class="modal">
+  <div class="modal-content apple-glass">
+    <span class="close-btn" id="closeSupport">&times;</span>
+    <h2>Support Us</h2>
+    <p>Zahlungsmethode:</p>
+    <select disabled>
+      <option>Paysafecard</option>
+    </select>
+    <p>16-stelliger Code:</p>
+    <input type="text" id="pscCode" maxlength="16" placeholder="XXXX-XXXX-XXXX-XXXX">
+    <button id="sendSupport">Senden</button>
+  </div>
+</div>
+
+<!-- Header Section -->
 <header class="hero-section apple-glass container">
-  <h1>Community</h1>
-  <p>Discord, Bau-System & Teams – werde Teil der TOOK WAR Community!</p>
+  <h1>TOOK WAR Social Media</h1>
+  <p>Folge uns auf TikTok, Instagram & YouTube und bleibe immer up-to-date!</p>
 </header>
 
 <!-- Main Content -->
-<main class="container">
-  <section class="community-section apple-glass">
-    <h2>Unser Discord</h2>
-    <p>Tritt unserem offiziellen Discord-Server bei und tausche dich mit der Community aus.</p>
-    <div class="discord-widget-wrapper">
-      <iframe src="https://discord.com/widget?id=1403091353214386237&theme=dark" 
-              width="350" 
-              height="500" 
-              allowtransparency="true" 
-              frameborder="0" 
-              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-              title="TOOK WAR Discord Widget">
-      </iframe>
+<main>
+  <section class="social-grid container">
+    <!-- TikTok Card -->
+    <div class="social-card apple-glass">
+      <h2>TikTok</h2>
+      <p>
+        <a href="https://www.tiktok.com/@tookwar" target="_blank" rel="noopener noreferrer" aria-label="TOOK WAR auf TikTok">@tookwar</a>
+      </p>
+    </div>
+
+    <!-- Instagram Card -->
+    <div class="social-card apple-glass">
+      <h2>Instagram</h2>
+      <p>
+        <a href="https://www.instagram.com/took.war/" target="_blank" rel="noopener noreferrer" aria-label="TOOK WAR auf Instagram">@took.war</a>
+      </p>
+    </div>
+
+    <!-- YouTube Card -->
+    <div class="social-card apple-glass">
+      <h2>YouTube</h2>
+      <p>
+        <a href="https://www.youtube.com/@tookwearMLT" target="_blank" rel="noopener noreferrer" aria-label="TOOK WAR auf YouTube">@tookwearMLT</a>
+      </p>
     </div>
   </section>
 </main>
@@ -57,6 +81,46 @@
   <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
 </footer>
 
-<script src="script.js"></script>
+<!-- Script für Sidebar & Support -->
+<script>
+/* Sidebar öffnen/schließen */
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.getElementById("sidebar");
+menuBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+});
+
+/* Support Modal */
+const supportBtn = document.getElementById('supportBtn');
+const modal = document.getElementById('supportModal');
+const closeBtn = document.getElementById('closeSupport');
+const sendBtn = document.getElementById('sendSupport');
+
+supportBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  modal.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === modal) modal.style.display = 'none';
+});
+
+sendBtn.addEventListener('click', () => {
+  const code = document.getElementById('pscCode').value.trim();
+  if (code.length !== 16) {
+    alert("Bitte einen gültigen 16-stelligen Paysafecard-Code eingeben.");
+    return;
+  }
+  const mail = "meowtroid24@proton.me";
+  const subject = "TOOK WAR Support – Paysafecard";
+  const body = "Zahlungsmethode: Paysafecard\nCode: " + code;
+  window.location.href = `mailto:${mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+});
+</script>
+
 </body>
 </html>
