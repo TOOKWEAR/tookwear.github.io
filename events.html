@@ -1,21 +1,128 @@
-<!-- Sidebar -->
-<aside class="sidebar">
-  <div class="sidebar-header">
-    <h3>Navigation</h3>
-  </div>
-  <ul class="sidebar-menu">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="community.html">Community</a></li>
-    <li class="active"><a href="events.html">Events</a></li>
-    <li><a href="support.html">Support</a></li>
-    <li><a href="news.html">News</a></li>
-    <li><a href="conventions.html">Konventionen</a></li>
-    <li><a href="rules.html">Regelwerk</a></li>
-  </ul>
-</aside>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Events — TOOK WAR</title>
+<meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! Events & Turniere." />
+<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
 
-<!-- Dein Script -->
+<!-- Menü Button -->
+<div class="menu-btn" id="menuBtn">☰</div>
+
+<!-- Sidebar Navbar -->
+<div class="sidebar apple-glass" id="sidebar">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="community.html">Community</a>
+  <a href="events.html">Events</a>
+  <a href="support.html">Support</a>
+  <a href="news.html">News</a>
+  <a href="conventions.html">Konventionen</a>
+  <a href="rules.html">Regelwerk</a>
+  <a href="#" id="supportBtn">💛 Support Us</a>
+</div>
+
+<!-- Support Popup -->
+<div id="supportModal" class="modal">
+  <div class="modal-content apple-glass">
+    <span class="close-btn" id="closeSupport">&times;</span>
+    <h2>Support Us</h2>
+    <p>Zahlungsmethode:</p>
+    <select disabled>
+      <option>Paysafecard</option>
+    </select>
+    <p>16-stelliger Code:</p>
+    <input type="text" id="pscCode" maxlength="16" placeholder="XXXX-XXXX-XXXX-XXXX">
+    <button id="sendSupport">Senden</button>
+  </div>
+</div>
+
+<!-- Hero / Header -->
+<header class="hero-section apple-glass container">
+  <h1>Events & Turniere</h1>
+  <p>Alle aktuellen Wettbewerbe, Turniere und Community-Events von TOOK WAR.</p>
+</header>
+
+<!-- Main Content -->
+<main>
+  <section class="events-section">
+    <h2>Kommende Events</h2>
+    <div id="eventsContainer" class="events-grid">
+      <p>Events werden geladen...</p>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="apple-glass">
+  <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
+</footer>
+
+<!-- Admin FAB Button -->
+<button class="admin-fab" id="adminFab" title="Admin Login">📅</button>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Admin Login</h3>
+      <button class="close-btn" id="closeModal">&times;</button>
+    </div>
+    <div id="modalContent">
+      <!-- Login Form -->
+      <div id="loginView">
+        <div id="loginMessage"></div>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">E-Mail:</label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+
+      <!-- Admin Dashboard -->
+      <div id="adminView" class="hidden">
+        <div class="user-info">
+          <p><strong>Eingeloggt als:</strong></p>
+          <p id="userEmail"></p>
+        </div>
+        <div id="eventFormMessage"></div>
+        <form id="eventForm">
+          <div class="form-group">
+            <label for="eventTitle">Event-Titel:</label>
+            <input type="text" id="eventTitle" required>
+          </div>
+          <div class="form-group">
+            <label for="eventDate">Datum:</label>
+            <input type="datetime-local" id="eventDate" required>
+          </div>
+          <div class="form-group">
+            <label for="eventLocation">Ort:</label>
+            <input type="text" id="eventLocation" required>
+          </div>
+          <div class="form-group">
+            <label for="eventDescription">Beschreibung:</label>
+            <textarea id="eventDescription" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" id="submitEventBtn">Event erstellen</button>
+          <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display:none;">Bearbeitung abbrechen</button>
+        </form>
+        <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 (function() {
   // Supabase Client initialisieren
@@ -262,3 +369,6 @@
 
 })();
 </script>
+<script src="script.js"></script>
+</body>
+</html>
