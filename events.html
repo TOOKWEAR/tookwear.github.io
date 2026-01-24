@@ -1,152 +1,264 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Events — TOOK WAR</title>
-<meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! Events & Turniere." />
-<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear" />
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<!-- Menü Button -->
-<div class="menu-btn" id="menuBtn">☰</div>
-
-<!-- Sidebar Navbar -->
-<div class="sidebar apple-glass" id="sidebar">
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="community.html">Community</a>
-  <a href="events.html">Events</a>
-  <a href="support.html">Support</a>
-  <a href="news.html">News</a>
-  <a href="conventions.html">Konventionen</a>
-  <a href="rules.html">Regelwerk</a>
-  <a href="#" id="supportBtn">💛 Support Us</a>
-</div>
-
-<!-- Support Popup -->
-<div id="supportModal" class="modal">
-  <div class="modal-content apple-glass">
-    <span class="close-btn" id="closeSupport">&times;</span>
-    <h2>Support Us</h2>
-    <p>Zahlungsmethode:</p>
-    <select disabled>
-      <option>Paysafecard</option>
-    </select>
-    <p>16-stelliger Code:</p>
-    <input type="text" id="pscCode" maxlength="16" placeholder="XXXX-XXXX-XXXX-XXXX">
-    <button id="sendSupport">Senden</button>
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h3>Navigation</h3>
   </div>
-</div>
+  <ul class="sidebar-menu">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li class="active"><a href="events.html">Events</a></li>
+    <li><a href="support.html">Support</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="conventions.html">Konventionen</a></li>
+    <li><a href="rules.html">Regelwerk</a></li>
+  </ul>
+</aside>
 
-<!-- Hero / Header -->
-<header class="hero-section apple-glass container">
-  <h1>Events & Turniere</h1>
-  <p>Alle aktuellen Wettbewerbe, Turniere und Community-Events von TOOK WAR.</p>
-</header>
-
-<!-- Main Content -->
-<main class="container">
-  <section class="events-section apple-glass">
-    <h2>Kommende Events</h2>
-    <div id="eventsContainer" class="events-grid">
-      <p>Events werden geladen...</p>
-    </div>
-  </section>
-</main>
-
-<!-- Footer -->
-<footer class="apple-glass">
-  <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
-</footer>
-
-<!-- Dein altes Script -->
+<!-- Dein Script -->
 <script>
-const ADMIN_PASS="2409";
+(function() {
+  // Supabase Client initialisieren
+  const SUPABASE_URL = 'https://canbmnjlmzxiscmohtqy.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhbmJtbmpsbXp4aXNjbW9odHF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNTMwMDUsImV4cCI6MjA4MjkyOTAwNX0.WxS_wRHL6dARReG1IPAfJV0JeNfWwcvnO2Kg_-qd22o';
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-function loadNews(){
- const c=document.getElementById("newsContainer");
- if(!c)return;
- let n=JSON.parse(localStorage.getItem("news"))||[];
- c.innerHTML="";
- n.reverse().forEach(e=>{
-  let d=document.createElement("div");
-  d.className="apple-glass";
-  d.innerHTML=`<h3>${e.title}</h3><p>${e.text}</p><small>${e.author} • ${e.date}</small>`;
-  c.appendChild(d);
- });
-}
+  let currentUser = null;
+  let isEditMode = false;
 
-function loginAdmin(){
- let n=document.getElementById("adminName").value;
- let p=document.getElementById("adminPass").value;
- if(p===ADMIN_PASS && n){
-   document.getElementById("adminSection").style.display="none";
-   document.getElementById("postSection").style.display="block";
-   sessionStorage.setItem("admin",n);
- }else alert("Falsches Passwort");
-}
+  // UI Elemente
+  const adminFab = document.getElementById('adminFab');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const closeModal = document.getElementById('closeModal');
+  const loginView = document.getElementById('loginView');
+  const adminView = document.getElementById('adminView');
+  const loginForm = document.getElementById('loginForm');
+  const eventForm = document.getElementById('eventForm');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const userEmail = document.getElementById('userEmail');
+  const loginMessage = document.getElementById('loginMessage');
+  const eventFormMessage = document.getElementById('eventFormMessage');
+  const modalTitle = document.getElementById('modalTitle');
+  const submitEventBtn = document.getElementById('submitEventBtn');
+  const cancelEditBtn = document.getElementById('cancelEditBtn');
 
-function postNews(){
- let t=document.getElementById("newsTitle").value;
- let x=document.getElementById("newsText").value;
- let a=sessionStorage.getItem("admin");
- let n=JSON.parse(localStorage.getItem("news"))||[];
- n.push({title:t,text:x,author:a,date:new Date().toLocaleString()});
- localStorage.setItem("news",JSON.stringify(n));
- loadNews();
-}
+  // Modal öffnen/schließen
+  adminFab.addEventListener('click', () => {
+    modalOverlay.classList.add('active');
+  });
+  closeModal.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+    resetEventForm();
+  });
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+      modalOverlay.classList.remove('active');
+      resetEventForm();
+    }
+  });
 
-document.addEventListener("DOMContentLoaded",loadNews);
-</script>
-
-<!-- Sidebar & Support Modal Script -->
-<script>
-/* Sidebar öffnen/schließen */
-const menuBtn = document.getElementById("menuBtn");
-const sidebar = document.getElementById("sidebar");
-
-menuBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("open");
-});
-
-/* Support Modal */
-const supportBtn = document.getElementById('supportBtn');
-const modal = document.getElementById('supportModal');
-const closeBtn = document.getElementById('closeSupport');
-const sendBtn = document.getElementById('sendSupport');
-
-supportBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  modal.style.display = 'flex';
-});
-
-closeBtn.addEventListener('click', () => {
-  modal.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-  if (e.target === modal) modal.style.display = 'none';
-});
-
-sendBtn.addEventListener('click', () => {
-  const code = document.getElementById('pscCode').value.trim();
-
-  if (code.length !== 16) {
-    alert("Bitte einen gültigen 16-stelligen Paysafecard-Code eingeben.");
-    return;
+  // Prüfe Authentifizierungsstatus beim Laden
+  async function checkAuth() {
+    try {
+      const { data: { session }, error } = await supabaseClient.auth.getSession();
+      if (error) { console.error('Auth Check Error:', error); return; }
+      if (session) {
+        currentUser = session.user;
+        showAdminView();
+      }
+    } catch (error) {
+      console.error('Auth Check Error:', error);
+    }
   }
 
-  const mail = "meowtroid24@proton.me";
-  const subject = "TOOK WAR Support – Paysafecard";
-  const body = "Zahlungsmethode: Paysafecard\nCode: " + code;
+  // Login Handler
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    if (!email || !password) {
+      showMessage(loginMessage, 'Bitte fülle alle Felder aus!', 'error');
+      return;
+    }
+    try {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      currentUser = data.user;
+      showMessage(loginMessage, '✓ Login erfolgreich!', 'success');
+      setTimeout(() => { showAdminView(); loginForm.reset(); loadEvents(); }, 1000);
+    } catch (error) {
+      showMessage(loginMessage, '✗ ' + error.message, 'error');
+      console.error('Login Error:', error);
+    }
+  });
 
-  window.location.href = `mailto:${mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-});
+  // Logout Handler
+  logoutBtn.addEventListener('click', async () => {
+    try {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) throw error;
+      currentUser = null;
+      showLoginView();
+      showMessage(loginMessage, '✓ Erfolgreich ausgeloggt', 'success');
+      loadEvents();
+      modalOverlay.classList.remove('active');
+    } catch (error) {
+      showMessage(eventFormMessage, '✗ Logout fehlgeschlagen: ' + error.message, 'error');
+      console.error('Logout Error:', error);
+    }
+  });
+
+  // Event erstellen / bearbeiten
+  eventForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!currentUser) { showMessage(eventFormMessage, '✗ Du musst eingeloggt sein!', 'error'); return; }
+    const title = document.getElementById('eventTitle').value.trim();
+    const dateInput = document.getElementById('eventDate').value;
+    const location = document.getElementById('eventLocation').value.trim();
+    const description = document.getElementById('eventDescription').value.trim();
+    if (!title || !dateInput || !location || !description) { showMessage(eventFormMessage, '✗ Bitte fülle alle Felder aus!', 'error'); return; }
+    if (title.length < 3) { showMessage(eventFormMessage, '✗ Der Titel muss mindestens 3 Zeichen lang sein!', 'error'); return; }
+    if (description.length < 10) { showMessage(eventFormMessage, '✗ Die Beschreibung muss mindestens 10 Zeichen lang sein!', 'error'); return; }
+    const eventDate = new Date(dateInput);
+    if (eventDate < new Date()) { showMessage(eventFormMessage, '✗ Das Event-Datum muss in der Zukunft liegen!', 'error'); return; }
+
+    try {
+      let error = null;
+      if (isEditMode) {
+        error = (await supabaseClient.from('events').update({ title, date: eventDate.toISOString(), location, description }).eq('id', eventForm.dataset.editId)).error;
+      } else {
+        error = (await supabaseClient.from('events').insert([{ title, date: eventDate.toISOString(), location, description, author: currentUser.email }])).error;
+      }
+      if (error) throw error;
+      showMessage(eventFormMessage, isEditMode ? '✓ Event erfolgreich aktualisiert!' : '✓ Event erfolgreich erstellt!', 'success');
+      resetEventForm();
+      loadEvents();
+      setTimeout(() => { modalOverlay.classList.remove('active'); eventFormMessage.innerHTML = ''; }, 2000);
+    } catch (error) { showMessage(eventFormMessage, '✗ ' + error.message, 'error'); console.error('Event Operation Error:', error); }
+  });
+
+  cancelEditBtn.addEventListener('click', resetEventForm);
+
+  // Event bearbeiten
+  function editEvent(id, title, date, location, description) {
+    isEditMode = true;
+    modalTitle.textContent = 'Event bearbeiten';
+    submitEventBtn.textContent = 'Event aktualisieren';
+    cancelEditBtn.style.display = 'block';
+    eventForm.dataset.editId = id;
+    document.getElementById('eventTitle').value = title;
+    document.getElementById('eventLocation').value = location;
+    document.getElementById('eventDescription').value = description;
+    document.getElementById('eventDate').value = new Date(date).toISOString().substring(0,16);
+    modalOverlay.classList.add('active');
+    showAdminView();
+  }
+
+  // Event löschen
+  async function deleteEvent(id, title) {
+    if (!confirm(`Möchtest du das Event "${title}" wirklich löschen?`)) return;
+    try {
+      const { error } = await supabaseClient.from('events').delete().eq('id', id);
+      if (error) throw error;
+      showMessage(eventFormMessage, '✓ Event erfolgreich gelöscht!', 'success');
+      loadEvents();
+    } catch (error) {
+      showMessage(eventFormMessage, '✗ Fehler beim Löschen: ' + error.message, 'error');
+    }
+  }
+
+  // Events laden
+  async function loadEvents() {
+    try {
+      const { data: events, error } = await supabaseClient.from('events').select('*').order('date', { ascending: true });
+      if (error) throw error;
+      const container = document.getElementById('eventsContainer');
+      container.innerHTML = '';
+      if (!events || events.length === 0) {
+        container.innerHTML = '<p style="color: #6b7280; font-size: 1.2rem;">📅 Noch keine Events vorhanden.</p>';
+        return;
+      }
+      const upcomingEvents = events.filter(e => new Date(e.date) >= new Date());
+      if (upcomingEvents.length === 0) {
+        container.innerHTML = '<p style="color: #6b7280; font-size: 1.2rem;">📅 Keine kommenden Events.</p>';
+        return;
+      }
+      upcomingEvents.forEach(e => {
+        const div = document.createElement('div');
+        div.classList.add('event-card');
+        const eventDate = new Date(e.date);
+        div.innerHTML = `
+          <h3>${escapeHtml(e.title)}</h3>
+          <div class="event-date">${eventDate.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+          <div class="event-location">${escapeHtml(e.location)}</div>
+          <div class="event-description">${escapeHtml(e.description)}</div>
+          <div class="event-meta">Organisiert von: ${escapeHtml(e.author)}</div>
+        `;
+        if (currentUser) {
+          const controls = document.createElement('div');
+          controls.className = 'news-admin-controls';
+          const editBtn = document.createElement('button');
+          editBtn.className = 'btn-edit';
+          editBtn.textContent = '✏️ Bearbeiten';
+          editBtn.addEventListener('click', () => editEvent(e.id, e.title, e.date, e.location, e.description));
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'btn-delete';
+          deleteBtn.textContent = '🗑️ Löschen';
+          deleteBtn.addEventListener('click', () => deleteEvent(e.id, e.title));
+          controls.appendChild(editBtn);
+          controls.appendChild(deleteBtn);
+          div.appendChild(controls);
+        }
+        container.appendChild(div);
+      });
+    } catch (err) {
+      const container = document.getElementById('eventsContainer');
+      container.innerHTML = `<div style="background: #fef2f2; color: #991b1b; padding: 20px; border-radius: 12px; border-left: 4px solid #dc2626;">
+        <strong>✗ Fehler beim Laden der Events</strong><br>${escapeHtml(err.message)}
+      </div>`;
+      console.error('Load Events Error:', err);
+    }
+  }
+
+  // Hilfsfunktionen
+  function resetEventForm() {
+    isEditMode = false;
+    eventForm.reset();
+    delete eventForm.dataset.editId;
+    submitEventBtn.textContent = 'Event erstellen';
+    cancelEditBtn.style.display = 'none';
+    eventFormMessage.innerHTML = '';
+    modalTitle.textContent = 'Event erstellen';
+  }
+
+  function showAdminView() {
+    loginView.classList.add('hidden');
+    adminView.classList.remove('hidden');
+    modalTitle.textContent = isEditMode ? 'Event bearbeiten' : 'Event erstellen';
+    userEmail.textContent = currentUser.email;
+    loginMessage.innerHTML = '';
+  }
+
+  function showLoginView() {
+    loginView.classList.remove('hidden');
+    adminView.classList.add('hidden');
+    modalTitle.textContent = 'Admin Login';
+    eventFormMessage.innerHTML = '';
+  }
+
+  function showMessage(element, message, type) {
+    element.innerHTML = `<div class="${type}">${message}</div>`;
+    setTimeout(() => { element.innerHTML = ''; }, 5000);
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Initialisierung
+  document.addEventListener('DOMContentLoaded', () => { checkAuth(); loadEvents(); });
+
+})();
 </script>
-
-</body>
-</html>
