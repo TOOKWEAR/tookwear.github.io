@@ -304,122 +304,130 @@ footer {
   color: #dc2626;
 }
 
-/* ===== SOCIAL ICONS – JETZT WIRKLICH ZENTRIERT ===== */
-.social-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 80px 20px;
-  min-height: 60vh;
+:root {
+	--white-color: #ffffff;
+	--black-color: #000000;
+	--transition: .3s;
+}
+/*--------- Comman css Start -------*/
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+body, html {
+	margin: 0;
+  padding: 100px;
+  text-align: center;
+}
+ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+a {
+	text-decoration: none;
+	transition: var(--transition);
 }
 
-.social-icons {
-  display: flex;
-  gap: 60px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+/*--------- Comman css End -------*/
+
+/*--------- Social Icons css Start -------*/
+.social_icons{
+    display: inline-block;
+}
+.social_icons ul{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+.social_icons ul li{
+    position: relative;
+    list-style: none;
+    width: 50px;
+    height: 50px;
+    margin: 0 25px;
+    transform: rotate(-30deg) skew(25deg);
+    background-color: rgba(238, 238, 238, 0.749);
+}
+.social_icons ul li span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: 0.5s;
+}
+.social_icons ul li span:after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: 0.5s;
+}
+.social_icons ul li span:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: 0.5s;
+}
+.social_icons ul li i{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 25px;
+}
+.social_icons ul li:hover i{
+    transform: translate(34px,-32px);
+    opacity: 1;
+}
+.social_icons ul li:hover span{
+    transform: translate(24px,-23px);
+    opacity: .7;
+}
+.social_icons ul li:hover span:after{
+    transform: translate(-9px,9px);
+    opacity: .5;
+}
+.social_icons ul li:hover span:before{
+    transform: translate(-17px,16px);
+    opacity: .3;
+}
+.social_icons ul li:nth-child(1) span,
+.social_icons ul li:nth-child(1) span:after,
+.social_icons ul li:nth-child(1) span:before,
+.social_icons ul li:nth-child(1) i{
+    background: linear-gradient(45deg, #1877F2, #0F5BD7);
+}
+.social_icons ul li:nth-child(2) span,
+.social_icons ul li:nth-child(2) span:after,
+.social_icons ul li:nth-child(2) span:before,
+.social_icons ul li:nth-child(2) i{
+    background: linear-gradient(45deg, #F58529, #DD2A7B);
+}
+.social_icons ul li:nth-child(3) span,
+.social_icons ul li:nth-child(3) span:after,
+.social_icons ul li:nth-child(3) span:before,
+.social_icons ul li:nth-child(3) i{
+    background: linear-gradient(45deg, #FF0000, #CC0000);
+}
+.social_icons ul li:nth-child(4) span,
+.social_icons ul li:nth-child(4) span:after,
+.social_icons ul li:nth-child(4) span:before,
+.social_icons ul li:nth-child(4) i{
+    background: linear-gradient(45deg, #1DA1F2, #0D8BDB);
 }
 
-.social-icons li {
-  position: relative;
-  width: 110px;           /* 70px + 20px left + Puffer für Hover */
-  height: 110px;
-  transform: skew(-20deg);
-}
+/*--------- Social Icons css End -------*/
 
-.social-icons li a {
-  position: absolute;
-  inset: 0;
-  background: #111;
-  color: #fff;
-  font-size: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: all 0.35s ease;
-  box-shadow: -20px 20px 10px rgba(0,0,0,0.4);
-}
-
-.social-icons li::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  left: -20px;
-  width: 20px;
-  height: 100%;
-  background: inherit;
-  transform: skewY(-45deg);
-}
-
-.social-icons li::after {
-  content: "";
-  position: absolute;
-  bottom: -20px;
-  left: -10px;
-  width: 100%;
-  height: 20px;
-  background: inherit;
-  transform: skewX(-45deg);
-}
-
-.social-icons li:hover a {
-  transform: translate(20px, -20px);
-  box-shadow: -40px 40px 25px rgba(0,0,0,0.55);
-}
-
-/* ===== Farben pro Icon ===== */
-.social-icons li:nth-child(1) a,
-.social-icons li:nth-child(1)::before,
-.social-icons li:nth-child(1)::after {
-  background: #000;
-}
-
-.social-icons li:nth-child(2) a,
-.social-icons li:nth-child(2)::before,
-.social-icons li:nth-child(2)::after {
-  background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
-}
-
-.social-icons li:nth-child(3) a,
-.social-icons li:nth-child(3)::before,
-.social-icons li:nth-child(3)::after {
-  background: #ff0000;
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-  header h1 {
-    font-size: 3.2rem;
-  }
-  .social-icons {
-    gap: 45px;
-  }
-  .social-icons li {
-    width: 95px;
-    height: 95px;
-  }
-  .social-icons li a {
-    font-size: 32px;
-  }
-}
-
-@media (max-width: 480px) {
-  .social-center {
-    padding: 60px 15px;
-  }
-  .social-icons {
-    gap: 35px;
-  }
-  .social-icons li {
-    width: 85px;
-    height: 85px;
-  }
-  .social-icons li a {
-    font-size: 28px;
-  }
-  header {
-    padding: 120px 15px;
-  }
-}
