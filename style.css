@@ -321,7 +321,9 @@ footer {
   display: flex;
   justify-content: center;
   margin: 4rem 0;
+  transform: translateX(10px); /* optional: justiere je nach Skew */
 }
+
 
 /* === ORIGINAL 3D SOCIAL ICON EFFECT === */
 .social-icons {
