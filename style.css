@@ -316,71 +316,70 @@ footer {
     padding: 80px 15px;
   }
 }
-/* === FIXED & CLEAN 3D SOCIAL ICONS === */
+/* === REAL 3D SOCIAL ICONS === */
 .social-3d-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 4rem 0;
+  margin: 5rem 0;
+  perspective: 900px;
 }
 
 .social-3d-icons {
   display: flex;
-  gap: 32px;
-  padding: 0;
+  gap: 36px;
   list-style: none;
+  padding: 0;
 }
 
 .social-3d-icons li {
+  width: 70px;
+  height: 70px;
   position: relative;
-  width: 64px;
-  height: 64px;
-  transform: rotate(-25deg) skew(10deg);
+  transform-style: preserve-3d;
 }
 
 .social-3d-icons li a {
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(8px);
-  border-radius: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
+  font-size: 28px;
   color: #fff;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 20px 30px rgba(0,0,0,0.35);
+  transform: rotateX(15deg) rotateY(-25deg);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow:
+    0 20px 35px rgba(0,0,0,0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.15);
 }
 
-.social-3d-icons li::before {
+/* Tiefe */
+.social-3d-icons li a::before {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 14px;
-  background: inherit;
-  filter: brightness(0.6);
-  transform: translate(8px, 8px);
-  z-index: -1;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.35);
+  transform: translateZ(-18px);
 }
 
-/* Hover – elegant, nicht aggressiv */
+/* Hover */
 .social-3d-icons li:hover a {
-  transform: translate(-6px, -6px);
-  box-shadow: 0 30px 40px rgba(0,0,0,0.5);
+  transform: rotateX(0deg) rotateY(0deg) translateY(-8px);
+  box-shadow: 0 35px 55px rgba(0,0,0,0.6);
 }
 
-/* Farben */
+/* Brand Farben */
 .social-3d-icons li.tiktok a { color: #69f0f3; }
 .social-3d-icons li.instagram a { color: #e1306c; }
 .social-3d-icons li.youtube a { color: #ff4b4b; }
 
 /* Mobile */
 @media (max-width: 600px) {
-  .social-3d-icons {
-    gap: 20px;
-  }
   .social-3d-icons li {
     width: 56px;
     height: 56px;
