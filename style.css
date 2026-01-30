@@ -316,91 +316,73 @@ footer {
     padding: 80px 15px;
   }
 }
-/* === 3D Social Icons === */
-.social-3d {
+/* === FIXED & CLEAN 3D SOCIAL ICONS === */
+.social-3d-wrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 4rem 0;
 }
 
-.social-icons {
+.social-3d-icons {
   display: flex;
-  gap: 40px;
-  list-style: none;
+  gap: 32px;
   padding: 0;
+  list-style: none;
 }
 
-.social-icons li {
+.social-3d-icons li {
   position: relative;
-  width: 70px;
-  height: 70px;
-  transform: skew(-20deg);
+  width: 64px;
+  height: 64px;
+  transform: rotate(-25deg) skew(10deg);
 }
 
-.social-icons li a {
+.social-3d-icons li a {
   position: absolute;
   inset: 0;
-  background: #111;
-  color: #fff;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  text-decoration: none;
-  transition: 0.3s;
-  box-shadow: -20px 20px 10px rgba(0,0,0,0.3);
+  font-size: 26px;
+  color: #fff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 20px 30px rgba(0,0,0,0.35);
 }
 
-.social-icons li::before,
-.social-icons li::after {
+.social-3d-icons li::before {
   content: "";
   position: absolute;
-  background: #000;
-  transition: 0.3s;
+  inset: 0;
+  border-radius: 14px;
+  background: inherit;
+  filter: brightness(0.6);
+  transform: translate(8px, 8px);
+  z-index: -1;
 }
 
-.social-icons li::before {
-  width: 20px;
-  height: 100%;
-  left: -20px;
-  top: 10px;
-  transform: skewY(-45deg);
-}
-
-.social-icons li::after {
-  width: 100%;
-  height: 20px;
-  bottom: -20px;
-  left: -10px;
-  transform: skewX(-45deg);
-}
-
-/* Hover */
-.social-icons li:hover a {
-  transform: translate(20px, -20px);
-  box-shadow: -40px 40px 20px rgba(0,0,0,0.4);
+/* Hover – elegant, nicht aggressiv */
+.social-3d-icons li:hover a {
+  transform: translate(-6px, -6px);
+  box-shadow: 0 30px 40px rgba(0,0,0,0.5);
 }
 
 /* Farben */
-.social-icons li.tiktok a,
-.social-icons li.tiktok::before,
-.social-icons li.tiktok::after {
-  background: #000;
-}
+.social-3d-icons li.tiktok a { color: #69f0f3; }
+.social-3d-icons li.instagram a { color: #e1306c; }
+.social-3d-icons li.youtube a { color: #ff4b4b; }
 
-.social-icons li.instagram a,
-.social-icons li.instagram::before,
-.social-icons li.instagram::after {
-  background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
-}
-
-.social-icons li.youtube a,
-.social-icons li.youtube::before,
-.social-icons li.youtube::after {
-  background: #ff0000;
-}
-
-/* Accessibility */
-.social-icons li a:focus {
-  outline: 3px solid #fff;
+/* Mobile */
+@media (max-width: 600px) {
+  .social-3d-icons {
+    gap: 20px;
+  }
+  .social-3d-icons li {
+    width: 56px;
+    height: 56px;
+  }
 }
