@@ -316,72 +316,88 @@ footer {
     padding: 80px 15px;
   }
 }
-/* === REAL 3D SOCIAL ICONS === */
-.social-3d-wrapper {
-  width: 100%;
+/* === CENTER FIX === */
+.social-center {
   display: flex;
   justify-content: center;
-  margin: 5rem 0;
-  perspective: 900px;
+  margin: 4rem 0;
 }
 
-.social-3d-icons {
+/* === ORIGINAL 3D SOCIAL ICON EFFECT === */
+.social-icons {
   display: flex;
-  gap: 36px;
+  gap: 40px;
   list-style: none;
   padding: 0;
 }
 
-.social-3d-icons li {
+.social-icons li {
+  position: relative;
   width: 70px;
   height: 70px;
-  position: relative;
-  transform-style: preserve-3d;
+  transform: skew(-20deg);
 }
 
-.social-3d-icons li a {
+.social-icons li a {
   position: absolute;
   inset: 0;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(10px);
+  background: #111;
+  color: #fff;
+  font-size: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  color: #fff;
-  transform: rotateX(15deg) rotateY(-25deg);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-  box-shadow:
-    0 20px 35px rgba(0,0,0,0.4),
-    inset 0 0 0 1px rgba(255,255,255,0.15);
+  text-decoration: none;
+  transition: 0.3s;
+  box-shadow: -20px 20px 10px rgba(0,0,0,0.4);
 }
 
-/* Tiefe */
-.social-3d-icons li a::before {
+/* LEFT SIDE */
+.social-icons li::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  background: rgba(0,0,0,0.35);
-  transform: translateZ(-18px);
+  top: 10px;
+  left: -20px;
+  width: 20px;
+  height: 100%;
+  background: #000;
+  transform: skewY(-45deg);
 }
 
-/* Hover */
-.social-3d-icons li:hover a {
-  transform: rotateX(0deg) rotateY(0deg) translateY(-8px);
-  box-shadow: 0 35px 55px rgba(0,0,0,0.6);
+/* BOTTOM */
+.social-icons li::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: -10px;
+  width: 100%;
+  height: 20px;
+  background: #000;
+  transform: skewX(-45deg);
 }
 
-/* Brand Farben */
-.social-3d-icons li.tiktok a { color: #69f0f3; }
-.social-3d-icons li.instagram a { color: #e1306c; }
-.social-3d-icons li.youtube a { color: #ff4b4b; }
+/* HOVER – DAS IST DER 3D-EFFEKT */
+.social-icons li:hover a {
+  transform: translate(20px, -20px);
+  box-shadow: -40px 40px 20px rgba(0,0,0,0.6);
+}
 
-/* Mobile */
-@media (max-width: 600px) {
-  .social-3d-icons li {
-    width: 56px;
-    height: 56px;
-  }
+/* COLORS */
+.social-icons li:nth-child(1) a,
+.social-icons li:nth-child(1)::before,
+.social-icons li:nth-child(1)::after {
+  background: #000;
+}
+
+.social-icons li:nth-child(2) a,
+.social-icons li:nth-child(2)::before,
+.social-icons li:nth-child(2)::after {
+  background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
+}
+
+.social-icons li:nth-child(3) a,
+.social-icons li:nth-child(3)::before,
+.social-icons li:nth-child(3)::after {
+  background: #ff0000;
+ }
 }
