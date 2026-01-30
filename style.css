@@ -304,50 +304,68 @@ footer {
   color: #dc2626;
 }
 
-/* ===== SOCIAL ICONS – JETZT WIRKLICH ZENTRIERT ===== */
+/* ================================================
+   SOCIAL MEDIA – FULLSCREEN / FAST FULLSCREEN
+   ================================================ */
+
 .social-center {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 80px 20px;
-  min-height: 60vh;
+  min-height: 85vh;               /* fast ganzer Screen */
+  height: 85vh;                   /* fixiert die Höhe */
+  width: 100%;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
 }
 
+/* Die Liste der Icons selbst */
 .social-icons {
   display: flex;
-  gap: 60px;
+  gap: 8vw;                       /* sehr großer Abstand – skaliert mit Bildschirm */
   list-style: none;
   padding: 0;
   margin: 0;
+  flex-wrap: nowrap;              /* verhindert Umbruch */
 }
 
+/* Jedes Icon-Element */
 .social-icons li {
   position: relative;
-  width: 110px;           /* 70px + 20px left + Puffer für Hover */
-  height: 110px;
+  width: 22vw;                    /* sehr groß – passt sich Screen-Breite an */
+  height: 22vw;
+  max-width: 220px;               /* Obergrenze, damit es auf großen Monitoren nicht explodiert */
+  max-height: 220px;
   transform: skew(-20deg);
+  transition: transform 0.4s ease;
 }
 
+/* Icon-Link (Font Awesome) */
 .social-icons li a {
   position: absolute;
   inset: 0;
   background: #111;
-  color: #fff;
-  font-size: 36px;
+  color: #ffffff;
+  font-size: 11vw;                /* riesig – passt sich an */
+  max-font-size: 110px;           /* nicht zu extrem auf 4K */
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  transition: all 0.35s ease;
-  box-shadow: -20px 20px 10px rgba(0,0,0,0.4);
+  transition: all 0.4s ease;
+  box-shadow: -25px 25px 15px rgba(0,0,0,0.5);
 }
 
+/* 3D-Seiten (vorher ::before / ::after) */
 .social-icons li::before {
   content: "";
   position: absolute;
-  top: 10px;
-  left: -20px;
-  width: 20px;
+  top: 12px;
+  left: -25px;
+  width: 25px;
   height: 100%;
   background: inherit;
   transform: skewY(-45deg);
@@ -356,25 +374,30 @@ footer {
 .social-icons li::after {
   content: "";
   position: absolute;
-  bottom: -20px;
-  left: -10px;
+  bottom: -25px;
+  left: -12px;
   width: 100%;
-  height: 20px;
+  height: 25px;
   background: inherit;
   transform: skewX(-45deg);
 }
 
-.social-icons li:hover a {
-  transform: translate(20px, -20px);
-  box-shadow: -40px 40px 25px rgba(0,0,0,0.55);
+/* Hover-Effekt – noch dramatischer */
+.social-icons li:hover {
+  transform: skew(-20deg) scale(1.12);
+  z-index: 20;
 }
 
-/* ===== Farben pro Icon ===== */
+.social-icons li:hover a {
+  transform: translate(30px, -30px);
+  box-shadow: -60px 60px 40px rgba(0,0,0,0.7);
+  font-size: 12.5vw;             /* noch etwas größer beim Hover */
+}
+
+/* Farben bleiben gleich */
 .social-icons li:nth-child(1) a,
 .social-icons li:nth-child(1)::before,
-.social-icons li:nth-child(1)::after {
-  background: #000;
-}
+.social-icons li:nth-child(1)::after { background: #000; }
 
 .social-icons li:nth-child(2) a,
 .social-icons li:nth-child(2)::before,
@@ -384,42 +407,38 @@ footer {
 
 .social-icons li:nth-child(3) a,
 .social-icons li:nth-child(3)::before,
-.social-icons li:nth-child(3)::after {
-  background: #ff0000;
-}
+.social-icons li:nth-child(3)::after { background: #ff0000; }
 
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-  header h1 {
-    font-size: 3.2rem;
-  }
+/* Mobile / kleinere Bildschirme */
+@media (max-width: 900px) {
   .social-icons {
-    gap: 45px;
+    gap: 6vw;
   }
   .social-icons li {
-    width: 95px;
-    height: 95px;
+    width: 28vw;
+    height: 28vw;
+    max-width: 160px;
+    max-height: 160px;
   }
   .social-icons li a {
-    font-size: 32px;
+    font-size: 14vw;
+    max-font-size: 80px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 500px) {
   .social-center {
-    padding: 60px 15px;
+    min-height: 80vh;
+    padding: 10px;
   }
   .social-icons {
-    gap: 35px;
+    gap: 10vw;
   }
   .social-icons li {
-    width: 85px;
-    height: 85px;
+    width: 32vw;
+    height: 32vw;
   }
   .social-icons li a {
-    font-size: 28px;
-  }
-  header {
-    padding: 120px 15px;
+    font-size: 16vw;
   }
 }
