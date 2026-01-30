@@ -302,41 +302,25 @@ footer {
   color: #374151;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 480px) {
-  .connect-wrapper {
-    flex-direction: column;
-  }
-
-  header h1 {
-    font-size: 2.5rem;
-  }
-
-  section {
-    padding: 80px 15px;
-  }
-}
-/* === CENTER FIX === */
+/* ===== Social Media Icons – jetzt korrekt zentriert ===== */
 .social-center {
   display: flex;
   justify-content: center;
   margin: 4rem 0;
-  transform: translateX(10px); /* optional: justiere je nach Skew */
 }
 
-
-/* === ORIGINAL 3D SOCIAL ICON EFFECT === */
 .social-icons {
   display: flex;
-  gap: 40px;
+  gap: 50px;           /* etwas mehr Luft – sieht meist besser aus */
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .social-icons li {
   position: relative;
-  width: 70px;
-  height: 70px;
+  width: 100px;        /* +30px Puffer für left: -20px & Hover */
+  height: 100px;       /* Puffer für bottom & Hover */
   transform: skew(-20deg);
 }
 
@@ -345,7 +329,7 @@ footer {
   inset: 0;
   background: #111;
   color: #fff;
-  font-size: 28px;
+  font-size: 32px;     /* etwas größer → wirkt hochwertiger */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -378,7 +362,7 @@ footer {
   transform: skewX(-45deg);
 }
 
-/* HOVER – DAS IST DER 3D-EFFEKT */
+/* HOVER – 3D-EFFEKT */
 .social-icons li:hover a {
   transform: translate(20px, -20px);
   box-shadow: -40px 40px 20px rgba(0,0,0,0.6);
@@ -401,5 +385,28 @@ footer {
 .social-icons li:nth-child(3)::before,
 .social-icons li:nth-child(3)::after {
   background: #ff0000;
- }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .connect-wrapper {
+    flex-direction: column;
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+  }
+
+  section {
+    padding: 80px 15px;
+  }
+
+  .social-icons {
+    gap: 30px;
+  }
+
+  .social-icons li {
+    width: 90px;
+    height: 90px;
+  }
 }
