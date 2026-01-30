@@ -6,27 +6,26 @@
   <title>TOOK WAR — Social</title>
   <meta name="description" content="Folge TOOK WAR auf TikTok, Instagram & YouTube!">
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- Menü Button -->
-<div class="menu-btn" id="menuBtn">☰</div>
+  <!-- Menü Button -->
+  <div class="menu-btn" id="menuBtn">☰</div>
 
-<!-- Sidebar Navbar -->
-<div class="sidebar apple-glass" id="sidebar">
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="community.html">Community</a>
-  <a href="events.html">Events</a>
-  <a href="support.html">Support</a>
-  <a href="news.html">News</a>
-  <a href="conventions.html">Konventionen</a>
-  <a href="rules.html">Regelwerk</a>
-  <a href="#" id="supportBtn">💛 Support Us</a>
-</div>
+  <!-- Sidebar Navbar -->
+  <div class="sidebar apple-glass" id="sidebar">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="community.html">Community</a>
+    <a href="events.html">Events</a>
+    <a href="support.html">Support</a>
+    <a href="news.html">News</a>
+    <a href="conventions.html">Konventionen</a>
+    <a href="rules.html">Regelwerk</a>
+    <a href="#" id="supportBtn">💛 Support Us</a>
+  </div>
 
   <!-- Header Section -->
   <header class="hero-section">
@@ -36,21 +35,42 @@
 
   <!-- Main Content -->
   <main>
-<section class="social-center" style="background: rgba(255,0,0,0.2); padding: 100px 20px;">
-  <ul class="social-icons">
-    <li><a href="https://www.tiktok.com/@tookwar" target="_blank"><i class="fab fa-tiktok"></i></a></li>
-    <li><a href="https://www.instagram.com/took.war/" target="_blank"><i class="fab fa-instagram"></i></a></li>
-    <li><a href="https://www.youtube.com/@tookwearMLT" target="_blank"><i class="fab fa-youtube"></i></a></li>
-  </ul>
-</section>
-
-
+    <section class="social-center">
+      <ul class="social-icons">
+        <li>
+          <a href="https://www.tiktok.com/@tookwar" target="_blank" aria-label="TikTok">
+            <i class="fab fa-tiktok"></i>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/took.war/" target="_blank" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.youtube.com/@tookwearMLT" target="_blank" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </li>
+      </ul>
+    </section>
   </main>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
+    <p>© 2025 TOOK WAR. Alle Rechte vorbehalten.</p>
   </footer>
 
+  <!-- Support Modal (wird per JS eingeblendet) -->
+  <div class="modal" id="supportModal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <h2>Support TOOK WAR</h2>
+      <p>Vielen Dank, dass du uns unterstützen möchtest! 💛</p>
+      <p>Hier kommen bald Links zu PayPal, Ko-fi, Patreon oder ähnlichem.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
