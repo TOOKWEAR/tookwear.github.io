@@ -8,6 +8,7 @@
 html, body {
   width: 100%;
   height: 100%;
+  text-align: center;
 }
 
 /* ===== BODY MIT HINTERGRUNDBILD ===== */
@@ -53,7 +54,7 @@ a:hover {
   transform: scale(1.05);
 }
 
-/* ===== Navigation (alte Top-Navbar – falls noch verwendet) ===== */
+/* ===== Navigation ===== */
 nav {
   position: fixed;
   top: 0;
@@ -83,10 +84,11 @@ nav a:hover {
 header.hero-section {
   background: linear-gradient(135deg, #2563eb, #60a5fa);
   color: white;
-  padding: 150px 20px;
+  padding: 150px 20px 100px; /* optionales Bottom-Padding */
   text-align: center;
   border-radius: 0 0 50px 50px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  margin-top: 0; /* sicherstellen, dass kein Abstand oben ist */
 }
 
 header h1 {
@@ -117,7 +119,7 @@ section {
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-/* ===== Buttons (allgemein) ===== */
+/* ===== Buttons ===== */
 .btn {
   display: inline-block;
   background: #2563eb;
@@ -134,7 +136,7 @@ section {
   box-shadow: 0 6px 25px rgba(0,0,0,0.15);
 }
 
-/* ===== Connect Section (falls noch vorhanden) ===== */
+/* ===== Connect Section ===== */
 .connect-section {
   display: flex;
   flex-direction: column;
@@ -206,10 +208,7 @@ footer {
   border-radius: 50px 50px 0 0;
 }
 
-/* =================================================
-   SIDEBAR + MENÜ-BUTTON + SUPPORT-MODAL
-   ================================================= */
-
+/* ===== Sidebar + Menu ===== */
 .menu-btn {
   position: fixed;
   top: 18px;
@@ -269,7 +268,7 @@ footer {
   padding: 14px 0;
 }
 
-/* ===== Modal (Support) – definitiv KEIN ROT ===== */
+/* ===== Modal Support ===== */
 .modal {
   display: none;
   position: fixed;
@@ -304,130 +303,90 @@ footer {
   color: #dc2626;
 }
 
+/* ===== Root Variablen ===== */
 :root {
-	--white-color: #ffffff;
-	--black-color: #000000;
-	--transition: .3s;
-}
-/*--------- Comman css Start -------*/
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-body, html {
-	margin: 0;
-  padding: 100px;
-  text-align: center;
-}
-ul{
-	list-style:none;
-	margin:0;
-	padding:0;
-}
-a {
-	text-decoration: none;
-	transition: var(--transition);
+  --white-color: #ffffff;
+  --black-color: #000000;
+  --transition: .3s;
 }
 
-/*--------- Comman css End -------*/
-
-/*--------- Social Icons css Start -------*/
+/* ===== Social Icons ===== */
 .social_icons{
-    display: inline-block;
+  display: inline-block;
 }
 .social_icons ul{
-    position: relative;
-    margin: 0;
-    padding: 0;
-    display: flex;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: flex;
 }
 .social_icons ul li{
-    position: relative;
-    list-style: none;
-    width: 50px;
-    height: 50px;
-    margin: 0 25px;
-    transform: rotate(-30deg) skew(25deg);
-    background-color: rgba(238, 238, 238, 0.749);
+  position: relative;
+  list-style: none;
+  width: 50px;
+  height: 50px;
+  margin: 0 25px;
+  transform: rotate(-30deg) skew(25deg);
+  background-color: rgba(238, 238, 238, 0.749);
 }
 .social_icons ul li span{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: 0.5s;
-}
-.social_icons ul li span:after{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: 0.5s;
-}
-.social_icons ul li span:before{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: 0.5s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: 0.5s;
 }
 .social_icons ul li i{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: 0.5s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 25px;
 }
 .social_icons ul li:hover i{
-    transform: translate(34px,-32px);
-    opacity: 1;
+  transform: translate(34px,-32px);
+  opacity: 1;
 }
 .social_icons ul li:hover span{
-    transform: translate(24px,-23px);
-    opacity: .7;
+  transform: translate(24px,-23px);
+  opacity: .7;
 }
 .social_icons ul li:hover span:after{
-    transform: translate(-9px,9px);
-    opacity: .5;
+  transform: translate(-9px,9px);
+  opacity: .5;
 }
 .social_icons ul li:hover span:before{
-    transform: translate(-17px,16px);
-    opacity: .3;
+  transform: translate(-17px,16px);
+  opacity: .3;
 }
 .social_icons ul li:nth-child(1) span,
 .social_icons ul li:nth-child(1) span:after,
 .social_icons ul li:nth-child(1) span:before,
 .social_icons ul li:nth-child(1) i{
-    background: linear-gradient(45deg, #1877F2, #0F5BD7);
+  background: linear-gradient(45deg, #1877F2, #0F5BD7);
 }
 .social_icons ul li:nth-child(2) span,
 .social_icons ul li:nth-child(2) span:after,
 .social_icons ul li:nth-child(2) span:before,
 .social_icons ul li:nth-child(2) i{
-    background: linear-gradient(45deg, #F58529, #DD2A7B);
+  background: linear-gradient(45deg, #F58529, #DD2A7B);
 }
 .social_icons ul li:nth-child(3) span,
 .social_icons ul li:nth-child(3) span:after,
 .social_icons ul li:nth-child(3) span:before,
 .social_icons ul li:nth-child(3) i{
-    background: linear-gradient(45deg, #FF0000, #CC0000);
+  background: linear-gradient(45deg, #FF0000, #CC0000);
 }
 .social_icons ul li:nth-child(4) span,
 .social_icons ul li:nth-child(4) span:after,
 .social_icons ul li:nth-child(4) span:before,
 .social_icons ul li:nth-child(4) i{
-    background: linear-gradient(45deg, #1DA1F2, #0D8BDB);
+  background: linear-gradient(45deg, #1DA1F2, #0D8BDB);
 }
-
-/*--------- Social Icons css End -------*/
-
