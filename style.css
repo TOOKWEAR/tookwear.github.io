@@ -53,7 +53,7 @@ a:hover {
   transform: scale(1.05);
 }
 
-/* ===== Navigation (alte Top-Navbar bleibt) ===== */
+/* ===== Navigation (alte Top-Navbar – falls noch verwendet) ===== */
 nav {
   position: fixed;
   top: 0;
@@ -80,7 +80,7 @@ nav a:hover {
 }
 
 /* ===== Header / Hero ===== */
-header {
+header.hero-section {
   background: linear-gradient(135deg, #2563eb, #60a5fa);
   color: white;
   padding: 150px 20px;
@@ -100,7 +100,7 @@ header p {
   margin: 0 auto;
 }
 
-/* ===== Sektionen ===== */
+/* ===== Allgemeine Sektionen ===== */
 section {
   padding: 100px 20px;
   min-height: 100vh;
@@ -117,7 +117,7 @@ section {
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-/* ===== Buttons ===== */
+/* ===== Buttons (allgemein) ===== */
 .btn {
   display: inline-block;
   background: #2563eb;
@@ -134,7 +134,7 @@ section {
   box-shadow: 0 6px 25px rgba(0,0,0,0.15);
 }
 
-/* ===== Connect Section ===== */
+/* ===== Connect Section (falls noch vorhanden) ===== */
 .connect-section {
   display: flex;
   flex-direction: column;
@@ -167,7 +167,6 @@ section {
   box-shadow: 0 0 12px rgba(67, 56, 202, 0.3);
 }
 
-/* Buttons */
 #copyBtn,
 .connect-section button {
   background: linear-gradient(135deg, #2563eb, #60a5fa);
@@ -189,7 +188,6 @@ section {
   box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
 
-/* Kopier-Feedback */
 #copyMsg {
   display: none;
   margin-top: 8px;
@@ -209,10 +207,9 @@ footer {
 }
 
 /* =================================================
-   SIDEBAR NAVBAR + SUPPORT MODAL
+   SIDEBAR + MENÜ-BUTTON + SUPPORT-MODAL
    ================================================= */
 
-/* Menü Button */
 .menu-btn {
   position: fixed;
   top: 18px;
@@ -232,7 +229,6 @@ footer {
   background: rgba(37,99,235,0.9);
 }
 
-/* Sidebar */
 .sidebar {
   position: fixed;
   left: -280px;
@@ -264,18 +260,16 @@ footer {
   color: #93c5fd;
 }
 
-/* Support Button */
 .sidebar a#supportBtn {
-  margin-top: 30px;
+  margin: 30px 20px 0;
   background: linear-gradient(135deg, #2563eb, #60a5fa);
   border-radius: 40px;
-  margin-left: 20px;
-  margin-right: 20px;
   text-align: center;
   color: white;
+  padding: 14px 0;
 }
 
-/* Modal */
+/* ===== Modal (Support) – definitiv KEIN ROT ===== */
 .modal {
   display: none;
   position: fixed;
@@ -287,31 +281,41 @@ footer {
 }
 
 .modal-content {
-  background: rgba(255,255,255,0.92);
-  padding: 35px 30px;
-  width: 340px;
+  background: rgba(255,255,255,0.94);
+  padding: 40px 30px;
+  width: 90%;
+  max-width: 420px;
   border-radius: 25px;
   text-align: center;
-  box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+  box-shadow: 0 15px 60px rgba(0,0,0,0.35);
+  position: relative;
 }
 
 .close-btn {
-  float: right;
-  font-size: 24px;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 36px;
   cursor: pointer;
   color: #374151;
 }
 
-/* ===== Social Media Icons – jetzt korrekt zentriert ===== */
+.close-btn:hover {
+  color: #dc2626;
+}
+
+/* ===== SOCIAL ICONS – JETZT WIRKLICH ZENTRIERT ===== */
 .social-center {
   display: flex;
   justify-content: center;
-  margin: 4rem 0;
+  align-items: center;
+  padding: 80px 20px;
+  min-height: 60vh;
 }
 
 .social-icons {
   display: flex;
-  gap: 50px;           /* etwas mehr Luft – sieht meist besser aus */
+  gap: 60px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -319,8 +323,8 @@ footer {
 
 .social-icons li {
   position: relative;
-  width: 100px;        /* +30px Puffer für left: -20px & Hover */
-  height: 100px;       /* Puffer für bottom & Hover */
+  width: 110px;           /* 70px + 20px left + Puffer für Hover */
+  height: 110px;
   transform: skew(-20deg);
 }
 
@@ -329,16 +333,15 @@ footer {
   inset: 0;
   background: #111;
   color: #fff;
-  font-size: 32px;     /* etwas größer → wirkt hochwertiger */
+  font-size: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  transition: 0.3s;
+  transition: all 0.35s ease;
   box-shadow: -20px 20px 10px rgba(0,0,0,0.4);
 }
 
-/* LEFT SIDE */
 .social-icons li::before {
   content: "";
   position: absolute;
@@ -346,11 +349,10 @@ footer {
   left: -20px;
   width: 20px;
   height: 100%;
-  background: #000;
+  background: inherit;
   transform: skewY(-45deg);
 }
 
-/* BOTTOM */
 .social-icons li::after {
   content: "";
   position: absolute;
@@ -358,17 +360,16 @@ footer {
   left: -10px;
   width: 100%;
   height: 20px;
-  background: #000;
+  background: inherit;
   transform: skewX(-45deg);
 }
 
-/* HOVER – 3D-EFFEKT */
 .social-icons li:hover a {
   transform: translate(20px, -20px);
-  box-shadow: -40px 40px 20px rgba(0,0,0,0.6);
+  box-shadow: -40px 40px 25px rgba(0,0,0,0.55);
 }
 
-/* COLORS */
+/* ===== Farben pro Icon ===== */
 .social-icons li:nth-child(1) a,
 .social-icons li:nth-child(1)::before,
 .social-icons li:nth-child(1)::after {
@@ -388,25 +389,37 @@ footer {
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 480px) {
-  .connect-wrapper {
-    flex-direction: column;
-  }
-
+@media (max-width: 768px) {
   header h1 {
-    font-size: 2.5rem;
+    font-size: 3.2rem;
   }
-
-  section {
-    padding: 80px 15px;
-  }
-
   .social-icons {
-    gap: 30px;
+    gap: 45px;
   }
-
   .social-icons li {
-    width: 90px;
-    height: 90px;
+    width: 95px;
+    height: 95px;
+  }
+  .social-icons li a {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .social-center {
+    padding: 60px 15px;
+  }
+  .social-icons {
+    gap: 35px;
+  }
+  .social-icons li {
+    width: 85px;
+    height: 85px;
+  }
+  .social-icons li a {
+    font-size: 28px;
+  }
+  header {
+    padding: 120px 15px;
   }
 }
