@@ -243,19 +243,20 @@
 
 <!-- SCRIPT KOMPLETT INTEGRIERT -->
 <script>
+  const copyButtons = document.querySelectorAll('.copyBtn');
+  copyButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetId = button.getAttribute('data-target');
+      const input = document.getElementById(targetId);
+      input.select();
+      input.setSelectionRange(0, 99999); // für mobile Geräte
 
-/* Copy IP */
-document.getElementById('copyBtn').addEventListener('click', () => {
-  const ipInput = document.getElementById('serverIP');
-  ipInput.select();
-  ipInput.setSelectionRange(0, 99999);
-  document.execCommand('copy');
-
-  const msg = document.getElementById('copyMsg');
-  msg.style.display = 'block';
-  setTimeout(() => { msg.style.display = 'none'; }, 2000);
-});
-
+      navigator.clipboard.writeText(input.value).then(() => {
+        const msg = document.getElementById('copyMsg');
+        msg.style.opacity = 1;
+        setTimeout(() => msg.style.opacity = 0, 2000);
+      }).catch(err => console.error('Kopieren fehlgeschlagen:', err));
+    });
 /* Sidebar öffnen / schließen */
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
