@@ -203,17 +203,18 @@
   <section class="connect-section apple-glass">
     <h2>Schnell verbinden</h2>
     <p>Verbinde dich direkt mit unserem Minecraft-Server:</p>
-    <div class="connect-wrapper">
-      <input type="text" id="serverIP" value="took-wear.gl.joinmc.link" readonly>
-      <button id="copyBtn">Kopieren</button>
-      <button onclick="window.open('https://tookwar.statuspage.io/','_blank')">Status</button>
-    </div>
-    <div class="connect-wrapper">
-      <input type="text" id="serverIP-PE" value="maybe-climbing.gl.at.ply.gg" readonly>
-      <input type="text" id="Port-PE" value="9449" readonly>
-      <button id="copyBtn">Kopieren</button>
-    </div>
-    <p id="copyMsg" class="copy-msg">IP kopiert!</p>
+<div class="connect-wrapper">
+  <input type="text" id="serverIP" value="took-wear.gl.joinmc.link" readonly>
+  <button class="copyBtn" data-target="serverIP">Kopieren</button>
+</div>
+
+<div class="connect-wrapper">
+  <input type="text" id="serverIP-PE" value="maybe-climbing.gl.at.ply.gg" readonly>
+  <input type="text" id="Port-PE" value="9449" readonly>
+  <button class="copyBtn" data-target="serverIP-PE">Kopieren</button>
+</div>
+
+<p id="copyMsg" class="copy-msg">IP kopiert!</p>
   </section>
 </main>
 
