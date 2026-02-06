@@ -222,7 +222,9 @@
 </main>
 
 <script>
+/* ===== Copy-Buttons ===== */
 const copyButtons = document.querySelectorAll('.copyBtn');
+
 copyButtons.forEach(button => {
   button.addEventListener('click', () => {
     const targetIds = button.getAttribute('data-target').split(',');
@@ -230,24 +232,26 @@ copyButtons.forEach(button => {
     let textToCopy = '';
 
     if(targetIds.length === 1){
-      // Java
       const input = document.getElementById(targetIds[0].trim());
       if(input) textToCopy = input.value;
     } else if(targetIds.length > 1){
-      // Bedrock / PE -> IP:Port
       const ipInput = document.getElementById(targetIds[0].trim());
       const portInput = document.getElementById(targetIds[1].trim());
       if(ipInput && portInput) textToCopy = `${label}: ${ipInput.value}:${portInput.value}`;
     }
 
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      const msg = document.getElementById('copyMsg');
-      msg.textContent = textToCopy + " kopiert!";
-      msg.style.opacity = 1;
-      setTimeout(() => msg.style.opacity = 0, 2000);
-    }).catch(err => console.error('Kopieren fehlgeschlagen:', err));
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        const msg = document.getElementById('copyMsg');
+        msg.textContent = textToCopy + " kopiert!";
+        msg.style.opacity = 1;
+        setTimeout(() => msg.style.opacity = 0, 2000);
+      })
+      .catch(err => console.error('Kopieren fehlgeschlagen:', err));
   });
-/* Sidebar öffnen / schließen */
+});
+
+/* ===== Sidebar öffnen / schließen ===== */
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
 
@@ -255,8 +259,8 @@ menuBtn.addEventListener("click", () => {
   sidebar.classList.toggle("open");
 });
 
-/* Support Modal */
-const supportBtn = document.getElementById('supportBtn');
+/* ===== Support Modal ===== */
+const supportBtn = document.querySelector('a#supportBtn'); // nur 1 Support Button
 const modal = document.getElementById('supportModal');
 const closeBtn = document.getElementById('closeSupport');
 const sendBtn = document.getElementById('sendSupport');
@@ -266,31 +270,18 @@ supportBtn.addEventListener('click', (e) => {
   modal.style.display = 'flex';
 });
 
-closeBtn.addEventListener('click', () => {
-  modal.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-  if (e.target === modal) modal.style.display = 'none';
-});
+closeBtn.addEventListener('click', () => modal.style.display = 'none');
+window.addEventListener('click', (e) => { if(e.target === modal) modal.style.display = 'none'; });
 
 sendBtn.addEventListener('click', () => {
   const code = document.getElementById('pscCode').value.trim();
-
-  if (code.length !== 16) {
-    alert("Bitte einen gültigen 16-stelligen Paysafecard-Code eingeben.");
-    return;
-  }
+  if(code.length !== 16) { alert("Bitte einen gültigen 16-stelligen Paysafecard-Code eingeben."); return; }
 
   const mail = "meowtroid24@proton.me";
   const subject = "TOOK WAR Support – Paysafecard";
   const body = "Zahlungsmethode: Paysafecard\nCode: " + code;
-
-  window.location.href =
-    `mailto:${mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = `mailto:${mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
-
 </script>
-
 </body>
 </html>
