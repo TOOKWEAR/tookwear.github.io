@@ -203,60 +203,50 @@
   <section class="connect-section apple-glass">
     <h2>Schnell verbinden</h2>
     <p>Verbinde dich direkt mit unserem Minecraft-Server:</p>
-<div class="connect-wrapper">
-  <input type="text" id="serverIP" value="took-wear.gl.joinmc.link" readonly>
-  <button class="copyBtn" data-target="serverIP">Kopieren</button>
-</div>
 
-<div class="connect-wrapper">
-  <input type="text" id="serverIP-PE" value="maybe-climbing.gl.at.ply.gg" readonly>
-  <input type="text" id="Port-PE" value="9449" readonly>
-  <button class="copyBtn" data-target="serverIP-PE">Kopieren</button>
-</div>
+    <!-- Java -->
+    <div class="connect-wrapper">
+      <input type="text" id="serverIP" value="took-wear.gl.joinmc.link" readonly>
+      <button class="copyBtn" data-target="serverIP" data-label="Java">Kopieren</button>
+    </div>
 
-<p id="copyMsg" class="copy-msg">IP kopiert!</p>
+    <!-- Bedrock / PE -->
+    <div class="connect-wrapper">
+      <input type="text" id="serverIP-PE" value="maybe-climbing.gl.at.ply.gg" readonly>
+      <input type="text" id="Port-PE" value="9449" readonly>
+      <button class="copyBtn" data-target="serverIP-PE,Port-PE" data-label="PE">Kopieren</button>
+    </div>
+
+    <p id="copyMsg" class="copy-msg"></p>
   </section>
 </main>
 
-<!-- Support Popup -->
-<div id="supportModal" class="modal">
-  <div class="modal-content apple-glass">
-    <span class="close-btn" id="closeSupport">&times;</span>
-    <h2>Support Us</h2>
-
-    <p>Zahlungsmethode:</p>
-    <select disabled>
-      <option>Paysafecard</option>
-    </select>
-
-    <p>16-stelliger Code:</p>
-    <input type="text" id="pscCode" maxlength="16" placeholder="XXXX-XXXX-XXXX-XXXX">
-
-    <button id="sendSupport">Senden</button>
-  </div>
-</div>
-
-<!-- Footer -->
-<footer class="apple-glass">
-  <p>&copy; 2026 TOOK WAR. Alle Rechte vorbehalten.</p>
-</footer>
-
-<!-- SCRIPT KOMPLETT INTEGRIERT -->
 <script>
-  const copyButtons = document.querySelectorAll('.copyBtn');
-  copyButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const targetId = button.getAttribute('data-target');
-      const input = document.getElementById(targetId);
-      input.select();
-      input.setSelectionRange(0, 99999); // für mobile Geräte
+const copyButtons = document.querySelectorAll('.copyBtn');
+copyButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const targetIds = button.getAttribute('data-target').split(',');
+    const label = button.getAttribute('data-label') || '';
+    let textToCopy = '';
 
-      navigator.clipboard.writeText(input.value).then(() => {
-        const msg = document.getElementById('copyMsg');
-        msg.style.opacity = 1;
-        setTimeout(() => msg.style.opacity = 0, 2000);
-      }).catch(err => console.error('Kopieren fehlgeschlagen:', err));
-    });
+    if(targetIds.length === 1){
+      // Java
+      const input = document.getElementById(targetIds[0].trim());
+      if(input) textToCopy = input.value;
+    } else if(targetIds.length > 1){
+      // Bedrock / PE -> IP:Port
+      const ipInput = document.getElementById(targetIds[0].trim());
+      const portInput = document.getElementById(targetIds[1].trim());
+      if(ipInput && portInput) textToCopy = `${label}: ${ipInput.value}:${portInput.value}`;
+    }
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      const msg = document.getElementById('copyMsg');
+      msg.textContent = textToCopy + " kopiert!";
+      msg.style.opacity = 1;
+      setTimeout(() => msg.style.opacity = 0, 2000);
+    }).catch(err => console.error('Kopieren fehlgeschlagen:', err));
+  });
 /* Sidebar öffnen / schließen */
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
